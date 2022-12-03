@@ -1,0 +1,30 @@
+cmake_minimum_required(VERSION 3.24)
+project(fyp)
+
+set(CMAKE_CXX_STANDARD 17)
+set(APP_TARGET main.app)
+
+set(GLFW_H /usr/local/Cellar/glfw/3.3.8/include/GLFW)
+include_directories( ${GLFW_H})
+
+set(GLFW_LINK /usr/local/Cellar/glfw/3.3.8/lib/libglfw.3.dylib)
+link_libraries( ${GLFW_LINK})
+
+# OPENGL
+find_package(OpenGL REQUIRED)
+include_directories(${OPENGL_INCLUDE_DIRS})
+
+if (APPLE)
+    set(CMAKE_CXX_FLAGS "-framework Cocoa -framework IOKit -framework OpenGL -framework CoreVideo")
+    add_compile_definitions(GL_SILENCE_DEPRECATION)
+endif ()
+
+
+set(IMGUI_DIR ./imgui)
+include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends)
+
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+file(GLOB sources *.cpp)
+add_executable(fyp main.cpp ${sources} ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp)
