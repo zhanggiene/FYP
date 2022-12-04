@@ -14,6 +14,10 @@ link_libraries( ${GLFW_LINK})
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIRS})
 
+# Eigen
+
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+
 if (APPLE)
     set(CMAKE_CXX_FLAGS "-framework Cocoa -framework IOKit -framework OpenGL -framework CoreVideo")
     add_compile_definitions(GL_SILENCE_DEPRECATION)
@@ -27,4 +31,5 @@ include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 file(GLOB sources *.cpp)
-add_executable(fyp main.cpp ${sources} ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp)
+add_executable(fyp main.cpp ${sources} ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp include/Point.h source/Canvas.cpp include/Canvas.h include/Curve.h)
+target_link_libraries (fyp Eigen3::Eigen)

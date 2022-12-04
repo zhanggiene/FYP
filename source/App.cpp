@@ -22,6 +22,15 @@ void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mo
         glfwSetWindowShouldClose(window_, GL_TRUE);
     std::cout<<"ESC"<<mode;
 }
+
+void App::draw() {
+    for (auto p: _points) {
+        // std::cout<<"drawing"<<std::endl;
+        p.draw();
+    }
+    _canvas.draw();
+
+}
 bool App::initialize(int width, int height, const char *title) {
 
    if (!glfwInit()) {
@@ -43,10 +52,14 @@ bool App::initialize(int width, int height, const char *title) {
         glfwTerminate();
         return false;
     }
-
+    _canvas.setSize(width);
     glfwMakeContextCurrent(_window);
 
-    glfwSetKeyCallback(_window, key_callback); //Register callback function
+
+    //Register callback function
+    glfwSetKeyCallback(_window, key_callback);
+    glfwSetCursorPosCallback(_window, cursor_position_callback);
+    glfwSetMouseButtonCallback(_window, mouse_button_callback);
     glfwSwapInterval(1); // Enable vsync
 
     // Setup Dear ImGui context
@@ -57,6 +70,19 @@ bool App::initialize(int width, int height, const char *title) {
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(_window, true);
     ImGui_ImplOpenGL2_Init();
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+    glDisable(GL_DEPTH_TEST);
+    glShadeModel(GL_SMOOTH);
+    glDisable(GL_CULL_FACE);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glOrtho(0, width, height, 0, 1, -1);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     return true;
 
 }
@@ -71,15 +97,18 @@ int App::run() {
         ImGui::NewFrame();
 
         {
-            static float f = 0.0f;
+            static float f1 = 0.0f;
+            static float f2 = 0.0f;
             static int counter = 0;
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Control Point");                          // Create a window called "Hello, world!" and append into it.
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+            // ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
 
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+            ImGui::SliderFloat("r1", &f1, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+            ImGui::SliderFloat("r2", &f2, 0.0f, 1.0f);
+            ImGui::ColorEdit3(" color 1 ", (float*)&color1); // Edit 3 floats representing a color
+            ImGui::ColorEdit3(" color 2 ", (float*)&color2); // Edit 2
 
             if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
                 counter++;
@@ -97,29 +126,34 @@ int App::run() {
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        draw();
+        /*
         glBegin(GL_TRIANGLES);
         glColor3f(1, 0, 0); //Red
-        glVertex3f(0, 1, 1);
+        glVertex2f(0, 1);
 
         glColor3f(0, 1, 0); //Green
-        glVertex3f(-1, -1, 0);
+        glVertex2f(-1, -1);
 
         glColor3f(0, 0, 1); //Blue
-        glVertex3f(1, -1, 0);
+        glVertex2f(1, -1);
         //End a drawing step
         glEnd();
 
-        glBegin(GL_POLYGON);
-        //Draw another trapezoid, you need to pay attention to the stroke order
-        glColor3f(0.5, 0.5, 0.5); //Grey
-        glVertex2d(0.5, 0.5);
-        glVertex2d(1, 1);
-        glVertex2d(1, 0);
-        glVertex2d(0.5, 0);
+
+        glBegin(GL_TRIANGLES);
+        glColor3f(1, 0, 0); //Red
+        glVertex2f(0, 0);
+
+        glColor3f(0, 1, 0); //Green
+        glVertex2f(1028, 1028);
+
+        glColor3f(0, 0, 1); //Blue
+        glVertex2f(1028, 0);
+        //End a drawing step
         glEnd();
-
-
-
+         */
+        //End a drawing step
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
         //glUseProgram(last_program);
 
@@ -137,4 +171,41 @@ int App::run() {
     glfwTerminate();
     return 0;
 }
+
+void App::cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
+    //std::cout<<"x: "<<xpos<<"y: "<<ypos<<std::endl;
+}
+
+void App::mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        double xpos, ypos;
+        //getting cursor position
+        glfwGetCursorPos(window, &xpos, &ypos);
+        // std::cout << "Cursor Position at (" << xpos << " : " << ypos << std::endl;
+        _points.emplace_back(color1,color2,xpos,ypos);
+        std::cout<<"points added "<<color1.x<<"  "<<color1.y<<"   "<<color1.z<<"   "<<xpos<<"   "<<ypos;
+
+    }
+    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+    {
+        addCurve();
+    }
+
+}
+
+void App::addCurve() {
+    if (!_points.empty())
+    {
+        _canvas.addCurve(new Curve(_points));
+        _points.clear();
+        std::cout<<"added curve"<<std::endl;
+    }
+}
+
+
 GLFWwindow* App::_window;
+std::vector<Point > App::_points;
+Canvas App::_canvas;
+ImVec4 App::color1;
+ImVec4 App::color2;
