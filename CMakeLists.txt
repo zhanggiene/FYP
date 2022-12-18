@@ -2,6 +2,17 @@ cmake_minimum_required(VERSION 3.24)
 project(fyp)
 
 set(CMAKE_CXX_STANDARD 17)
+
+
+# Define build options
+option(AUTODIFF_BUILD_TESTS "Enable the compilation of the test files." ON)
+
+
+if(AUTODIFF_BUILD_TESTS)
+    # Tell CMake to include the /src/CMakeLists.txt file in the build.
+    add_subdirectory(test)
+endif()
+
 set(APP_TARGET main.app)
 
 set(GLFW_H /usr/local/Cellar/glfw/3.3.8/include/GLFW)
@@ -31,5 +42,5 @@ include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 file(GLOB sources *.cpp)
-add_executable(fyp main.cpp ${sources} ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp include/Point.h source/Canvas.cpp include/Canvas.h include/Curve.h)
+add_executable(fyp main.cpp ${sources} ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp include/Point.h source/Canvas.cpp include/Canvas.h include/Curve.h include/VisualPoint.h)
 target_link_libraries (fyp Eigen3::Eigen)

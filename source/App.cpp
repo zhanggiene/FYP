@@ -13,7 +13,6 @@
 #endif
 
 #include "App.h"
-
 #include <glfw3.h>
 void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mode)
 {
@@ -24,9 +23,9 @@ void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mo
 }
 
 void App::draw() {
-    for (auto p: _points) {
+    for (int i=0; i<_points.size();i++) {
         // std::cout<<"drawing"<<std::endl;
-        p.draw();
+        _points[i].draw();
     }
     _canvas.draw();
 
@@ -73,6 +72,8 @@ bool App::initialize(int width, int height, const char *title) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glEnable(GL_POLYGON_SMOOTH);
     glShadeModel(GL_SMOOTH);
     glDisable(GL_CULL_FACE);
 
@@ -97,16 +98,14 @@ int App::run() {
         ImGui::NewFrame();
 
         {
-            static float f1 = 0.0f;
-            static float f2 = 0.0f;
             static int counter = 0;
 
             ImGui::Begin("Control Point");                          // Create a window called "Hello, world!" and append into it.
 
             // ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
 
-            ImGui::SliderFloat("r1", &f1, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::SliderFloat("r2", &f2, 0.0f, 1.0f);
+            ImGui::SliderFloat("r1", &r1, 0.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+            ImGui::SliderFloat("r2", &r2, 0.0f, 100.0f);
             ImGui::ColorEdit3(" color 1 ", (float*)&color1); // Edit 3 floats representing a color
             ImGui::ColorEdit3(" color 2 ", (float*)&color2); // Edit 2
 
@@ -172,19 +171,37 @@ int App::run() {
     return 0;
 }
 
+void App::keyboard_press_callback(GLFWwindow *window,int key, int scancode, int action, int mods)
+{
+
+}
+
 void App::cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
     //std::cout<<"x: "<<xpos<<"y: "<<ypos<<std::endl;
+    ImGuiIO& io = ImGui::GetIO();
+
+        for (auto &p: _points) {   // important here , otherwise, it is a copy, not a reference
+            // std::cout<<"drawing"<<std::endl;
+            p.checkMouseSelection(xpos, ypos);
+        }
+    _canvas.checkMouseSelection(xpos,ypos);
+
+
 }
 
 void App::mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
+
+    ImGuiIO& io = ImGui::GetIO();
+    io.AddMouseButtonEvent(button, action);
+    if (io.WantCaptureMouse) return;
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
         double xpos, ypos;
-        //getting cursor position
         glfwGetCursorPos(window, &xpos, &ypos);
-        // std::cout << "Cursor Position at (" << xpos << " : " << ypos << std::endl;
-        _points.emplace_back(color1,color2,xpos,ypos);
-        std::cout<<"points added "<<color1.x<<"  "<<color1.y<<"   "<<color1.z<<"   "<<xpos<<"   "<<ypos;
+        std::cout<<r1<<std::endl;
+        std::cout<<r2<<std::endl;
+        _points.emplace_back(color1,color2,xpos,ypos,r1,r2);
+        std::cout<<"points added "<<color1.x<<"  "<<color1.y<<"   "<<color1.z<<"   "<<xpos<<"   "<<ypos<<"  "<<r1<<"  "<<r2<<" ;";
 
     }
     else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
@@ -209,3 +226,6 @@ std::vector<Point > App::_points;
 Canvas App::_canvas;
 ImVec4 App::color1;
 ImVec4 App::color2;
+float App::r1;
+float App::r2;
+bool App::editMode;
