@@ -32,5 +32,7 @@ public:
     void drawToImage(); // make the upper and lower boundary into 2 layers.
     void diffuse(int iteration);
     void checkMouseSelection(float xpos, float ypos);
+    void updatePosition(float xpos, float ypos);
+    void setdisplayMode(bool b_);
 };
 #endif //FYP_CANVAS_H

@@ -17,6 +17,10 @@ void Canvas::clear()
 {
 
 }
+void Canvas::setdisplayMode(bool bl_)
+{
+    displayMode=bl_;
+}
 
 Canvas::~Canvas()
 {
@@ -172,5 +176,14 @@ void Canvas::checkMouseSelection(float xpos, float ypos)
     for (auto c: _curves) {
         // std::cout<<"drawing"<<std::endl;
         c->checkMouseSelection(xpos, ypos);
+    }
+}
+
+
+void Canvas::updatePosition(float xpos, float ypos)
+{
+    for (auto c: _curves) {
+        // std::cout<<"drawing"<<std::endl;
+        c->updatePosition(xpos, ypos);
     }
 }

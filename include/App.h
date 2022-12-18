@@ -25,7 +25,7 @@ public:
     static float r2;
     static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
-    static void App::keyboard_press_callback(GLFWwindow *window,int key, int scancode, int action, int mods)
+    static void keyboard_press_callback(GLFWwindow *window,int key, int scancode, int action, int mods);
     static void addCurve();
 private:
     static void draw();
@@ -33,5 +33,6 @@ private:
     static ImVec4 color1;
     static ImVec4 color2;
     static bool editMode;
+    static void clear();
 };
 #endif //FYP_APP_H

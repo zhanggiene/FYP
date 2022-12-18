@@ -30,6 +30,11 @@ void App::draw() {
     _canvas.draw();
 
 }
+
+void App::clear()
+{
+    _points.clear();
+}
 bool App::initialize(int width, int height, const char *title) {
 
    if (!glfwInit()) {
@@ -59,6 +64,7 @@ bool App::initialize(int width, int height, const char *title) {
     glfwSetKeyCallback(_window, key_callback);
     glfwSetCursorPosCallback(_window, cursor_position_callback);
     glfwSetMouseButtonCallback(_window, mouse_button_callback);
+    glfwSetKeyCallback(_window, keyboard_press_callback);
     glfwSwapInterval(1); // Enable vsync
 
     // Setup Dear ImGui context
@@ -173,7 +179,24 @@ int App::run() {
 
 void App::keyboard_press_callback(GLFWwindow *window,int key, int scancode, int action, int mods)
 {
+    ImGuiIO& io = ImGui::GetIO();
+    if (key == GLFW_KEY_E && action == GLFW_PRESS)
+    {
+        if (!editMode)
+        {
+            _canvas.setdisplayMode(true);
+            editMode=true;
+        }
+        else
+        {
+            _canvas.setdisplayMode(false);
+            editMode=false;
+        }
 
+        std::cout<<"edit mode is "<<editMode;
+    }
+
+    _canvas.clear();
 }
 
 void App::cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
@@ -185,6 +208,14 @@ void App::cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
             p.checkMouseSelection(xpos, ypos);
         }
     _canvas.checkMouseSelection(xpos,ypos);
+        if (editMode && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+            {
+                for (auto &p: _points) {   // important here , otherwise, it is a copy, not a reference
+                    // std::cout<<"drawing"<<std::endl;
+                    p.updatePosition(xpos, ypos);
+                }
+                _canvas.updatePosition(xpos,ypos);
+            }
 
 
 }
@@ -194,7 +225,7 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
     ImGuiIO& io = ImGui::GetIO();
     io.AddMouseButtonEvent(button, action);
     if (io.WantCaptureMouse) return;
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && editMode==false)
     {
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
@@ -204,9 +235,13 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
         std::cout<<"points added "<<color1.x<<"  "<<color1.y<<"   "<<color1.z<<"   "<<xpos<<"   "<<ypos<<"  "<<r1<<"  "<<r2<<" ;";
 
     }
-    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS && editMode==false)
     {
         addCurve();
+    }
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && editMode)
+    {
+
     }
 
 }
@@ -228,4 +263,4 @@ ImVec4 App::color1;
 ImVec4 App::color2;
 float App::r1;
 float App::r2;
-bool App::editMode;
+bool App::editMode=false;

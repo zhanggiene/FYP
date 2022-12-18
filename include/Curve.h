@@ -117,12 +117,22 @@ protected:
             p.checkMouseSelection(xpos, ypos);
         }
     }
+
+    void updatePosition(float xpos, float ypos)
+    {
+        for (auto &p: _controlPoints) {   // important here , otherwise, it is a copy, not a reference
+            // std::cout<<"drawing"<<std::endl;
+            p.updatePosition(xpos, ypos);
+        }
+        _toRenew=true;
+    }
     void generateStartingBoundary()
     {
         _startingBoundaryVisualControlPoints.clear();
         _startingBoundaryVisualControlPoints.push_back(_normalUp.front());
         _startingBoundaryVisualControlPoints.push_back((_normalUp.front()+_normalDown.front())/2);
         _startingBoundaryVisualControlPoints.push_back(_normalDown.front());
+        _startingBoundaryVisualPoints.clear();
         for (float i = 0.0f; i < knotVector[_degree + 3]; i += 0.01f )
         {
 
@@ -144,6 +154,7 @@ protected:
         _endingBoundaryVisualControlPoints.push_back(_normalUp.back());
         _endingBoundaryVisualControlPoints.push_back((_normalUp.back()+_normalDown.back())/2);
         _endingBoundaryVisualControlPoints.push_back(_normalDown.back());
+        _endingBoundaryVisualPoints.clear();
         for (float i = 0.0f; i < knotVector[_degree + 3]; i += 0.01f )
         {
 
@@ -156,6 +167,7 @@ protected:
                 }
             }
         }
+
 
     }
 
@@ -204,6 +216,7 @@ protected:
     }
     void drawEndBoundary()
     {
+        // std::cout<<"size of _endingBoundaryVisualPoint is "<<_endingBoundaryVisualPoints.size();
         for(int i=0;i< _endingBoundaryVisualPoints.size()-1;i++) {
             glBegin( GL_LINES);
             //std::cout<<_normalUp[i].position<<std::endl;
@@ -263,6 +276,7 @@ protected:
     void generateKnotVector()
     {
         //  needs to be tested
+        knotVector.clear();
         int index=0;
         for (int i = 0; i < (_degree + _controlPoints.size() + 1); i++) // n+p+1
         {
@@ -272,7 +286,6 @@ protected:
             else knotVector.push_back(index);
         }
 
-        std::cout<<"generate knot vector";
         for (auto x:knotVector)
         {
             std::cout<<"  "<<x;

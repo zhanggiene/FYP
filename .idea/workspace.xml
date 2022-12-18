@@ -24,23 +24,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="basic bazier curve done">
-      <change afterPath="$PROJECT_DIR$/.idea/Mycode.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VisualPoint.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/integration_tests.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/main.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/util/catch.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="boundary points outline">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/App.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/App.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Curve.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Curve.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Point.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Point.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/App.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/App.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/Canvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Canvas.cpp" afterDir="false" />
     </list>
@@ -182,7 +171,7 @@
       <workItem from="1671173342395" duration="14998000" />
       <workItem from="1671200147319" duration="5164000" />
       <workItem from="1671242666945" duration="1478000" />
-      <workItem from="1671287485345" duration="10432000" />
+      <workItem from="1671287485345" duration="16346000" />
     </task>
     <task id="LOCAL-00001" summary="basic bazier curve done">
       <created>1670145198085</created>
@@ -191,7 +180,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670145198085</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="boundary points outline">
+      <created>1671340870597</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1671340870597</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -210,6 +206,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="basic bazier curve done" />
-    <option name="LAST_COMMIT_MESSAGE" value="basic bazier curve done" />
+    <MESSAGE value="boundary points outline" />
+    <option name="LAST_COMMIT_MESSAGE" value="boundary points outline" />
   </component>
 </project>

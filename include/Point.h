@@ -76,6 +76,15 @@ public:
         }
 
     }
+
+    void updatePosition(float x,float y)
+    {
+        if (isSelected)
+        {
+            position.x()=x;
+            position.y()=y;
+        }
+    }
     void draw()
     {
         if (isSelected) {
