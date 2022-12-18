@@ -130,7 +130,7 @@ protected:
     {
         _startingBoundaryVisualControlPoints.clear();
         _startingBoundaryVisualControlPoints.push_back(_normalUp.front());
-        _startingBoundaryVisualControlPoints.push_back((_normalUp.front()+_normalDown.front())/2);
+        _startingBoundaryVisualControlPoints.push_back((_normalUp.front()+_normalDown.front())/(2.0));
         _startingBoundaryVisualControlPoints.push_back(_normalDown.front());
         _startingBoundaryVisualPoints.clear();
         for (float i = 0.0f; i < knotVector[_degree + 3]; i += 0.01f )
@@ -152,7 +152,7 @@ protected:
     {
         _endingBoundaryVisualControlPoints.clear();
         _endingBoundaryVisualControlPoints.push_back(_normalUp.back());
-        _endingBoundaryVisualControlPoints.push_back((_normalUp.back()+_normalDown.back())/2);
+        _endingBoundaryVisualControlPoints.push_back((_normalUp.back()+_normalDown.back())/(2.0));
         _endingBoundaryVisualControlPoints.push_back(_normalDown.back());
         _endingBoundaryVisualPoints.clear();
         for (float i = 0.0f; i < knotVector[_degree + 3]; i += 0.01f )
@@ -216,22 +216,20 @@ protected:
     }
     void drawEndBoundary()
     {
-        // std::cout<<"size of _endingBoundaryVisualPoint is "<<_endingBoundaryVisualPoints.size();
+        //std::cout<<"size of _endingBoundaryVisualPoint is "<<_endingBoundaryVisualPoints.size();
         for(int i=0;i< _endingBoundaryVisualPoints.size()-1;i++) {
             glBegin( GL_LINES);
-            //std::cout<<_normalUp[i].position<<std::endl;
             glColor3f(_endingBoundaryVisualPoints[i].color.x,_endingBoundaryVisualPoints[i].color.y,_endingBoundaryVisualPoints[i].color.z);
             glVertex2f(_endingBoundaryVisualPoints[i].position.x(),_endingBoundaryVisualPoints[i].position.y());
             glVertex2f(_endingBoundaryVisualPoints[i+1].position.x(),_endingBoundaryVisualPoints[i+1].position.y());
             glEnd();
 
         }
-        for(int i=0;i< _startingBoundaryVisualControlPoints.size()-1;i++) {
+        for(int i=0;i< _startingBoundaryVisualPoints.size()-1;i++) {
             glBegin( GL_LINES);
-            //std::cout<<_normalUp[i].position<<std::endl;
-            glColor3f(_startingBoundaryVisualControlPoints[i].color.x,_startingBoundaryVisualControlPoints[i].color.y,_startingBoundaryVisualControlPoints[i].color.z);
-            glVertex2f(_startingBoundaryVisualControlPoints[i].position.x(),_startingBoundaryVisualControlPoints[i].position.y());
-            glVertex2f(_startingBoundaryVisualControlPoints[i+1].position.x(),_startingBoundaryVisualControlPoints[i+1].position.y());
+            glColor3f(_startingBoundaryVisualPoints[i].color.x,_startingBoundaryVisualPoints[i].color.y,_startingBoundaryVisualPoints[i].color.z);
+            glVertex2f(_startingBoundaryVisualPoints[i].position.x(),_startingBoundaryVisualPoints[i].position.y());
+            glVertex2f(_startingBoundaryVisualPoints[i+1].position.x(),_startingBoundaryVisualPoints[i+1].position.y());
             glEnd();
 
         }
@@ -243,7 +241,6 @@ protected:
         // draw skeleton, the center extrapolated thin line
         for(int i=0;i< _centerPoints.size()-1;i++)
         {
-            // std::cout<<_centerPoints[i]<<std::endl;
             glBegin( GL_LINES);
             glVertex2f(_centerPoints[i].position.x(),_centerPoints[i].position.y());
             glVertex2f(_centerPoints[i+1].position.x(),_centerPoints[i+1].position.y());

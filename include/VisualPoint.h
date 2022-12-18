@@ -53,11 +53,19 @@ public:
         position=other.position;
         return *this;
     }
+    VisualPoint (VisualPoint&& other)
+    {
+        color=std::move(other.color);
+        position=std::move(other.position);
+    }
 
     VisualPoint operator+(const VisualPoint &p) const
     {
         VisualPoint ret=p;
         ret.position+=position;
+        ret.color.x+=color.x;
+        ret.color.y+=color.y;
+        ret.color.z+=color.z;
         return ret;
     }
 
@@ -65,46 +73,68 @@ public:
     {
         VisualPoint ret=p;
         ret.position-=position;
+        ret.color.x-=color.x;
+        ret.color.y-=color.y;
+        ret.color.z-=color.z;
         return ret;
     }
 
     VisualPoint operator*(float s) const
     {
-        VisualPoint ret(position);
+        VisualPoint ret=*this;
         ret.position*=s;
+        ret.color.x*=s;
+        ret.color.y*=s;
+        ret.color.z*=s;
         return ret;
     }
 
     VisualPoint operator/(float s) const
     {
-        VisualPoint ret(position);
+        VisualPoint ret=*this;
         ret.position/=s;
+        ret.color.x/=s;
+        ret.color.y/=s;
+        ret.color.z/=s;
         return ret;
     }
 
     void operator+=(const VisualPoint &p)
     {
         position+=p.position;
+        color.x+=p.color.x;
+        color.y+=p.color.y;
+        color.z+=p.color.z;
     }
 
     void operator-=(const VisualPoint &p)
     {
         position-=p.position;
+        color.x-=p.color.x;
+        color.y-=p.color.y;
+        color.z-=p.color.z;
     }
 
     void operator*=(float s)
     {
         position*=s;
+        color.x*=s;
+        color.y*=s;
+        color.z*=s;
     }
 
     void operator/=(float s)
     {
         position/=s;
+        color.x/=s;
+        color.y/=s;
+        color.z/=s;
+
     }
 
     friend std::ostream &operator<<(std::ostream &os, const VisualPoint &p)
     {
-        os << "position:"<<p.position<<"";
+        os << "color "<<p.color.x<<""<<p.color.x<<p.color.z;
         return os << " }";
     }
 

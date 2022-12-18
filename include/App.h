@@ -23,6 +23,7 @@ public:
     static std::vector<Point > _points;
     static float r1;
     static float r2;
+    static Point& draggablePoint;
     static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void keyboard_press_callback(GLFWwindow *window,int key, int scancode, int action, int mods);

@@ -24,14 +24,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="boundary points outline">
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="draggable control point">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/App.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/App.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Curve.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Curve.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Point.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Point.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/App.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/App.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/Canvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Canvas.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/VisualPoint.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/VisualPoint.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,7 +168,7 @@
       <workItem from="1671173342395" duration="14998000" />
       <workItem from="1671200147319" duration="5164000" />
       <workItem from="1671242666945" duration="1478000" />
-      <workItem from="1671287485345" duration="16346000" />
+      <workItem from="1671287485345" duration="19253000" />
     </task>
     <task id="LOCAL-00001" summary="basic bazier curve done">
       <created>1670145198085</created>
@@ -187,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671340870597</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="draggable control point">
+      <created>1671349846322</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1671349846322</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,6 +211,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="basic bazier curve done" />
     <MESSAGE value="boundary points outline" />
-    <option name="LAST_COMMIT_MESSAGE" value="boundary points outline" />
+    <MESSAGE value="draggable control point" />
+    <option name="LAST_COMMIT_MESSAGE" value="draggable control point" />
   </component>
 </project>
