@@ -33,7 +33,6 @@ public:
     Point(ImVec4 color1_,ImVec4 color2_,float x_,float y_,float r1_,float r2_):
     color1(color1_), color2(color2_) ,position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_)
     {
-
     }
     Point(ImVec4 color1_,ImVec4 color2_,Eigen::Vector2f position_,float r1_,float r2_):
             color1(color1_), color2(color2_) ,position(position_),isSelected(false),radius1(r1_),radius2(r2_)

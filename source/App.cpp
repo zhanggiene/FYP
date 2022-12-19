@@ -27,9 +27,18 @@ void App::draw() {
         // std::cout<<"drawing"<<std::endl;
         _points[i].draw();
     }
-    _canvas.draw();
+
+    if (finalImageBool)
+    {
+        _canvas.displayFinalImage();
+    }
+    else
+    {
+        _canvas.draw();
+    }
 
 }
+
 
 void App::clear()
 {
@@ -95,7 +104,7 @@ bool App::initialize(int width, int height, const char *title) {
 }
 
 int App::run() {
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    ImVec4 clear_color = ImVec4(0, 0, 0, 1.00f);
     while(!glfwWindowShouldClose(_window))
     {
         glfwPollEvents();
@@ -195,6 +204,13 @@ void App::keyboard_press_callback(GLFWwindow *window,int key, int scancode, int 
 
         std::cout<<"edit mode is "<<editMode;
     }
+    else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+        {
+
+            std::cout<<"space button clicked is "<<editMode;
+            _canvas.drawFinalImage();
+            finalImageBool=true;
+        }
 
     _canvas.clear();
 }
@@ -259,8 +275,9 @@ void App::addCurve() {
 GLFWwindow* App::_window;
 std::vector<Point > App::_points;
 Canvas App::_canvas;
-ImVec4 App::color1;
-ImVec4 App::color2;
-float App::r1;
-float App::r2;
+ImVec4 App::color1(0.3,0.4,0.2,0.5);
+ImVec4 App::color2(0.3,0,0.4,0.5);
+float App::r1=5;
+float App::r2=5;
 bool App::editMode=false;
+bool App::finalImageBool=false;

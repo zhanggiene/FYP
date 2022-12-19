@@ -10,17 +10,17 @@
 #include <Eigen/Sparse>
 class Canvas
 {
-private:
+public:
     bool displayMode;
     unsigned  int size_;
-    Eigen::ArrayXXd imageRed;  // row major because we want to flatten i
-    Eigen::ArrayXXd imageGreen;
-    Eigen::ArrayXXd imageBlue;
-    Eigen::Array<bool,Eigen::Dynamic,Eigen::Dynamic> Mask;         //  0 means there is a mask
-    Eigen::SparseMatrix<double>  A;
+    Eigen::Array<float,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> imageRed;  // row major because we want to flatten i
+    Eigen::Array<float,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> imageGreen;
+    Eigen::Array<float,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> imageBlue;
+    Eigen::Array<bool,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> Mask;
+    Eigen::SparseMatrix<float>  A;
     bool _arePointsVisible;
     std::vector<Curve*> _curves;
-public:
+    int counter;
     Canvas();
     ~Canvas();
     void setSize(unsigned  int size);
@@ -34,5 +34,7 @@ public:
     void checkMouseSelection(float xpos, float ypos);
     void updatePosition(float xpos, float ypos);
     void setdisplayMode(bool b_);
+    void drawFinalImage();
+    void displayFinalImage();
 };
 #endif //FYP_CANVAS_H
