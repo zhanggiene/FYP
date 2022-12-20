@@ -2,6 +2,7 @@
 // Created by Zhang Zhuyan on 4/12/22.
 //
 
+// https://stackoverflow.com/questions/21070076/opengl-generating-a-2d-texture-from-a-data-array-to-display-on-a-quad
 #include "Canvas.h"
 Canvas::Canvas()
         :
@@ -21,9 +22,6 @@ void Canvas::setSize(unsigned int size)
     imageRed.fill(0);
     imageBlue.fill(0);
     imageGreen.fill(0);
-
-
-
 }
 void Canvas::clear()
 {

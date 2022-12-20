@@ -8,8 +8,9 @@
 #include "imgui_impl_opengl2.h"
 int main(int argc, char *argv[])
 {
+ /*
 
-    /*Canvas testCanvas=Canvas();
+    Canvas testCanvas=Canvas();
     testCanvas.setSize(50);
 
     for(int i=10;i<30;i++) {
@@ -58,14 +59,17 @@ int main(int argc, char *argv[])
     answerR = solver.solve(imageRedv).array();
     std::cout << "estimated error: " << solver.error();
     std::cout<<answerR;
-    */
 
     //Eigen::Map<const Eigen::VectorXd> imageRedv(imageRed.data(), imageRed.size());
     //answerR.abs(); //  the random number can be -1 to 0
+     */
     App::initialize(WINDOW_SIZE, WINDOW_SIZE, "Intuitive Colouring");
     return App::run();
     return 1;
 }
+
+
+
 
 
 

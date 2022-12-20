@@ -8,6 +8,8 @@
 #include <vector>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+//https://gist.github.com/insaneyilin/038a022f2ece61c923315306ddcea081
+// https://nehe.gamedev.net/tutorial/texture_mapping/12038/
 class Canvas
 {
 public:

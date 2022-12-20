@@ -12,7 +12,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 file(GLOB_RECURSE TEST_FILES "*tests.cpp")
-add_executable(cpptest main.cpp ${TEST_FILES})
+add_executable(cpptest main.cpp ${TEST_FILES} ../include/stb_image.h ../include/stb_image_write.h)
 target_link_libraries(cpptest Eigen3::Eigen Catch2::Catch2WithMain)
 add_custom_target(test
         COMMENT "Running C++ tests..."

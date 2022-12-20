@@ -14,6 +14,11 @@
 
 #include "App.h"
 #include <glfw3.h>
+#define STB_IMAGE_IMPLEMENTATION
+// https://subscription.packtpub.com/book/game-development/9781838986193/2/ch02lvl1sec14/loading-images-with-stb
+#include "stb_image.h"
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb_image_write.h>
 void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mode)
 {
     //If you press ESC and set windowShouldClose to True, the outer loop will close the application
@@ -23,6 +28,21 @@ void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mo
 }
 
 void App::draw() {
+
+
+    glEnable(GL_TEXTURE_2D);
+
+
+    /* Draw a quad */
+    glBegin(GL_QUADS);
+    glTexCoord2i(0, 0); glVertex2i(0,   0);
+    glTexCoord2i(0, 1); glVertex2i(0,   size);
+    glTexCoord2i(1, 1); glVertex2i(size, size);
+    glTexCoord2i(1, 0); glVertex2i(size, 0);
+    glEnd();
+
+    // glDeleteTextures(1, &image_tex);
+    glDisable(GL_TEXTURE_2D);
     for (int i=0; i<_points.size();i++) {
         // std::cout<<"drawing"<<std::endl;
         _points[i].draw();
@@ -50,7 +70,9 @@ bool App::initialize(int width, int height, const char *title) {
         std::cout << "INITIALIZER: Failed to initialize GLFW!" << std::endl;
         return false;
     }
+
     _window = glfwCreateWindow(width, height, "test", NULL, NULL);
+    size=width;
 
 
 #ifdef __APPLE__
@@ -67,6 +89,7 @@ bool App::initialize(int width, int height, const char *title) {
     }
     _canvas.setSize(width);
     glfwMakeContextCurrent(_window);
+    image_tex=LoadImage();
 
 
     //Register callback function
@@ -270,6 +293,33 @@ void App::addCurve() {
         std::cout<<"added curve"<<std::endl;
     }
 }
+GLuint App::LoadImage()
+{
+    int w, h, comp;
+    const uint8_t* img = stbi_load(  "/Users/zhangzhuyan/Desktop/mosQUIToes/coding/FYP/Mycode/Baseline-Example.jpg", &w, &h, &comp, 3);
+    if (img == NULL) {
+        std::cout<<" file not found";
+        return -1;
+    }
+    GLuint texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D,texture);
+    glTexParameteri(texture, GL_TEXTURE_MAX_LEVEL, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexImage2D(GL_TEXTURE_2D,     // Type of texture
+                 0,                 // Pyramid level (for mip-mapping) - 0 is the top level
+                 GL_RGB,            // Internal colour format to convert to
+                 w,          // Image width  i.e. 640 for Kinect in standard mode
+                 h,          // Image height i.e. 480 for Kinect in standard mode
+                 0,                 // Border width in pixels (can either be 1 or 0)
+                 GL_RGB, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
+                 GL_UNSIGNED_BYTE,  // Image data type
+                 img);        // The actual image data itself
+                 return texture;
+}
 
 
 GLFWwindow* App::_window;
@@ -281,3 +331,5 @@ float App::r1=5;
 float App::r2=5;
 bool App::editMode=false;
 bool App::finalImageBool=false;
+GLuint App::image_tex;
+int App::size;
