@@ -19,6 +19,7 @@ public:
     Eigen::Array<float,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> imageGreen;
     Eigen::Array<float,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> imageBlue;
     Eigen::Array<bool,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> Mask;
+    std::vector<float> data; // for giving to opengl
     Eigen::SparseMatrix<float>  A;
     bool _arePointsVisible;
     std::vector<Curve*> _curves;
@@ -38,5 +39,8 @@ public:
     void setdisplayMode(bool b_);
     void drawFinalImage();
     void displayFinalImage();
+    void initializeTexture();
+    GLuint texture;
+    void cleardiffuseImage();
 };
 #endif //FYP_CANVAS_H

@@ -27,35 +27,46 @@ void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mo
     std::cout<<"ESC"<<mode;
 }
 
-void App::draw() {
+void App::draw( GLuint texture) {
 
 
+    /*
+    //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texture);   //  this is important
 
-
-    /* Draw a quad */
     glBegin(GL_QUADS);
     glTexCoord2i(0, 0); glVertex2i(0,   0);
-    glTexCoord2i(0, 1); glVertex2i(0,   size);
-    glTexCoord2i(1, 1); glVertex2i(size, size);
-    glTexCoord2i(1, 0); glVertex2i(size, 0);
+    glTexCoord2i(0, 1); glVertex2i(0,   size/2);
+    glTexCoord2i(1, 1); glVertex2i(size/2, size/2);
+    glTexCoord2i(1, 0); glVertex2i(size/2, 0);
+
     glEnd();
 
     // glDeleteTextures(1, &image_tex);
     glDisable(GL_TEXTURE_2D);
+
+
+    glBegin(GL_TRIANGLES);
+    glColor3f(0, 1, 0);
+    glVertex2f(0, 0);
+    glVertex2f(size/2, 0);
+    glVertex2f(size, size);
+    glColor3f(1, 1, 1); // this is important
+    // https://stackoverflow.com/questions/8956736/glcolor-coloring-all-textures
+    glEnd();
+    */
+    if (finalImageBool) {
+        _canvas.displayFinalImage();
+    }
+
+        _canvas.draw();
     for (int i=0; i<_points.size();i++) {
         // std::cout<<"drawing"<<std::endl;
         _points[i].draw();
     }
 
-    if (finalImageBool)
-    {
-        _canvas.displayFinalImage();
-    }
-    else
-    {
-        _canvas.draw();
-    }
+
 
 }
 
@@ -88,8 +99,9 @@ bool App::initialize(int width, int height, const char *title) {
         return false;
     }
     _canvas.setSize(width);
-    glfwMakeContextCurrent(_window);
-    image_tex=LoadImage();
+    glfwMakeContextCurrent(_window); // this one is important to be above opengl call
+    //image_tex_=LoadImage();
+    _canvas.initializeTexture();
 
 
     //Register callback function
@@ -163,34 +175,7 @@ int App::run() {
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        draw();
-        /*
-        glBegin(GL_TRIANGLES);
-        glColor3f(1, 0, 0); //Red
-        glVertex2f(0, 1);
-
-        glColor3f(0, 1, 0); //Green
-        glVertex2f(-1, -1);
-
-        glColor3f(0, 0, 1); //Blue
-        glVertex2f(1, -1);
-        //End a drawing step
-        glEnd();
-
-
-        glBegin(GL_TRIANGLES);
-        glColor3f(1, 0, 0); //Red
-        glVertex2f(0, 0);
-
-        glColor3f(0, 1, 0); //Green
-        glVertex2f(1028, 1028);
-
-        glColor3f(0, 0, 1); //Blue
-        glVertex2f(1028, 0);
-        //End a drawing step
-        glEnd();
-         */
-        //End a drawing step
+        draw(image_tex_);
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
         //glUseProgram(last_program);
 
@@ -235,7 +220,6 @@ void App::keyboard_press_callback(GLFWwindow *window,int key, int scancode, int 
             finalImageBool=true;
         }
 
-    _canvas.clear();
 }
 
 void App::cursor_position_callback(GLFWwindow *window, double xpos, double ypos) {
@@ -290,35 +274,69 @@ void App::addCurve() {
     {
         _canvas.addCurve(new Curve(_points));
         _points.clear();
-        std::cout<<"added curve"<<std::endl;
     }
 }
 GLuint App::LoadImage()
 {
+
+    /*
     int w, h, comp;
     const uint8_t* img = stbi_load(  "/Users/zhangzhuyan/Desktop/mosQUIToes/coding/FYP/Mycode/Baseline-Example.jpg", &w, &h, &comp, 3);
     if (img == NULL) {
         std::cout<<" file not found";
-        return -1;
     }
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D,texture);
-    glTexParameteri(texture, GL_TEXTURE_MAX_LEVEL, 0);
+    unsigned int depth = 3;
+
+    GLubyte *checkImage = new GLubyte[size * size * depth];
+
+    for(unsigned int ix = 0; ix < size; ++ix)
+    {
+        for(unsigned int iy = 0; iy < size; ++iy)
+        {
+            float c=100;
+
+            checkImage[ix * size * depth + iy * depth + 0] = c;   //red
+            checkImage[ix * size * depth + iy * depth + 1] = c;   //green
+            checkImage[ix * size * depth + iy * depth + 2] = c;   //blue
+        }
+    }
+     */
+
+    //delete [] checkImage;
+
+    //GLuint texture;
+    GLuint image_tex;
+    glGenTextures(1, &image_tex);
+    glBindTexture(GL_TEXTURE_2D,image_tex);
+    glTexParameteri(image_tex, GL_TEXTURE_MAX_LEVEL, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    static Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> A(size,size);
+    data.resize(A.size()*3,0);
+    // https://github.com/libigl/libigl/blob/main/include/igl/png/writePNG.cpp
+    int comp=3;
+    for (unsigned i = 0; i<A.rows();++i)
+    {
+        for (unsigned j = 0; j < A.cols(); ++j)
+        {
+            data[(j * A.rows() * comp) + (i * comp) + 0] = 1;
+            data[(j * A.rows() * comp) + (i * comp) + 1] = 0;
+            data[(j * A.rows() * comp) + (i * comp) + 2] = 0;
+        }
+    }
+    A.setConstant(size, size, 0.0f);
     glTexImage2D(GL_TEXTURE_2D,     // Type of texture
                  0,                 // Pyramid level (for mip-mapping) - 0 is the top level
                  GL_RGB,            // Internal colour format to convert to
-                 w,          // Image width  i.e. 640 for Kinect in standard mode
-                 h,          // Image height i.e. 480 for Kinect in standard mode
+                 size,          // Image width  i.e. 640 for Kinect in standard mode
+                 size,          // Image height i.e. 480 for Kinect in standard mode
                  0,                 // Border width in pixels (can either be 1 or 0)
                  GL_RGB, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
-                 GL_UNSIGNED_BYTE,  // Image data type
-                 img);        // The actual image data itself
-                 return texture;
+                 GL_FLOAT,  // Image data type
+                 data.data());        // The actual image data itself
+                 return image_tex;
 }
 
 
@@ -331,5 +349,6 @@ float App::r1=5;
 float App::r2=5;
 bool App::editMode=false;
 bool App::finalImageBool=false;
-GLuint App::image_tex;
+GLuint App::image_tex_;
 int App::size;
+std::vector<float> App::data;

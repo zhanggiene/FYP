@@ -25,19 +25,20 @@ public:
     static float r2;
     static Point& draggablePoint;
     static bool finalImageBool;
-    static GLuint image_tex;
+    static GLuint image_tex_;
     static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void keyboard_press_callback(GLFWwindow *window,int key, int scancode, int action, int mods);
     static void addCurve();
     static GLuint LoadImage();
 private:
-    static void draw();
+    static void draw(GLuint texture);
     static Canvas _canvas;
     static ImVec4 color1;
     static ImVec4 color2;
     static bool editMode;
     static void clear();
     static int size;
+    static std::vector<float> data;
 };
 #endif //FYP_APP_H

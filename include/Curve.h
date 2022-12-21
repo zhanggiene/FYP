@@ -222,6 +222,7 @@ protected:
             glColor3f(_endingBoundaryVisualPoints[i].color.x,_endingBoundaryVisualPoints[i].color.y,_endingBoundaryVisualPoints[i].color.z);
             glVertex2f(_endingBoundaryVisualPoints[i].position.x(),_endingBoundaryVisualPoints[i].position.y());
             glVertex2f(_endingBoundaryVisualPoints[i+1].position.x(),_endingBoundaryVisualPoints[i+1].position.y());
+            glColor3f(1,1,1);
             glEnd();
 
         }
@@ -230,6 +231,7 @@ protected:
             glColor3f(_startingBoundaryVisualPoints[i].color.x,_startingBoundaryVisualPoints[i].color.y,_startingBoundaryVisualPoints[i].color.z);
             glVertex2f(_startingBoundaryVisualPoints[i].position.x(),_startingBoundaryVisualPoints[i].position.y());
             glVertex2f(_startingBoundaryVisualPoints[i+1].position.x(),_startingBoundaryVisualPoints[i+1].position.y());
+            glColor3f(1,1,1);
             glEnd();
 
         }
@@ -266,8 +268,10 @@ protected:
             glColor3f(_normalDown[i].color.x,_normalDown[i].color.y,_normalDown[i].color.z);
             glVertex2f(_normalDown[i].position.x(),_normalDown[i].position.y());
             glVertex2f(_normalDown[i+1].position.x(),_normalDown[i+1].position.y());
+            glColor3f(1,1,1);
             glEnd();
         }
+
         // std::cout<<"draw boundary,_normalUp.size()"<<_normalUp.size()<<std::endl;
     }
     void generateKnotVector()
@@ -378,6 +382,7 @@ Point gradientDeboor(int p, int i, float t)
             glColor3f(_interpolants[i].color2.x, _interpolants[i].color2.y, _interpolants[i].color2.z);
             glVertex2f(_interpolants[i].position.x() - normal.position.x(), _interpolants[i].position.y() - normal.position.y());
         }
+        glColor3f(1, 1, 1);
         glEnd();
     }
 };

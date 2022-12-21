@@ -149,6 +149,7 @@ public:
                     (position.x() + (POINT_SIZE_v* cos(i * twicePi / 20))), (position.y() + (POINT_SIZE_v * sin(i * twicePi / 20)))
             );
         }
+        glColor3f(1, 1, 1);
         glEnd(); //END
     }
 };

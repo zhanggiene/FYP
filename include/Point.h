@@ -104,6 +104,7 @@ public:
                         (cx + (r* cos(i * twicePi / num_segments))), (cy + (r * sin(i * twicePi / num_segments)))
                 );
             }
+            glColor3f(1, 1, 1);
             glEnd(); //END
     }
 
@@ -119,6 +120,7 @@ public:
             glVertex2f(x + cx, y + cy);//output vertex
         }
         glLineWidth(1);
+        glColor3f(1, 1, 1);
         glEnd();
     }
 

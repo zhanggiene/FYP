@@ -18,10 +18,29 @@ void Canvas::setSize(unsigned int size)
     imageBlue.resize(size,size);
     imageGreen.resize(size,size);
     Mask.resize(size,size);
+    cleardiffuseImage();
+    data.resize(imageRed.size()*3,0);
+}
+
+void Canvas::cleardiffuseImage()
+{
     Mask.fill(false);
     imageRed.fill(0);
     imageBlue.fill(0);
     imageGreen.fill(0);
+}
+
+void Canvas::initializeTexture()
+{
+
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D,texture);
+    glTexParameteri(texture, GL_TEXTURE_MAX_LEVEL, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
 }
 void Canvas::clear()
 {
@@ -45,27 +64,57 @@ void Canvas::addCurve(Curve* curve) {
 
 void Canvas::draw() {
 
+
     for (size_t i = 0; i < _curves.size(); i++) {
         if (_arePointsVisible) {
             _curves[i]->drawControlPoints();
         }
         _curves[i]->draw();
     }
-    glFlush();
+    //glFlush();
 
 }
 
 void Canvas::drawFinalImage()
 {
     std::cout<<"draw final image"<<std::endl;
+    cleardiffuseImage();
     drawToImage();
-    diffuse(20);
-    //std::cout<<imageRed;
+    diffuse(2);
+
+    int comp=3;
+    std::cout<<imageRed.rows();
+    std::cout<<imageRed.cols();
+    //std::fill(data.begin(), data.end(), 0);
+    //uint32_t z = 0; glClearTexImage(texture, 0, GL_RGBA, GL_UNSIGNED_BYTE, &z);
+    for (unsigned i = 0; i<imageRed.rows();++i)
+    {
+        for (unsigned j = 0; j < imageRed.cols(); ++j)
+        {
+            data[(j * imageRed.rows() * comp) + (i * comp) + 0] = imageRed(i,j);
+            data[(j * imageRed.rows() * comp) + (i * comp) + 1] = imageGreen(i,j);
+            data[(j * imageRed.rows() * comp) + (i * comp) + 2] = imageBlue(i,j);
+        }
+    }
+
+    glTexImage2D(GL_TEXTURE_2D,     // Type of texture
+                 0,                 // Pyramid level (for mip-mapping) - 0 is the top level
+                 GL_RGB,            // Internal colour format to convert to
+                 size_,          // Image width  i.e. 640 for Kinect in standard mode
+                 size_,          // Image height i.e. 480 for Kinect in standard mode
+                 0,                 // Border width in pixels (can either be 1 or 0)
+                 GL_RGB, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
+                 GL_FLOAT,  // Image data type
+                 data.data());        // The actual image data itself
+    //displayFinalImage();
+
 
 }
 void Canvas::displayFinalImage()
 {
-    glBegin (GL_POINTS);
+
+
+    /*glBegin (GL_POINTS);
     for(int i=0;i<size_;i++)
     {
         for(int j=0;j<size_;j++)
@@ -75,7 +124,27 @@ void Canvas::displayFinalImage()
             glVertex2i(i, j);
         }
     }
+    // this method is not good can be included in the report
     glEnd ();
+     */
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,texture);
+
+
+
+    glBegin(GL_QUADS);
+    glTexCoord2i(0, 0); glVertex2i(0,   0);
+    glTexCoord2i(0, 1); glVertex2i(0,   size_);
+    glTexCoord2i(1, 1); glVertex2i(size_, size_);
+    glTexCoord2i(1, 0); glVertex2i(size_, 0);
+    glEnd();
+
+    //glDeleteTextures(1, &texture);
+
+    glDisable(GL_TEXTURE_2D);
+    //glBindTexture(GL_TEXTURE_2D, 0);
+
+
 }
 
 void Canvas::diffuse(int iteration){
@@ -144,7 +213,6 @@ void Canvas::diffuse(int iteration){
     Eigen::ArrayXXf answerB = Eigen::ArrayXXf::Random(size_,size_);
     Eigen::BiCGSTAB<Eigen::SparseMatrix<float> > solver;
     solver.compute(A);
-    std::cout<<answerR<<"  ";
     answerR=Mask.select(imageRed,answerR);
     answerG=Mask.select(imageGreen,answerG);
     answerB=Mask.select(imageBlue,answerB);
@@ -152,9 +220,7 @@ void Canvas::diffuse(int iteration){
     answerR=answerR.abs(); //  the random number can be -1 to 0
     answerG=answerG.abs();
     answerB=answerB.abs();
-    //std::cout<<std::endl;
-    //std::cout<<"after max";
-    //std::cout<<answerR<<"  ";
+
 
 
     Eigen::Map<const Eigen::VectorXf> imageRedv(imageRed.data(), imageRed.size());
@@ -267,7 +333,6 @@ void Canvas::addVisualPointXY(int x, int y, const ImVec4 &color) {
 void Canvas::checkMouseSelection(float xpos, float ypos)
 {
     for (auto c: _curves) {
-        // std::cout<<"drawing"<<std::endl;
         c->checkMouseSelection(xpos, ypos);
     }
 }
@@ -276,7 +341,6 @@ void Canvas::checkMouseSelection(float xpos, float ypos)
 void Canvas::updatePosition(float xpos, float ypos)
 {
     for (auto c: _curves) {
-        // std::cout<<"drawing"<<std::endl;
         c->updatePosition(xpos, ypos);
     }
 }

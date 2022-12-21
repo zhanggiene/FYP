@@ -1,7 +1,7 @@
 #include <iostream>
 #include "App.h"
 #include <glfw3.h>
-#define WINDOW_SIZE 100
+#define WINDOW_SIZE 200
 #include <Eigen/Dense>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
