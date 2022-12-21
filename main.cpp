@@ -63,6 +63,9 @@ int main(int argc, char *argv[])
     //Eigen::Map<const Eigen::VectorXd> imageRedv(imageRed.data(), imageRed.size());
     //answerR.abs(); //  the random number can be -1 to 0
      */
+    Eigen::setNbThreads(2);
+    int n = Eigen::nbThreads( );
+    std::cout<< n;
     App::initialize(WINDOW_SIZE, WINDOW_SIZE, "Intuitive Colouring");
     return App::run();
     return 1;

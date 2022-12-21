@@ -38,9 +38,11 @@ endif ()
 set(IMGUI_DIR ./imgui)
 include_directories(${IMGUI_DIR} ${IMGUI_DIR}/backends)
 
+set(MKL_LINK "-fopenmp=libomp -lpthread")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+find_package(OpenMP REQUIRED)
 file(GLOB sources *.cpp)
 add_executable(fyp main.cpp ${sources} ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp include/Point.h source/Canvas.cpp include/Canvas.h include/Curve.h include/VisualPoint.h include/stb_image.h include/stb_image_write.h)
-target_link_libraries (fyp Eigen3::Eigen)
+target_link_libraries (fyp Eigen3::Eigen OpenMP::OpenMP_CXX)
