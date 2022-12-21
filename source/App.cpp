@@ -62,7 +62,6 @@ void App::draw( GLuint texture) {
 
         _canvas.draw();
     for (int i=0; i<_points.size();i++) {
-        // std::cout<<"drawing"<<std::endl;
         _points[i].draw();
     }
 
@@ -346,7 +345,7 @@ Canvas App::_canvas;
 ImVec4 App::color1(0.3,0.4,0.2,0.5);
 ImVec4 App::color2(0.3,0,0.4,0.5);
 float App::r1=5;
-float App::r2=5;
+float App::r2=10;
 bool App::editMode=false;
 bool App::finalImageBool=false;
 GLuint App::image_tex_;

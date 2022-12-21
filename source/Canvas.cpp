@@ -14,10 +14,10 @@ Canvas::Canvas()
 void Canvas::setSize(unsigned int size)
 {
     size_=size;
-    imageRed.resize(size,size);
-    imageBlue.resize(size,size);
-    imageGreen.resize(size,size);
-    Mask.resize(size,size);
+    imageRed.resize(size*size);
+    imageBlue.resize(size*size);
+    imageGreen.resize(size*size);
+    Mask.resize(size*size);
     cleardiffuseImage();
     data.resize(imageRed.size()*3,0);
 }
@@ -83,17 +83,15 @@ void Canvas::drawFinalImage()
     diffuse(2);
 
     int comp=3;
-    std::cout<<imageRed.rows();
-    std::cout<<imageRed.cols();
     //std::fill(data.begin(), data.end(), 0);
     //uint32_t z = 0; glClearTexImage(texture, 0, GL_RGBA, GL_UNSIGNED_BYTE, &z);
-    for (unsigned i = 0; i<imageRed.rows();++i)
+    for (unsigned i = 0; i<size_;++i)
     {
-        for (unsigned j = 0; j < imageRed.cols(); ++j)
+        for (unsigned j = 0; j < size_; ++j)
         {
-            data[(j * imageRed.rows() * comp) + (i * comp) + 0] = imageRed(i,j);
-            data[(j * imageRed.rows() * comp) + (i * comp) + 1] = imageGreen(i,j);
-            data[(j * imageRed.rows() * comp) + (i * comp) + 2] = imageBlue(i,j);
+            data[(j * size_ * comp) + (i * comp) + 0] = imageRed(i*size_+j);
+            data[(j * size_ * comp) + (i * comp) + 1] = imageGreen(i*size_+j);
+            data[(j * size_ * comp) + (i * comp) + 2] = imageBlue(i*size_+j);
         }
     }
 
@@ -124,9 +122,9 @@ void Canvas::displayFinalImage()
             glVertex2i(i, j);
         }
     }
-    // this method is not good can be included in the report
-    glEnd ();
      */
+    // this method is not good can be included in the report
+    //glEnd ();
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D,texture);
 
@@ -159,7 +157,7 @@ void Canvas::diffuse(int iteration){
     for(unsigned  i =0;i<size_;i++)
     {
         for(unsigned  j=0;j<size_;j++) {
-            if (Mask(i,j))
+            if (Mask(i*size_+j))
             {A.coeffRef(i*size_+j,i*size_+j)=1;}
             else if (i ==0  || i == size_-1 || j==0 || j==size_-1 )
             {
@@ -204,13 +202,10 @@ void Canvas::diffuse(int iteration){
             }
         }
     }
-        // std::cout<<"one round "<<A_row<<std::endl<<std::flush;
-    std::cout<<"A initialization is done ";
     */
-    //std::cout<<A<<"A initialization is done ";
-    Eigen::ArrayXXf answerR = Eigen::ArrayXXf::Random(size_,size_);
-    Eigen::ArrayXXf answerG = Eigen::ArrayXXf::Random(size_,size_);
-    Eigen::ArrayXXf answerB = Eigen::ArrayXXf::Random(size_,size_);
+    Eigen::ArrayXf answerR = Eigen::ArrayXf::Random(size_*size_);
+    Eigen::ArrayXf answerG = Eigen::ArrayXf::Random(size_*size_);
+    Eigen::ArrayXf answerB = Eigen::ArrayXf::Random(size_*size_);
     Eigen::BiCGSTAB<Eigen::SparseMatrix<float> > solver;
     solver.compute(A);
     answerR=Mask.select(imageRed,answerR);
@@ -222,12 +217,11 @@ void Canvas::diffuse(int iteration){
     answerB=answerB.abs();
 
 
-
-    Eigen::Map<const Eigen::VectorXf> imageRedv(imageRed.data(), imageRed.size());
+    Eigen::Map<const Eigen::VectorXf> imageRedv(imageRed.data(), imageRed.size());// very important,
+    // not just .array()
     Eigen::Map<const Eigen::VectorXf> imageGreenv(imageGreen.data(), imageGreen.size());
     Eigen::Map<const Eigen::VectorXf> imageBluev(imageBlue.data(), imageBlue.size());
-    //std::cout<<imageRedv<<"  ";
-    //std::cout<<answerR.size()<<"  ";
+
     int temp_=0;
     for(temp_=0;temp_<iteration;temp_++)
     {
@@ -235,14 +229,10 @@ void Canvas::diffuse(int iteration){
         Eigen::Map<const Eigen::VectorXf> v2(answerG.data(), answerG.size());
         Eigen::Map<const Eigen::VectorXf> v3(answerB.data(), answerB.size());
 
-        //std::cout<<"iteration "<< v1;
         answerR = solver.solveWithGuess(imageRedv,v1).array();
         answerG = solver.solveWithGuess(imageGreenv,v2).array();
         answerB = solver.solveWithGuess	(imageBluev,v3).array();
-        //std::cout << "estimated error: " << solver.error();
-        answerR.resize(size_,size_);
-        answerG.resize(size_,size_);
-        answerB.resize(size_,size_);
+
 
         answerR = Mask.select(imageRed, answerR);
         answerG = Mask.select(imageGreen, answerG);
@@ -253,23 +243,17 @@ void Canvas::diffuse(int iteration){
 
 
     }
-
-    answerR.resize(size_,size_);
     imageRed=answerR;
-    answerG.resize(size_,size_);
     imageGreen=answerG;
-    answerB.resize(size_,size_);
     imageBlue=answerB;
-    //std::cout<<imageRed<<"  ";
-
 }
 
 void Canvas::addVisualPoint(const VisualPoint &p_) {
 
-    imageRed(int(p_.position.x()),int(p_.position.y())) = p_.color.x;
-    imageGreen(int(p_.position.x()),int(p_.position.y())) = p_.color.y;
-    imageBlue(int(p_.position.x()),int(p_.position.y())) = p_.color.z;
-    Mask(int(p_.position.x()),int(p_.position.y()))=true;
+    imageRed(int(p_.position.x())*size_+int(p_.position.y())) = p_.color.x;
+    imageGreen(int(p_.position.x())*size_+int(p_.position.y())) = p_.color.y;
+    imageBlue(int(p_.position.x())*size_+int(p_.position.y())) = p_.color.z;
+    Mask(int(p_.position.x())*size_+int(p_.position.y()))=true;
     counter+=1;
 }
 void Canvas::drawToImage()
@@ -291,7 +275,7 @@ void Canvas::drawToImage()
             addVisualPointXY(xpos,ypos, curve->_normalUp[i].color);
             xpos= int (curve->_normalUp[i].position.x())-shiftx;
             ypos= int (curve->_normalUp[i].position.y())-shifty;
-            //addVisualPointXY(xpos,ypos, curve->_centerPoints[i].colorOuter1);
+            addVisualPointXY(xpos,ypos, curve->_centerPoints[i].colorOuter1);
 
         }
         // TODO if the error rate is small, no need more iteration
@@ -310,7 +294,7 @@ void Canvas::drawToImage()
             addVisualPointXY(xpos,ypos, curve->_normalDown[i].color);
             xpos= int (curve->_normalDown[i].position.x())-shiftx;
             ypos= int (curve->_normalDown[i].position.y())-shifty;
-            //addVisualPointXY(xpos,ypos, curve->_centerPoints[i].colorOuter2);
+            addVisualPointXY(xpos,ypos, curve->_centerPoints[i].colorOuter2);
 
         }
 
@@ -322,10 +306,10 @@ void Canvas::drawToImage()
 void Canvas::addVisualPointXY(int x, int y, const ImVec4 &color) {
 
 
-    imageRed(x,y) = color.x;
-    imageGreen(x,y) = color.y;
-    imageBlue(x,y) = color.z;
-    Mask(x,y)=true;
+    imageRed(x*size_+y) = color.x;
+    imageGreen(x*size_+y) = color.y;
+    imageBlue(x*size_+y) = color.z;
+    Mask(x*size_+y)=true;
 
 
 }

@@ -197,9 +197,9 @@ protected:
             auto normalizedGradient = _centerGradientPoints[i].position.normalized(); // return a value
 
             Eigen::Vector2f rotateVectdown = Eigen::Vector2f(-normalizedGradient.y(), normalizedGradient.x());
-            _normalDown.push_back(VisualPoint(_centerPoints[i].position + (_centerPoints[i].radius2 * rotateVectdown),
+            _normalDown.push_back(VisualPoint(_centerPoints[i].position + (_centerPoints[i].radius2 * -rotateVectdown),
                                               _centerPoints[i].color2));
-            _normalUp.push_back(VisualPoint(_centerPoints[i].position + (_centerPoints[i].radius1 * (-rotateVectdown)),
+            _normalUp.push_back(VisualPoint(_centerPoints[i].position + (_centerPoints[i].radius1 * (rotateVectdown)),
                                             _centerPoints[i].color1));
         }
     }

@@ -15,10 +15,10 @@ class Canvas
 public:
     bool displayMode;
     unsigned  int size_;
-    Eigen::Array<float,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> imageRed;  // row major because we want to flatten i
-    Eigen::Array<float,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> imageGreen;
-    Eigen::Array<float,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> imageBlue;
-    Eigen::Array<bool,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor> Mask;
+    Eigen::ArrayXf imageRed;  // row major because we want to flatten i
+    Eigen::ArrayXf imageGreen;
+    Eigen::ArrayXf imageBlue;
+    Eigen::Array<bool,Eigen::Dynamic,1> Mask;
     std::vector<float> data; // for giving to opengl
     Eigen::SparseMatrix<float>  A;
     bool _arePointsVisible;
