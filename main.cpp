@@ -1,28 +1,29 @@
 #include <iostream>
 #include "App.h"
 #include <glfw3.h>
-#define WINDOW_SIZE 300
+#define WINDOW_SIZE 700
 #include <Eigen/Dense>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
 int main(int argc, char *argv[])
 {
- /*
 
+    /*
     Canvas testCanvas=Canvas();
-    testCanvas.setSize(50);
-
+    testCanvas.setSize(900);
     for(int i=10;i<30;i++) {
-        testCanvas.Mask(10, i) = true;
-        testCanvas.imageRed(10, i) = 1;
-        testCanvas.imageGreen(10, i) = 1;
-        testCanvas.imageBlue(10, i) = 1;
+        testCanvas.Mask(10*testCanvas.size_+ i) = true;
+        testCanvas.imageRed(10*testCanvas.size_ +i) = 1;
+        testCanvas.imageGreen(10*testCanvas.size_+ i) = 1;
+        testCanvas.imageBlue(10*testCanvas.size_+ i) = 1;
         testCanvas.counter += 1;
     }
-    testCanvas.diffuse(1);
-    std::cout<<"JIII"<<std::endl;
-    */
+    //testCanvas.constructA(50);
+    //testCanvas.diffuse(1);
+    //testCanvas.multigrid();
+     */
+    //std::cout<<"JIII"<<std::endl;
     /*
     Eigen::Array<bool,Eigen::Dynamic,Eigen::Dynamic> Mask;
     Mask.resize(10,10);
@@ -63,9 +64,9 @@ int main(int argc, char *argv[])
     //Eigen::Map<const Eigen::VectorXd> imageRedv(imageRed.data(), imageRed.size());
     //answerR.abs(); //  the random number can be -1 to 0
      */
-    Eigen::setNbThreads(2);
-    int n = Eigen::nbThreads( );
-    std::cout<< n;
+    //Eigen::setNbThreads(2);
+    //int n = Eigen::nbThreads( );
+    //std::cout<< n;
     App::initialize(WINDOW_SIZE, WINDOW_SIZE, "Intuitive Colouring");
     return App::run();
     return 1;

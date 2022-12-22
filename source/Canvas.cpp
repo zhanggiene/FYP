@@ -80,20 +80,8 @@ void Canvas::drawFinalImage()
     std::cout<<"draw final image"<<std::endl;
     cleardiffuseImage();
     drawToImage();
-    diffuse(2);
-
-    int comp=3;
-    //std::fill(data.begin(), data.end(), 0);
-    //uint32_t z = 0; glClearTexImage(texture, 0, GL_RGBA, GL_UNSIGNED_BYTE, &z);
-    for (unsigned i = 0; i<size_;++i)
-    {
-        for (unsigned j = 0; j < size_; ++j)
-        {
-            data[(j * size_ * comp) + (i * comp) + 0] = imageRed(i*size_+j);
-            data[(j * size_ * comp) + (i * comp) + 1] = imageGreen(i*size_+j);
-            data[(j * size_ * comp) + (i * comp) + 2] = imageBlue(i*size_+j);
-        }
-    }
+    //diffuse(1);
+    multigrid();
 
     glTexImage2D(GL_TEXTURE_2D,     // Type of texture
                  0,                 // Pyramid level (for mip-mapping) - 0 is the top level
@@ -144,12 +132,11 @@ void Canvas::displayFinalImage()
 
 
 }
-
-void Canvas::diffuse(int iteration){
-
-     A.resize(size_* size_,size_* size_);
-     A.reserve(counter+size_*4);
-     //std::cout<<" Size of Mask is "<<counter+size_*4<<std::endl;
+void Canvas::constructA(int size_)
+{
+    A.resize(size_* size_,size_* size_);
+    A.reserve(counter+size_*4);
+    //std::cout<<" Size of Mask is "<<counter+size_*4<<std::endl;
     /*for(int i=0;i<size_*size_;i++)
     {
         A.coeffRef(i,i)=1;
@@ -171,7 +158,64 @@ void Canvas::diffuse(int iteration){
                 A.coeffRef(i*size_+j,(i-1)*size_+j)=-1;
             }
         }
+    }
+
+    //std::cout<<A;
+}
+void Canvas::multigrid()
+{
+    constructA(size_);
+    typedef amgcl::backend::builtin<float> Backend;
+    typedef amgcl::make_solver<
+            // Use AMG as preconditioner:
+            amgcl::amg<
+                    Backend,
+                    amgcl::coarsening::smoothed_aggregation,
+                    amgcl::relaxation::spai0
+            >,
+            // And BiCGStab as iterative solver:
+            amgcl::solver::bicgstab<Backend>
+    > Solver;
+    boost::property_tree::ptree prm;
+    prm.put("solver.tol", 1e-3);
+    Solver solve(A,prm);
+    std::cout << solve << std::endl;
+    int    iters=0;
+    float error=0;
+    // setting the inistial value of result is the guess condition, very important, otheriwse , it does not converge
+    std::vector<float> result1(imageRed.data(), imageRed.data()+imageRed.size());
+    std::vector<float> rhs(imageRed.data(), imageRed.data()+imageRed.size());
+    std::tie(iters, error) = solve(rhs, result1);
+    std::cout<<"error is "<<error<<std::endl;
+    std::vector<float> result2(imageGreen.data(), imageGreen.data()+imageGreen.size());
+    std::vector<float> rhs2(imageGreen.data(), imageGreen.data()+imageGreen.size());
+    std::tie(iters, error) = solve(rhs2, result2);
+    std::cout<<"error is "<<error<<std::endl;
+    std::vector<float> result3(imageBlue.data(), imageBlue.data()+imageBlue.size());
+    std::vector<float> rhs3(imageBlue.data(), imageBlue.data()+imageBlue.size());
+    std::tie(iters, error) = solve(rhs3, result3);
+    std::cout<<"error is "<<error<<std::endl;
+    int comp=3;
+    //std::fill(data.begin(), data.end(), 0);
+    //uint32_t z = 0; glClearTexImage(texture, 0, GL_RGBA, GL_UNSIGNED_BYTE, &z);
+    for (unsigned i = 0; i<size_;++i)
+    {
+        for (unsigned j = 0; j < size_; ++j)
+        {
+            data[(j * size_ * comp) + (i * comp) + 0] = result1[i*size_+j];
+            data[(j * size_ * comp) + (i * comp) + 1] = result2[i*size_+j];
+            data[(j * size_ * comp) + (i * comp) + 2] = result3[i*size_+j];
         }
+    }
+    std::cout<<iters<<"  ";
+    std::cout<<"error is "<<error;
+
+
+}
+void Canvas::diffuse(int iteration){
+    constructA(size_);
+
+
     /*
      for(unsigned A_row=0;A_row<size_* size_;A_row++)
     {
@@ -208,6 +252,9 @@ void Canvas::diffuse(int iteration){
     Eigen::ArrayXf answerB = Eigen::ArrayXf::Random(size_*size_);
     Eigen::BiCGSTAB<Eigen::SparseMatrix<float> > solver;
     solver.compute(A);
+    solver.setTolerance(0.001);
+    // TODO what is the idea tolerance ?
+    solver.setMaxIterations(100);
     answerR=Mask.select(imageRed,answerR);
     answerG=Mask.select(imageGreen,answerG);
     answerB=Mask.select(imageBlue,answerB);
@@ -246,6 +293,18 @@ void Canvas::diffuse(int iteration){
     imageRed=answerR;
     imageGreen=answerG;
     imageBlue=answerB;
+    int comp=3;
+    //std::fill(data.begin(), data.end(), 0);
+    //uint32_t z = 0; glClearTexImage(texture, 0, GL_RGBA, GL_UNSIGNED_BYTE, &z);
+    for (unsigned i = 0; i<size_;++i)
+    {
+        for (unsigned j = 0; j < size_; ++j)
+        {
+            data[(j * size_ * comp) + (i * comp) + 0] = imageRed(i*size_+j);
+            data[(j * size_ * comp) + (i * comp) + 1] = imageGreen(i*size_+j);
+            data[(j * size_ * comp) + (i * comp) + 2] = imageBlue(i*size_+j);
+        }
+    }
 }
 
 void Canvas::addVisualPoint(const VisualPoint &p_) {

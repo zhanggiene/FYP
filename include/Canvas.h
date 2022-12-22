@@ -8,6 +8,13 @@
 #include <vector>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+#include <amgcl/make_solver.hpp>
+#include <amgcl/solver/bicgstab.hpp>
+#include <amgcl/amg.hpp>
+#include <amgcl/coarsening/smoothed_aggregation.hpp>
+#include <amgcl/relaxation/spai0.hpp>
+#include <amgcl/adapter/crs_tuple.hpp>
+#include <amgcl/adapter/eigen.hpp>   // important
 //https://gist.github.com/insaneyilin/038a022f2ece61c923315306ddcea081
 // https://nehe.gamedev.net/tutorial/texture_mapping/12038/
 class Canvas
@@ -20,7 +27,7 @@ public:
     Eigen::ArrayXf imageBlue;
     Eigen::Array<bool,Eigen::Dynamic,1> Mask;
     std::vector<float> data; // for giving to opengl
-    Eigen::SparseMatrix<float>  A;
+    Eigen::SparseMatrix<float,Eigen::RowMajor>  A;
     bool _arePointsVisible;
     std::vector<Curve*> _curves;
     int counter;
@@ -42,5 +49,7 @@ public:
     void initializeTexture();
     GLuint texture;
     void cleardiffuseImage();
+    void constructA(int size);
+    void multigrid();
 };
 #endif //FYP_CANVAS_H
