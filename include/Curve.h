@@ -77,6 +77,25 @@ protected:
         }
     }
 
+    void cleanDeletedPoints()
+    {
+        if (_controlPoints.size()>3)
+        {
+            auto start=_controlPoints.begin();
+            while(start!=_controlPoints.end())
+            {
+                if ((*start).isDeleted)
+                {
+                    _controlPoints.erase (start);
+                    _toRenew=true;
+                    _degree-=1;
+
+                }
+                start+=1;
+            }
+        }
+    }
+
 
 
     const Point interpolate(const float t)
@@ -208,6 +227,7 @@ protected:
 
 
     void draw() {
+        cleanDeletedPoints();
         if (_visibleControlPoint) drawControlPoints();
         if (_toRenew) {
             _toRenew = false;
