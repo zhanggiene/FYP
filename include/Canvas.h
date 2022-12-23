@@ -51,5 +51,7 @@ public:
     void cleardiffuseImage();
     void constructA(int size);
     void multigrid();
+    void ShowPropertyEditor(bool* p_open);
+    void ShowPlaceholderObject(const char* prefix, int uid);
 };
 #endif //FYP_CANVAS_H

@@ -4,6 +4,10 @@
 
 #ifndef FYP_POINT_H
 #define FYP_POINT_H
+#include <glfw3.h>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl2.h"
 #if defined(__APPLE__)
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -25,19 +29,19 @@ public:
     Eigen::Vector2f position;
     ImVec4 colorOuter1;
     ImVec4 colorOuter2;
-    static const unsigned int r=10;
+    static const unsigned int r=5;
     bool isSelected;
     float radius1;
     float radius2;
+    bool isshowMenu;
 
     Point(ImVec4 color1_,ImVec4 color2_,float x_,float y_,float r1_,float r2_):
-    color1(color1_), color2(color2_) ,position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_)
+    color1(color1_), color2(color2_) ,position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isshowMenu(false)
     {
     }
     Point(ImVec4 color1_,ImVec4 color2_,Eigen::Vector2f position_,float r1_,float r2_):
-            color1(color1_), color2(color2_) ,position(position_),isSelected(false),radius1(r1_),radius2(r2_)
+            color1(color1_), color2(color2_) ,position(position_),isSelected(false),radius1(r1_),radius2(r2_),isshowMenu(false)
     {
-
     }
 
     // Copy constructor
@@ -49,7 +53,52 @@ public:
         position=p1.position;
         radius1=p1.radius1;
         radius2=p1.radius2;
+        isshowMenu=false;
 
+
+    }
+
+    void showCruveproperty(const char* prefix, int uid)
+    {
+        ImGui::PushID(uid);
+
+        // Text and Tree nodes are less high than framed widgets, using AlignTextToFramePadding() we add vertical spacing to make the tree lines equal high.
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::AlignTextToFramePadding();
+        bool node_open = ImGui::TreeNode("Object", "%s_%u", prefix, uid);
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("points attributes");
+
+        if (node_open)
+        {
+            static float placeholder_members[8] = { 0.0f, 0.0f, 1.0f, 3.1416f, 100.0f, 999.0f };
+            for (int i = 0; i < 8; i++)
+            {
+
+                ImGui::PushID(i); // Use field index as identifier.
+                // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                ImGui::AlignTextToFramePadding();
+                ImGuiTreeNodeFlags flags =
+                        ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
+                if (i==0) ImGui::TreeNodeEx("Color 1", flags, "Field_%d", i);
+                else if (i==1 ) ImGui::TreeNodeEx("Color 2", flags, "Field_%d", i);
+
+                ImGui::TableSetColumnIndex(1);
+                ImGui::SetNextItemWidth(-FLT_MIN);
+
+                if (i==0) ImGui::ColorPicker3(" color 1 ", (float *) &color1);
+                else if (i==1) ImGui::ColorPicker3(" color 2 ", (float *) &color2);
+                ImGui::NextColumn();
+
+                ImGui::PopID();
+
+            }
+            ImGui::TreePop();
+        }
+        ImGui::PopID();
 
     }
 
@@ -60,19 +109,23 @@ public:
         position=std::move(other.position);
         radius1=other.radius1;
         radius2=other.radius2;
+        isshowMenu=false;
+
     }
 
-    void checkMouseSelection(float x,float y)
+    void checkMouseSelection(float x,float y,bool rightClickFlag=false)
     {
-        if(abs(position.x()-x)<2*r && abs(position.y()-y)<2*r)
+        if(abs(position.x()-x)<4*r && abs(position.y()-y)<4*r)
         {
             // highlighted by the mouse
             isSelected=true;
+            isshowMenu=true;
         }
         else
         {
             isSelected=false;
         }
+
 
     }
 
@@ -84,18 +137,35 @@ public:
             position.y()=y;
         }
     }
+    void drawMenu()
+    {
+        //ImGui::Begin("control point");
+        // Create a window called "Hello, world!" and append into it.
+        //ImGui::SliderFloat("radius 1 is = %f",&position.x(),0.0f,50.0f);
+
+        //ImGui::BeginChild("blah");
+        //ImGui::EndChild();r1
+        //ImGui::End();
+    }
+    void drawR1R2()
+    {
+        drawCircle(position.x(), position.y(), 100,10,radius1,color1.x,color1.y,color1.z);
+        drawCircle(position.x(), position.y(), 100,10,radius2,color2.x,color2.y,color2.z);
+
+    }
     void draw()
     {
-        if (isSelected) {
+        if (!isSelected) {
             drawFilledCircle(position.x(), position.y());
         }
         else drawCircle(position.x(),position.y());
+        drawR1R2();
     }
 
         void drawFilledCircle(float cx, float cy, int num_segments=20){
             //static float angle;
             // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glColor3ub(255, 0, 0);
+            glColor3f(1, 1, 1);
             float twicePi = 2.0 * 3.142;
             glBegin(GL_TRIANGLE_FAN); //BEGIN CIRCLE
             glVertex2f(cx, cy); // center of circle
@@ -108,15 +178,15 @@ public:
             glEnd(); //END
     }
 
-    void drawCircle(float cx, float cy, int num_segments=100) {
-        glLineWidth(10);
+    void drawCircle(float cx, float cy, int num_segments=100,int lineWidth=10,float radius=r,float r_c=0,float g=1,float b=0) {
+        glLineWidth(lineWidth);
         glEnable(GL_LINE_SMOOTH);
-        glColor3ub(0, 255, 0);
+        glColor3f(r_c, g, b);
         glBegin(GL_LINE_LOOP);
         for (int ii = 0; ii < num_segments; ii++)   {
             float theta = 2.0f * 3.1415926f * float(ii) / float(num_segments);//get the current angle
-            float x = r * cosf(theta);//calculate the x component
-            float y = r * sinf(theta);//calculate the y component
+            float x = radius * cosf(theta);//calculate the x component
+            float y = radius * sinf(theta);//calculate the y component
             glVertex2f(x + cx, y + cy);//output vertex
         }
         glLineWidth(1);
@@ -133,6 +203,7 @@ public:
         position=other.position;
         radius1=other.radius1;
         radius2=other.radius2;
+        isshowMenu=false;
         return *this;
     }
 
@@ -148,6 +219,7 @@ public:
         ret.color2.z+=(color2.z);
         ret.radius1+=radius1;
         ret.radius2+=radius2;
+        ret.isshowMenu=false;
         return ret;
     }
 
@@ -163,6 +235,7 @@ public:
         ret.color2.z-=(color2.z);
         ret.radius1-=radius1;
         ret.radius2-=radius2;
+        ret.isshowMenu=false;
         return ret;
     }
 
@@ -178,6 +251,7 @@ public:
         ret.color2.z*=s;
         ret.radius1*=s;
         ret.radius2*=s;
+        ret.isshowMenu=false;
         return ret;
     }
 
@@ -193,6 +267,7 @@ public:
         ret.color2.z/=s;
         ret.radius1/=s;
         ret.radius2/=s;
+        ret.isshowMenu=false;
 
         return ret;
     }
@@ -209,6 +284,7 @@ public:
         color2.z+=(p.color2.z);
         radius1+=p.radius1;
         radius2+=p.radius2;
+        isshowMenu=false;
 
     }
 
@@ -224,6 +300,7 @@ public:
         color2.z-=(p.color2.z);
         radius1-=p.radius1;
         radius2-=p.radius2;
+        isshowMenu=false;
 
     }
 
@@ -239,6 +316,7 @@ public:
         color2.z*=s;
         radius1*=s;
         radius2*=s;
+        isshowMenu=false;
 
     }
 
@@ -254,6 +332,7 @@ public:
         color2.z/=s;
         radius1/=s;
         radius2/=s;
+        isshowMenu=false;
 
     }
 

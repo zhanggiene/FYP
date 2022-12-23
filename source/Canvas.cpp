@@ -62,6 +62,31 @@ void Canvas::addCurve(Curve* curve) {
 
 }
 
+void Canvas::ShowPropertyEditor(bool* p_open)
+{
+    ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
+    if (!ImGui::Begin("Control points editor", p_open))
+    {
+        ImGui::End();
+        return;
+    }
+
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+    if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
+    {
+        // Iterate placeholder objects (all the same data)
+        for (int obj_i = 0; obj_i < _curves.size(); obj_i++)
+        {
+            //ImGui::Separator();
+           _curves[obj_i]->showCruveproperty(("Curve"+std::to_string(obj_i)).c_str(),obj_i);
+            //ShowPlaceholderObject("Object", obj_i);
+        }
+        ImGui::EndTable();
+    }
+    ImGui::PopStyleVar();
+    ImGui::End();
+}
+
 void Canvas::draw() {
 
 
@@ -71,7 +96,8 @@ void Canvas::draw() {
         }
         _curves[i]->draw();
     }
-    //glFlush();
+    // draw property windows as well
+    if (displayMode)     ShowPropertyEditor(&displayMode);
 
 }
 
@@ -183,6 +209,7 @@ void Canvas::multigrid()
     int    iters=0;
     float error=0;
     // setting the inistial value of result is the guess condition, very important, otheriwse , it does not converge
+    // the solver will throw error.
     std::vector<float> result1(imageRed.data(), imageRed.data()+imageRed.size());
     std::vector<float> rhs(imageRed.data(), imageRed.data()+imageRed.size());
     std::tie(iters, error) = solve(rhs, result1);

@@ -47,7 +47,7 @@ public:
             : _toRenew(true),
               _degree(degree),
               _step(0.01f),
-              _controlPoints(controlPoints),_thickness(1),_straightLine(true) {
+              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visible(true) {
     }
 protected:
     bool _toRenew;
@@ -68,6 +68,7 @@ protected:
     std::vector<VisualPoint> _endingBoundaryVisualPoints;  // 3
     float _thickness;
     bool _straightLine;
+    bool _visible;
     void drawControlPoints()
     {
         glColor3f(1.0f, 0.0f, 0.0f);
@@ -348,7 +349,46 @@ Point gradientDeboor(int p, int i, float t)
             }
         }
     }
+    void showCruveproperty(const char* prefix, int uid)
+    {
+        ImGui::PushID(uid);
 
+        // Text and Tree nodes are less high than framed widgets, using AlignTextToFramePadding() we add vertical spacing to make the tree lines equal high.
+        ImGui::TableNextRow();
+        ImGui::TableSetColumnIndex(0);
+        ImGui::AlignTextToFramePadding();
+        bool node_open = ImGui::TreeNode("Object", "%s_%u", prefix, uid);
+        ImGui::TableSetColumnIndex(1);
+        ImGui::Text("curve attributes");
+
+        if (node_open)
+        {
+            static float placeholder_members[8] = { 0.0f, 0.0f, 1.0f, 3.1416f, 100.0f, 999.0f };
+            for (int i = 0; i < _controlPoints.size(); i++)
+            {
+
+                    ImGui::PushID(i); // Use field index as identifier.
+                    // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
+                    ImGui::TableNextRow();
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::AlignTextToFramePadding();
+                    ImGuiTreeNodeFlags flags =
+                            ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
+                    ImGui::TreeNodeEx("Field", flags, "Field_%d", i);
+
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::SetNextItemWidth(-FLT_MIN);
+
+                    ImGui::Checkbox("visibility", &_visible);
+                    ImGui::NextColumn();
+
+                    ImGui::PopID();
+            }
+            ImGui::TreePop();
+        }
+        ImGui::PopID();
+
+    }
 
     void drawCurve()
     {

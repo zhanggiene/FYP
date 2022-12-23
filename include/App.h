@@ -23,6 +23,7 @@ public:
     static std::vector<Point > _points;
     static float r1;
     static float r2;
+    static bool showPopUp;
     static Point& draggablePoint;
     static bool finalImageBool;
     static GLuint image_tex_;
@@ -31,6 +32,7 @@ public:
     static void keyboard_press_callback(GLFWwindow *window,int key, int scancode, int action, int mods);
     static void addCurve();
     static GLuint LoadImage();
+    static void HelpMarker(const char* desc);
 private:
     static void draw(GLuint texture);
     static Canvas _canvas;

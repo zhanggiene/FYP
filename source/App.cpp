@@ -145,29 +145,74 @@ int App::run() {
         ImGui_ImplOpenGL2_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        ImGui::ShowDemoWindow();
 
         {
             static int counter = 0;
+            static bool showWindow = true;
+            if(showWindow) {
 
-            ImGui::Begin("Control Point");                          // Create a window called "Hello, world!" and append into it.
+                if (!ImGui::Begin(
+                        "Control Point",&showWindow))                        // Create a window called "Hello, world!" and append into it.
+                {
+                        ImGui::End();
+                }
+                else {
 
-            // ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+                    // ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+                    float w = (ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.y) * 0.40f;
+                    ImGui::SliderFloat("r1", &r1, 0.0f,
+                                       100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+                    ImGui::SliderFloat("r2", &r2, 0.0f, 100.0f);
+                    HelpMarker(
+                            "By default, colors are given to ColorEdit and ColorPicker in RGB, but ImGuiColorEditFlags_InputHSV"
+                            "allows you to store colors as HSV and pass them to ColorEdit and ColorPicker as HSV. This comes with the"
+                            "added benefit that you can manipulate hue values with the picker even when saturation or value are zero.");
+                    ImGui::SetNextItemWidth(w);
+                    ImGui::ColorPicker3(" color 1 ", (float *) &color1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
+                    ImGui::SetNextItemWidth(w);
+                    ImGui::Spacing();
+                    ImGui::ColorPicker3(" color 2 ", (float *) &color2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 2
+                    ImGui::Spacing();
 
-            ImGui::SliderFloat("r1", &r1, 0.0f, 100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::SliderFloat("r2", &r2, 0.0f, 100.0f);
-            ImGui::ColorEdit3(" color 1 ", (float*)&color1); // Edit 3 floats representing a color
-            ImGui::ColorEdit3(" color 2 ", (float*)&color2); // Edit 2
+                    if (ImGui::Button(
+                            "Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+                        counter++;
+                    ImGui::SameLine();
+                    ImGui::Text("counter = %d", counter);
 
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-            ImGui::End();
+                    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
+                                ImGui::GetIO().Framerate);
+                    ImGui::End();
+                }
+            }
         }
 
-        ImGui::Render();
+        // Create a window called "Hello, world!" and append into it.
+        ImGui::Begin(
+                "Control Point adding");
+        if (showPopUp)
+        {ImGui::OpenPopup("Stacked 1");}
+        if (ImGui::BeginPopupModal("Stacked 1", NULL, ImGuiWindowFlags_MenuBar))
+        {
+            ImGui::Text("Hello from Stacked The First\nUsing style.Colors[ImGuiCol_ModalWindowDimBg] behind it.");
+
+            // Testing behavior of widgets stacking their own regular popups over the modal.
+            ImGui::ColorPicker3(" color 1 ", (float *) &_points.back().color1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
+            ImGui::ColorPicker3(" color 2 ", (float *)  &_points.back().color2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
+            ImGui::SliderFloat("radius 1", &_points.back().radius1, 0.0f, 100.0f);
+            ImGui::SliderFloat("radius 2", &_points.back().radius2, 0.0f, 100.0f);
+
+            if (ImGui::Button("Done")) {
+                showPopUp=false;
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
+        ImGui::End();
+        //ImGui::BeginChild("blah");
+        //ImGui::EndChild();
+
         int display_w, display_h;
         glfwGetFramebufferSize(_window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
@@ -175,6 +220,8 @@ int App::run() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         draw(image_tex_);
+
+        ImGui::Render();
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
         //glUseProgram(last_program);
 
@@ -253,6 +300,7 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
         glfwGetCursorPos(window, &xpos, &ypos);
         std::cout<<r1<<std::endl;
         std::cout<<r2<<std::endl;
+        showPopUp=true;
         _points.emplace_back(color1,color2,xpos,ypos,r1,r2);
         std::cout<<"points added "<<color1.x<<"  "<<color1.y<<"   "<<color1.z<<"   "<<xpos<<"   "<<ypos<<"  "<<r1<<"  "<<r2<<" ;";
 
@@ -261,11 +309,32 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
     {
         addCurve();
     }
-    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && editMode)
+    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS && editMode)
     {
+        std::cout<<"IMGUI windows pop out";
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+        for (auto &p: _points) {   // important here , otherwise, it is a copy, not a reference
+            // std::cout<<"drawing"<<std::endl;
+            p.checkMouseSelection(xpos, ypos,true);
+        }
+
 
     }
 
+}
+
+void App::HelpMarker(const char* desc)
+{
+    ImGui::TextDisabled("(?)");
+    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort))
+    {
+        ImGui::BeginTooltip();
+        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+        ImGui::TextUnformatted(desc);
+        ImGui::PopTextWrapPos();
+        ImGui::EndTooltip();
+    }
 }
 
 void App::addCurve() {
@@ -348,6 +417,7 @@ float App::r1=5;
 float App::r2=10;
 bool App::editMode=false;
 bool App::finalImageBool=false;
+bool App::showPopUp=false;
 GLuint App::image_tex_;
 int App::size;
 std::vector<float> App::data;
