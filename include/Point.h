@@ -33,14 +33,14 @@ public:
     bool isSelected;
     float radius1;
     float radius2;
-    bool isshowMenu;
+    bool isDeleted;
 
     Point(ImVec4 color1_,ImVec4 color2_,float x_,float y_,float r1_,float r2_):
-    color1(color1_), color2(color2_) ,position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isshowMenu(false)
+    color1(color1_), color2(color2_) ,position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
     }
     Point(ImVec4 color1_,ImVec4 color2_,Eigen::Vector2f position_,float r1_,float r2_):
-            color1(color1_), color2(color2_) ,position(position_),isSelected(false),radius1(r1_),radius2(r2_),isshowMenu(false)
+            color1(color1_), color2(color2_) ,position(position_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
     }
 
@@ -53,7 +53,7 @@ public:
         position=p1.position;
         radius1=p1.radius1;
         radius2=p1.radius2;
-        isshowMenu=false;
+        isDeleted=false;
 
 
     }
@@ -72,8 +72,35 @@ public:
 
         if (node_open)
         {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            if (ImGui::Button("Delete..")) ImGui::OpenPopup("Delete?");
+
+            // Always center this window when appearing
+            ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+            ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+            if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+            {
+                ImGui::Text("This curve and all the points will be deleted!!.\nThis operation cannot be undone!\n\n");
+                ImGui::Separator();
+
+                //static int unused_i = 0;
+                //ImGui::Combo("Combo", &unused_i, "Delete\0Delete harder\0");
+
+                static bool dont_ask_me_next_time = false;
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+                ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+                ImGui::PopStyleVar();
+
+                if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup();isDeleted=true; }
+                ImGui::SetItemDefaultFocus();
+                ImGui::SameLine();
+                if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+                ImGui::EndPopup();
+            }
             static float placeholder_members[8] = { 0.0f, 0.0f, 1.0f, 3.1416f, 100.0f, 999.0f };
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 4; i++)
             {
 
                 ImGui::PushID(i); // Use field index as identifier.
@@ -85,12 +112,18 @@ public:
                         ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
                 if (i==0) ImGui::TreeNodeEx("Color 1", flags, "Field_%d", i);
                 else if (i==1 ) ImGui::TreeNodeEx("Color 2", flags, "Field_%d", i);
+                else if (i==2 ) ImGui::TreeNodeEx("radius 1", flags, "Field_%d", i);
+                else if (i==3 ) ImGui::TreeNodeEx("radius 2", flags, "Field_%d", i);
+                //else if (i==3 ) ImGui::TreeNodeEx("radius 2", flags, "Field_%d", i);
 
                 ImGui::TableSetColumnIndex(1);
                 ImGui::SetNextItemWidth(-FLT_MIN);
 
                 if (i==0) ImGui::ColorPicker3(" color 1 ", (float *) &color1);
                 else if (i==1) ImGui::ColorPicker3(" color 2 ", (float *) &color2);
+                else if (i==2) ImGui::DragFloat("##radius 1", &radius1, 1.0f, 0.0f,100.0f);
+                else if (i==3) ImGui::DragFloat("##radius 2", &radius2, 1.0f, 0.0f,100.0f);
+                //else if (i==3) ImGui::SliderFloat("radius 2", &radius2, 0.0f, 100.0f);
                 ImGui::NextColumn();
 
                 ImGui::PopID();
@@ -109,7 +142,7 @@ public:
         position=std::move(other.position);
         radius1=other.radius1;
         radius2=other.radius2;
-        isshowMenu=false;
+        isDeleted=false;
 
     }
 
@@ -119,7 +152,6 @@ public:
         {
             // highlighted by the mouse
             isSelected=true;
-            isshowMenu=true;
         }
         else
         {
@@ -203,7 +235,7 @@ public:
         position=other.position;
         radius1=other.radius1;
         radius2=other.radius2;
-        isshowMenu=false;
+        isDeleted=false;
         return *this;
     }
 
@@ -219,7 +251,7 @@ public:
         ret.color2.z+=(color2.z);
         ret.radius1+=radius1;
         ret.radius2+=radius2;
-        ret.isshowMenu=false;
+        ret.isDeleted=false;
         return ret;
     }
 
@@ -235,7 +267,7 @@ public:
         ret.color2.z-=(color2.z);
         ret.radius1-=radius1;
         ret.radius2-=radius2;
-        ret.isshowMenu=false;
+        ret.isDeleted=false;
         return ret;
     }
 
@@ -251,7 +283,7 @@ public:
         ret.color2.z*=s;
         ret.radius1*=s;
         ret.radius2*=s;
-        ret.isshowMenu=false;
+        ret.isDeleted=false;
         return ret;
     }
 
@@ -267,7 +299,7 @@ public:
         ret.color2.z/=s;
         ret.radius1/=s;
         ret.radius2/=s;
-        ret.isshowMenu=false;
+        ret.isDeleted=false;
 
         return ret;
     }
@@ -284,7 +316,7 @@ public:
         color2.z+=(p.color2.z);
         radius1+=p.radius1;
         radius2+=p.radius2;
-        isshowMenu=false;
+        isDeleted=false;
 
     }
 
@@ -300,7 +332,7 @@ public:
         color2.z-=(p.color2.z);
         radius1-=p.radius1;
         radius2-=p.radius2;
-        isshowMenu=false;
+        isDeleted=false;
 
     }
 
@@ -316,7 +348,7 @@ public:
         color2.z*=s;
         radius1*=s;
         radius2*=s;
-        isshowMenu=false;
+        isDeleted=false;
 
     }
 
@@ -332,7 +364,7 @@ public:
         color2.z/=s;
         radius1/=s;
         radius2/=s;
-        isshowMenu=false;
+        isDeleted=false;
 
     }
 

@@ -91,9 +91,6 @@ void Canvas::draw() {
 
 
     for (size_t i = 0; i < _curves.size(); i++) {
-        if (_arePointsVisible) {
-            _curves[i]->drawControlPoints();
-        }
         _curves[i]->draw();
     }
     // draw property windows as well

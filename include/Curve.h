@@ -47,7 +47,7 @@ public:
             : _toRenew(true),
               _degree(degree),
               _step(0.01f),
-              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visible(true) {
+              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true) {
     }
 protected:
     bool _toRenew;
@@ -68,7 +68,7 @@ protected:
     std::vector<VisualPoint> _endingBoundaryVisualPoints;  // 3
     float _thickness;
     bool _straightLine;
-    bool _visible;
+    bool _visibleControlPoint;
     void drawControlPoints()
     {
         glColor3f(1.0f, 0.0f, 0.0f);
@@ -76,6 +76,7 @@ protected:
             _controlPoints[i].draw();
         }
     }
+
 
 
     const Point interpolate(const float t)
@@ -207,6 +208,7 @@ protected:
 
 
     void draw() {
+        if (_visibleControlPoint) drawControlPoints();
         if (_toRenew) {
             _toRenew = false;
             generate();
@@ -363,26 +365,55 @@ Point gradientDeboor(int p, int i, float t)
 
         if (node_open)
         {
-            static float placeholder_members[8] = { 0.0f, 0.0f, 1.0f, 3.1416f, 100.0f, 999.0f };
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            if (ImGui::Button("Delete..")) ImGui::OpenPopup("Delete?");
+
+            // Always center this window when appearing
+            ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+            ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+            if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+            {
+                ImGui::Text("This curve and all the points will be deleted!!.\nThis operation cannot be undone!\n\n");
+                ImGui::Separator();
+
+                //static int unused_i = 0;
+                //ImGui::Combo("Combo", &unused_i, "Delete\0Delete harder\0");
+
+                static bool dont_ask_me_next_time = false;
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+                ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
+                ImGui::PopStyleVar();
+
+                if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+                ImGui::SetItemDefaultFocus();
+                ImGui::SameLine();
+                if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+                ImGui::EndPopup();
+            }
+            ImGui::PushID(_controlPoints.size()); // Use field index as identifier.
+            // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::AlignTextToFramePadding();
+            ImGuiTreeNodeFlags flags =
+                    ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
+            ImGui::TreeNodeEx("Field", flags, "Field_%d",10 );
+
+            ImGui::TableSetColumnIndex(1);
+            ImGui::SetNextItemWidth(-FLT_MIN);
+
+            ImGui::Checkbox("Control Point visibility", &_visibleControlPoint);
+            ImGui::NextColumn();
+
+            ImGui::PopID();
             for (int i = 0; i < _controlPoints.size(); i++)
             {
 
-                    ImGui::PushID(i); // Use field index as identifier.
-                    // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
-                    ImGui::TableNextRow();
-                    ImGui::TableSetColumnIndex(0);
-                    ImGui::AlignTextToFramePadding();
-                    ImGuiTreeNodeFlags flags =
-                            ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
-                    ImGui::TreeNodeEx("Field", flags, "Field_%d", i);
-
-                    ImGui::TableSetColumnIndex(1);
-                    ImGui::SetNextItemWidth(-FLT_MIN);
-
-                    ImGui::Checkbox("visibility", &_visible);
-                    ImGui::NextColumn();
-
-                    ImGui::PopID();
+                /*
+                */
+                _controlPoints[i].showCruveproperty("Points",i);
             }
             ImGui::TreePop();
         }
