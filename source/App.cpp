@@ -195,18 +195,23 @@ int App::run() {
         {ImGui::OpenPopup("Stacked 1");}
         if (ImGui::BeginPopupModal("Stacked 1", NULL, ImGuiWindowFlags_MenuBar))
         {
-            ImGui::Text("Hello from Stacked The First\nUsing style.Colors[ImGuiCol_ModalWindowDimBg] behind it.");
-
+            float w = (ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.y) * 0.40f;
             // Testing behavior of widgets stacking their own regular popups over the modal.
+            ImGui::SetNextItemWidth(w);
             ImGui::ColorPicker3(" color 1 ", (float *) &_points.back().color1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
+            ImGui::SetNextItemWidth(w);
             ImGui::ColorPicker3(" color 2 ", (float *)  &_points.back().color2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
+            ImGui::SetNextItemWidth(w);
             ImGui::SliderFloat("radius 1", &_points.back().radius1, 0.0f, 100.0f);
+            ImGui::SetNextItemWidth(w);
             ImGui::SliderFloat("radius 2", &_points.back().radius2, 0.0f, 100.0f);
 
             if (ImGui::Button("Done")) {
                 showPopUp=false;
                 ImGui::CloseCurrentPopup();
             }
+            if (ImGui::Button("Cancel")) { deleteLastPoint();showPopUp=false; ImGui::CloseCurrentPopup(); }
+            // TODO cancel button not working now
             ImGui::EndPopup();
         }
         ImGui::End();
@@ -343,6 +348,9 @@ void App::addCurve() {
         _canvas.addCurve(new Curve(_points));
         _points.clear();
     }
+}
+void App::deleteLastPoint() {
+    _points.pop_back();
 }
 GLuint App::LoadImage()
 {
