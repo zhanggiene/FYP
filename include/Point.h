@@ -23,6 +23,9 @@
 #define POINT_SIZE 10
 class Point
 {
+private:
+    typedef std::function<void()> some_void_function_type;
+    some_void_function_type f_;
 public:
     ImVec4 color1;
     ImVec4 color2;
@@ -35,6 +38,7 @@ public:
     float radius2;
     bool isDeleted;
 
+
     Point(ImVec4 color1_,ImVec4 color2_,float x_,float y_,float r1_,float r2_):
     color1(color1_), color2(color2_) ,position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
@@ -42,6 +46,11 @@ public:
     Point(ImVec4 color1_,ImVec4 color2_,Eigen::Vector2f position_,float r1_,float r2_):
             color1(color1_), color2(color2_) ,position(position_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
+    }
+
+    void setCallBack(some_void_function_type f)
+    {
+            f_ = f;
     }
 
     // Copy constructor
@@ -118,11 +127,12 @@ public:
 
                 ImGui::TableSetColumnIndex(1);
                 ImGui::SetNextItemWidth(-FLT_MIN);
+                // add callback!!https://stackoverflow.com/questions/20037427/pass-method-as-callback-from-one-class-to-other-class
 
-                if (i==0) ImGui::ColorPicker3(" color 1 ", (float *) &color1);
-                else if (i==1) ImGui::ColorPicker3(" color 2 ", (float *) &color2);
-                else if (i==2) ImGui::DragFloat("##radius 1", &radius1, 1.0f, 0.0f,100.0f);
-                else if (i==3) ImGui::DragFloat("##radius 2", &radius2, 1.0f, 0.0f,100.0f);
+                if (i==0 and ImGui::ColorPicker3(" color 1 ", (float *) &color1)) f_();
+                else if (i==1 and  ImGui::ColorPicker3(" color 2 ", (float *) &color2)) f_();
+                else if (i==2 and ImGui::DragFloat("##radius 1", &radius1, 1.0f, 0.0f,100.0f)) f_();
+                else if (i==3 and ImGui::DragFloat("##radius 2", &radius2, 1.0f, 0.0f,100.0f)) f_();
                 //else if (i==3) ImGui::SliderFloat("radius 2", &radius2, 0.0f, 100.0f);
                 ImGui::NextColumn();
 

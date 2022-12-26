@@ -84,14 +84,6 @@ bool App::initialize(int width, int height, const char *title) {
     _window = glfwCreateWindow(width, height, "test", NULL, NULL);
     size=width;
 
-
-#ifdef __APPLE__
-    /* We need to explicitly ask for a 3.2 context on OS X */
-    glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#endif
     if (_window == NULL) {
         std::cout << "INITIALIZER: Failed to open a window!" << std::endl;
         glfwTerminate();
@@ -115,10 +107,19 @@ bool App::initialize(int width, int height, const char *title) {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
     ImGui::StyleColorsDark();
+
+            ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
     ImGui_ImplGlfw_InitForOpenGL(_window, true);
     ImGui_ImplOpenGL2_Init();
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
@@ -229,8 +230,14 @@ int App::run() {
         ImGui::Render();
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
         //glUseProgram(last_program);
-
-        glfwMakeContextCurrent(_window);
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }
 
         /******Exchange buffer, update the content on the window******/
         glfwSwapBuffers(_window);

@@ -38,6 +38,9 @@ private:
 
         return deCasteljau(t,points);
     }
+private:
+    typedef std::function<void()> some_void_function_type;
+    some_void_function_type f_;
 
 public:
     Curve(const std::vector<Point>& controlPoints)
@@ -48,6 +51,11 @@ public:
               _degree(degree),
               _step(0.01f),
               _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true) {
+
+         for (int i=0;i<_controlPoints.size();i++)
+         {
+             _controlPoints[i].setCallBack(std::bind(&Curve::generate, this));
+         }
     }
 protected:
     bool _toRenew;
@@ -103,6 +111,11 @@ protected:
 
         std::vector<Point> controlPointCopy(_controlPoints);
         return deCasteljau(t,controlPointCopy);
+    }
+
+    void setCallBack(some_void_function_type f)
+    {
+        f_ = f;
     }
 
 

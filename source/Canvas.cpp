@@ -59,6 +59,8 @@ Canvas::~Canvas()
 void Canvas::addCurve(Curve* curve) {
      // area for improvement
     _curves.push_back(curve);
+    //curve->setCallBack(std::bind(&Canvas::generate, this));
+
 
 }
 
