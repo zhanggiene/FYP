@@ -5,7 +5,10 @@ set(CMAKE_CXX_STANDARD 17)
 
 # Define build options
 option(AUTODIFF_BUILD_TESTS "Enable the compilation of the test files." ON)
-
+find_package(
+        Boost 1.65 REQUIRED
+        COMPONENTS  json
+)
 
 if(AUTODIFF_BUILD_TESTS)
     # Tell CMake to include the /src/CMakeLists.txt file in the build.
@@ -44,6 +47,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 find_package(OpenMP REQUIRED)
 file(GLOB sources *.cpp)
-message(${sources})
-add_executable(fyp main.cpp ${sources} tinyfiledialogs.c ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp include/Point.h source/Canvas.cpp include/Canvas.h include/Curve.h include/VisualPoint.h include/stb_image.h include/stb_image_write.h)
-target_link_libraries (fyp Eigen3::Eigen OpenMP::OpenMP_CXX amgcl::amgcl)
+add_executable(fyp main.cpp ${sources} tinyfiledialogs.c ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp source/Canvas.cpp include/VisualPoint.h include/stb_image.h include/stb_image_write.h source/Point.cpp source/Curve.cpp)
+target_link_libraries (fyp Eigen3::Eigen OpenMP::OpenMP_CXX amgcl::amgcl ${Boost_LIBRARIES})

@@ -71,6 +71,11 @@ void Canvas::save2()
 
 void Canvas::save()
 {
+    //boost::json::stream_parser p;
+    //boost::json::object obj;                                                     // construct an empty object
+    //obj[ "pi" ] = 3.141;                                            // insert a double
+    //obj[ "happy" ] = true;                                          // insert a bool
+    //obj[ "name" ] = "Boost";
     testmessage="test123";
     lTheSaveFileName = tinyfd_saveFileDialog(
             "let us save this password",
@@ -466,6 +471,7 @@ void Canvas::checkMouseSelection(float xpos, float ypos)
         c->checkMouseSelection(xpos, ypos);
     }
 }
+
 
 
 void Canvas::updatePosition(float xpos, float ypos)

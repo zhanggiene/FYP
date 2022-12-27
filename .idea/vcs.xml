@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/cmake-build-debug/_deps/catch2-src" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/imgui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/json" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/test/cmake-build-debug/_deps/catch2-src" vcs="Git" />
   </component>
 </project>
