@@ -309,7 +309,7 @@ void App::HelpMarker(const char* desc)
 void App::addCurve() {
     if (!_points.empty())
     {
-        _canvas.addCurve(new Curve(_points));
+        _canvas.addCurve(Curve(_points));  // move semantic
         _points.clear();
     }
 }

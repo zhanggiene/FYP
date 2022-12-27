@@ -390,7 +390,7 @@
                 ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
                 ImGui::PopStyleVar();
 
-                if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+                if (ImGui::Button("OK", ImVec2(120, 0))) { std::cout << serialize( boost::json::value_from( *this ) );ImGui::CloseCurrentPopup(); }
                 ImGui::SetItemDefaultFocus();
                 ImGui::SameLine();
                 if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
@@ -464,9 +464,8 @@
 
 void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Curve const& c )
 {
-    jv = {
-            { "points" , {c._controlPoints}},
-    };
+    jv ={"position",boost::json::value_from( c._controlPoints )};
+
 }
 
 

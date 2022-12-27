@@ -95,7 +95,7 @@ public:
 Point gradientDeboor(int p, int i, float t);
     void generateCenterPoint();
     void showCruveproperty(const char* prefix, int uid);
-
+    friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Curve const& p );
     void drawCurve();
 
 };

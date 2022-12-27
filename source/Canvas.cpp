@@ -57,7 +57,7 @@ Canvas::~Canvas()
     clear();
 }
 
-void Canvas::addCurve(Curve* curve) {
+void Canvas::addCurve(Curve&& curve) {
      // area for improvement
     _curves.push_back(curve);
     //curve->setCallBack(std::bind(&Canvas::generate, this));
@@ -125,7 +125,7 @@ void Canvas::ShowPropertyEditor()
         for (int obj_i = 0; obj_i < _curves.size(); obj_i++)
         {
             //ImGui::Separator();
-           _curves[obj_i]->showCruveproperty(("Curve"+std::to_string(obj_i)).c_str(),obj_i);
+           _curves[obj_i].showCruveproperty(("Curve"+std::to_string(obj_i)).c_str(),obj_i);
             //ShowPlaceholderObject("Object", obj_i);
         }
         ImGui::EndTable();
@@ -159,7 +159,7 @@ void Canvas::draw() {
 
 
     for (size_t i = 0; i < _curves.size(); i++) {
-        _curves[i]->draw();
+        _curves[i].draw();
     }
     // draw property windows as well
     ShowPropertyEditor();
@@ -411,41 +411,41 @@ void Canvas::drawToImage()
 {
     for (auto curve : _curves)
     {
-        for (int i=0; i<curve->_normalUp.size();i++)
+        for (int i=0; i<curve._normalUp.size();i++)
         {
             int shiftx=-1;
-            if (curve->_normalUp[i].position.x() < curve->_centerPoints[i].position.x()) {
+            if (curve._normalUp[i].position.x() < curve._centerPoints[i].position.x()) {
                 shiftx = 1;
             }
             int shifty=-1;
-            if (curve->_normalUp[i].position.y() < curve->_centerPoints[i].position.y()) {
+            if (curve._normalUp[i].position.y() < curve._centerPoints[i].position.y()) {
                 shifty = 1;
             }
-            int xpos= int (curve->_normalUp[i].position.x())+shiftx;
-            int ypos= int (curve->_normalUp[i].position.y())+shifty;
-            addVisualPointXY(xpos,ypos, curve->_normalUp[i].color);
-            xpos= int (curve->_normalUp[i].position.x())-shiftx;
-            ypos= int (curve->_normalUp[i].position.y())-shifty;
-            addVisualPointXY(xpos,ypos, curve->_centerPoints[i].colorOuter1);
+            int xpos= int (curve._normalUp[i].position.x())+shiftx;
+            int ypos= int (curve._normalUp[i].position.y())+shifty;
+            addVisualPointXY(xpos,ypos, curve._normalUp[i].color);
+            xpos= int (curve._normalUp[i].position.x())-shiftx;
+            ypos= int (curve._normalUp[i].position.y())-shifty;
+            addVisualPointXY(xpos,ypos, curve._centerPoints[i].colorOuter1);
 
         }
         // TODO if the error rate is small, no need more iteration
-        for (int i=0; i<curve->_normalDown.size();i++)
+        for (int i=0; i<curve._normalDown.size();i++)
         {
             int shiftx=-1;
-            if (curve->_normalDown[i].position.x() < curve->_centerPoints[i].position.x()) {
+            if (curve._normalDown[i].position.x() < curve._centerPoints[i].position.x()) {
                 shiftx = 1;
             }
             int shifty=-1;
-            if (curve->_normalDown[i].position.y() < curve->_centerPoints[i].position.y()) {
+            if (curve._normalDown[i].position.y() < curve._centerPoints[i].position.y()) {
                 shifty = 1;
             }
-            int xpos= int (curve->_normalDown[i].position.x())+shiftx;
-            int ypos= int (curve->_normalDown[i].position.y())+shifty;
-            addVisualPointXY(xpos,ypos, curve->_normalDown[i].color);
-            xpos= int (curve->_normalDown[i].position.x())-shiftx;
-            ypos= int (curve->_normalDown[i].position.y())-shifty;
-            addVisualPointXY(xpos,ypos, curve->_centerPoints[i].colorOuter2);
+            int xpos= int (curve._normalDown[i].position.x())+shiftx;
+            int ypos= int (curve._normalDown[i].position.y())+shifty;
+            addVisualPointXY(xpos,ypos, curve._normalDown[i].color);
+            xpos= int (curve._normalDown[i].position.x())-shiftx;
+            ypos= int (curve._normalDown[i].position.y())-shifty;
+            addVisualPointXY(xpos,ypos, curve._centerPoints[i].colorOuter2);
 
         }
 
@@ -468,7 +468,7 @@ void Canvas::addVisualPointXY(int x, int y, const ImVec4 &color) {
 void Canvas::checkMouseSelection(float xpos, float ypos)
 {
     for (auto c: _curves) {
-        c->checkMouseSelection(xpos, ypos);
+        c.checkMouseSelection(xpos, ypos);
     }
 }
 
@@ -477,6 +477,6 @@ void Canvas::checkMouseSelection(float xpos, float ypos)
 void Canvas::updatePosition(float xpos, float ypos)
 {
     for (auto c: _curves) {
-        c->updatePosition(xpos, ypos);
+        c.updatePosition(xpos, ypos);
     }
 }

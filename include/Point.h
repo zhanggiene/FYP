@@ -76,6 +76,7 @@ public:
     void operator/=(float s);
 
     friend std::ostream &operator<<(std::ostream &os, const Point &p);
+    friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Point const& p );
 };
 
 
