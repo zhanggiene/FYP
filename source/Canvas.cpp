@@ -4,6 +4,7 @@
 
 // https://stackoverflow.com/questions/21070076/opengl-generating-a-2d-texture-from-a-data-array-to-display-on-a-quad
 #include "Canvas.h"
+
 Canvas::Canvas()
         :
           displayMode(false),
@@ -63,11 +64,50 @@ void Canvas::addCurve(Curve* curve) {
 
 
 }
-
-void Canvas::ShowPropertyEditor(bool* p_open)
+void Canvas::save2()
 {
+    std::cout<<" save this message"<<std::endl;
+}
+
+void Canvas::save()
+{
+    testmessage="test123";
+    lTheSaveFileName = tinyfd_saveFileDialog(
+            "let us save this password",
+            "passwordFile.txt",
+            1,
+            lFilterPatterns,
+            NULL);
+
+    if (! lTheSaveFileName)
+    {
+        tinyfd_messageBox(
+                "Error",
+                "Save file name is NULL",
+                "ok",
+                "error",
+                1);
+    }
+    lIn = fopen(lTheSaveFileName, "w");
+    if (!lIn)
+    {
+        tinyfd_messageBox(
+                "Error",
+                "Can not open this file in write mode",
+                "ok",
+                "error",
+                1);
+    }
+    fputs(testmessage.c_str(), lIn);
+    fclose(lIn);
+}
+
+void Canvas::ShowPropertyEditor()
+{
+    ShowAppMainMenuBar();
+    ImGuiWindowFlags window_flags = 0;
     ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Control points editor", p_open))
+    if (!ImGui::Begin("Control points editor",NULL,window_flags))
     {
         ImGui::End();
         return;
@@ -89,6 +129,27 @@ void Canvas::ShowPropertyEditor(bool* p_open)
     ImGui::End();
 }
 
+void Canvas::ShowAppMainMenuBar()
+{
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+            if (ImGui::MenuItem("save")) {save2();}
+
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Edit"))
+        {
+            if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+            if (ImGui::MenuItem("Clear", "CTRL+C")) {}
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+}
+
 void Canvas::draw() {
 
 
@@ -96,7 +157,7 @@ void Canvas::draw() {
         _curves[i]->draw();
     }
     // draw property windows as well
-    if (displayMode)     ShowPropertyEditor(&displayMode);
+    ShowPropertyEditor();
 
 }
 

@@ -129,8 +129,8 @@ public:
                 ImGui::SetNextItemWidth(-FLT_MIN);
                 // add callback!!https://stackoverflow.com/questions/20037427/pass-method-as-callback-from-one-class-to-other-class
 
-                if (i==0 and ImGui::ColorPicker3(" color 1 ", (float *) &color1)) f_();
-                else if (i==1 and  ImGui::ColorPicker3(" color 2 ", (float *) &color2)) f_();
+                if (i==0 and ImGui::ColorPicker3(" color 1 ", (float *) &color1,ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoAlpha)) f_();
+                else if (i==1 and  ImGui::ColorPicker3(" color 2 ", (float *) &color2,ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoAlpha)) f_();
                 else if (i==2 and ImGui::DragFloat("##radius 1", &radius1, 1.0f, 0.0f,100.0f)) f_();
                 else if (i==3 and ImGui::DragFloat("##radius 2", &radius2, 1.0f, 0.0f,100.0f)) f_();
                 //else if (i==3) ImGui::SliderFloat("radius 2", &radius2, 0.0f, 100.0f);

@@ -15,6 +15,7 @@
 #include <amgcl/relaxation/spai0.hpp>
 #include <amgcl/adapter/crs_tuple.hpp>
 #include <amgcl/adapter/eigen.hpp>   // important
+#include "tinyfiledialogs.h"
 //https://gist.github.com/insaneyilin/038a022f2ece61c923315306ddcea081
 // https://nehe.gamedev.net/tutorial/texture_mapping/12038/
 class Canvas
@@ -51,7 +52,15 @@ public:
     void cleardiffuseImage();
     void constructA(int size);
     void multigrid();
-    void ShowPropertyEditor(bool* p_open);
+    void ShowPropertyEditor();
     void ShowPlaceholderObject(const char* prefix, int uid);
+    void ShowAppMainMenuBar();
+    char const * lFilterPatterns[1] = { "*.txt"};
+    char const * lTheSaveFileName;
+	char const * lTheOpenFileName;
+    void save();
+    void save2();
+    FILE * lIn;
+    std::string testmessage;
 };
 #endif //FYP_CANVAS_H

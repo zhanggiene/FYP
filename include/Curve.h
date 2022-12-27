@@ -322,11 +322,6 @@ protected:
             else if (i<=_controlPoints.size()) knotVector.push_back(++index);
             else knotVector.push_back(index);
         }
-
-        for (auto x:knotVector)
-        {
-            std::cout<<"  "<<x;
-        }
     }
     void generateGradientControlPoint()
     {

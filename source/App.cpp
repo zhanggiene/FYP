@@ -148,50 +148,8 @@ int App::run() {
         ImGui::NewFrame();
         ImGui::ShowDemoWindow();
 
-        {
-            static int counter = 0;
-            static bool showWindow = true;
-            if(showWindow) {
-
-                if (!ImGui::Begin(
-                        "Control Point",&showWindow))                        // Create a window called "Hello, world!" and append into it.
-                {
-                        ImGui::End();
-                }
-                else {
-
-                    // ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-                    float w = (ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.y) * 0.40f;
-                    ImGui::SliderFloat("r1", &r1, 0.0f,
-                                       100.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-                    ImGui::SliderFloat("r2", &r2, 0.0f, 100.0f);
-                    HelpMarker(
-                            "By default, colors are given to ColorEdit and ColorPicker in RGB, but ImGuiColorEditFlags_InputHSV"
-                            "allows you to store colors as HSV and pass them to ColorEdit and ColorPicker as HSV. This comes with the"
-                            "added benefit that you can manipulate hue values with the picker even when saturation or value are zero.");
-                    ImGui::SetNextItemWidth(w);
-                    ImGui::ColorPicker3(" color 1 ", (float *) &color1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
-                    ImGui::SetNextItemWidth(w);
-                    ImGui::Spacing();
-                    ImGui::ColorPicker3(" color 2 ", (float *) &color2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 2
-                    ImGui::Spacing();
-
-                    if (ImGui::Button(
-                            "Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                        counter++;
-                    ImGui::SameLine();
-                    ImGui::Text("counter = %d", counter);
-
-                    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-                                ImGui::GetIO().Framerate);
-                    ImGui::End();
-                }
-            }
-        }
 
         // Create a window called "Hello, world!" and append into it.
-        ImGui::Begin(
-                "Control Point adding");
         if (showPopUp)
         {ImGui::OpenPopup("Stacked 1");}
         if (ImGui::BeginPopupModal("Stacked 1", NULL, ImGuiWindowFlags_MenuBar))
@@ -215,7 +173,6 @@ int App::run() {
             // TODO cancel button not working now
             ImGui::EndPopup();
         }
-        ImGui::End();
         //ImGui::BeginChild("blah");
         //ImGui::EndChild();
 
