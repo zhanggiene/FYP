@@ -308,10 +308,11 @@ void App::HelpMarker(const char* desc)
 
 void App::addCurve() {
     if (!_points.empty())
-    {
-        outerclass temp(_points);
+        {
+         std::vector<Point > temp_points=_points;  // make a copy
+        outerclass temp(temp_points);
         _canvas.addCurve(temp);  // move semantic
-        // _points.clear();
+        _points.clear();
     }
 }
 void App::deleteLastPoint() {

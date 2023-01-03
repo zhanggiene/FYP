@@ -55,11 +55,11 @@ public:
     void ShowPropertyEditor();
     void ShowPlaceholderObject(const char* prefix, int uid);
     void ShowAppMainMenuBar();
+    friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Canvas const& p );
     char const * lFilterPatterns[1] = { "*.txt"};
     char const * lTheSaveFileName;
 	char const * lTheOpenFileName;
     void save();
-    void save2();
     FILE * lIn;
     std::string testmessage;
 };

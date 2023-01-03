@@ -64,35 +64,15 @@ void Canvas::addCurve(outerclass curve) {
 
 
 }
-void Canvas::save2()
-{
-    std::cout<<" save this message"<<""<<serialize( boost::json::value_from( _curves[0] ) )<<std::endl;
-}
-
 void Canvas::save()
 {
-    //boost::json::stream_parser p;
-    //boost::json::object obj;                                                     // construct an empty object
-    //obj[ "pi" ] = 3.141;                                            // insert a double
-    //obj[ "happy" ] = true;                                          // insert a bool
-    //obj[ "name" ] = "Boost";
     testmessage="test123";
     lTheSaveFileName = tinyfd_saveFileDialog(
             "let us save this password",
-            "passwordFile.txt",
+            "curve1.json",
             1,
             lFilterPatterns,
             NULL);
-
-    if (! lTheSaveFileName)
-    {
-        tinyfd_messageBox(
-                "Error",
-                "Save file name is NULL",
-                "ok",
-                "error",
-                1);
-    }
     lIn = fopen(lTheSaveFileName, "w");
     if (!lIn)
     {
@@ -103,8 +83,17 @@ void Canvas::save()
                 "error",
                 1);
     }
-    fputs(testmessage.c_str(), lIn);
+    fputs(serialize( boost::json::value_from(*this )).c_str(), lIn);
     fclose(lIn);
+    std::cout<<" save this message"<<"";
+}
+
+
+void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Canvas const& c )
+{
+    jv ={
+            {"curves",c._curves }};
+
 }
 
 void Canvas::ShowPropertyEditor()
@@ -141,7 +130,7 @@ void Canvas::ShowAppMainMenuBar()
         if (ImGui::BeginMenu("File"))
         {
             if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-            if (ImGui::MenuItem("save")) {save2();}
+            if (ImGui::MenuItem("save")) {save();}
 
             ImGui::EndMenu();
         }
