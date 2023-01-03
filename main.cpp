@@ -6,58 +6,47 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
+#include "outerclass.h"
 
-namespace my_app {
-
-
-struct customer
-{
-    int id;
-    std::string name;
-    bool current;
-};
-
-struct outer{
-    customer c;
-
-};
-void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, customer const& c )
-{
-    jv = {
-        { "id" , c.id },
-        { "name", c.name },
-        { "current", c.current }
-    };
-
-}
-    void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, outer const& o )
-    {
-        jv = {
-                { "ids" , o.c },
-        };
-
-    }
-}// namespace my_app
 int main(int argc, char *argv[])
 {
-my_app::customer c{ 1001, "Boost", true };
-    my_app::outer oo{c};
-std::cout << serialize( boost::json::value_from( oo ) );
 
-    /*std::vector<Point> _points;
+    /*std::vector<Point> points;
+    ImVec4  color1(0.3,0.4,0.2,0.5);
+    ImVec4  color2(0.3,0.4,0.2,0.5);
+    Eigen::Vector2f position1(30,30);
+    Eigen::Vector2f position2(34,34);
+    Point point1(color1,color2,position1,30,30);
+    Point point2(color1,color2,position1,30,30);
+    points.push_back(point1);
+    points.push_back(point2);
+    outerclass oo(points);
+     */
+//oo.cc.push_back(point1);
+//oo.cc.push_back(point2);
+//std::cout << serialize( boost::json::value_from( oo ) );
+/*
+    std::vector<Point> _points;
     ImVec4  color1(0.3,0.4,0.2,0.5);
     ImVec4  color2(0.3,0.4,0.2,0.5);
     Eigen::Vector2f position1(30,30);
     Eigen::Vector2f position2(34,34);
     Eigen::Vector2f position3(39,39);
     Point point1(color1,color2,position1,30,30);
-    _points.emplace_back(color1,color2,position1,30,30);
-    _points.emplace_back(color1,color2,position2,30,30);
-    _points.emplace_back(color1,color2,position3,30,30);
+    Point point2(color1,color2,position1,30,30);
+    Point point3(color1,color2,position1,30,30);
+    _points.push_back(point1);
+    _points.push_back(point2);
+    _points.push_back(point3);
     Curve testCurve(_points);
-    std::cout << boost::json::serialize( boost::json::value_from( point1 ) );
-    std::cout << boost::json::serialize( boost::json::value_from( testCurve ) );
-     */
+    //testCurve._controlPoints.push_back(point1);
+    //testCurve._controlPoints.push_back(point2);
+    //testCurve._controlPoints.push_back(point3);
+    std::cout<<testCurve._controlPoints.size();
+    std::cout << boost::json::serialize( boost::json::value_from( point1 ) )<<std::endl;
+    std::cout << boost::json::serialize( boost::json::value_from(testCurve._controlPoints) );
+    std::cout << boost::json::serialize( boost::json::value_from(testCurve) );
+    */
     /*
     Canvas testCanvas=Canvas();
     testCanvas.setSize(900);
@@ -116,8 +105,8 @@ std::cout << serialize( boost::json::value_from( oo ) );
     //Eigen::setNbThreads(2);
     //int n = Eigen::nbThreads( );
     //std::cout<< n;
-    //App::initialize(WINDOW_SIZE, WINDOW_SIZE, "Intuitive Colouring");
-    //return App::run();
+    App::initialize(WINDOW_SIZE, WINDOW_SIZE, "Intuitive Colouring");
+    return App::run();
     return 1;
 }
 

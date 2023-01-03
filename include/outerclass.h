@@ -1,27 +1,50 @@
 //
-// Created by Zhang Zhuyan on 27/12/22.
+// Created by Zhang Zhuyan on 28/12/22.
 //
 
+#ifndef FYP_OUTERCLASS_H
+#define FYP_OUTERCLASS_H
 
-//
-// Created by Zhang Zhuyan on 4/12/22.
-//
-
-#include <iostream>
+#include <string>
 #include <vector>
-
-#if defined(__APPLE__)
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#else
-#include <GL/gl.h>
-#include <GL/glu.h>
-#endif
-
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl2.h"
 #include "Point.h"
+#include "Canvas.h"
 #include "VisualPoint.h"
-#include "Curve.h"
-    Point Curve::deCasteljau(const float t, std::vector<Point>& points)
+class outerclass {
+public:
+
+    bool _toRenew;
+    unsigned int _degree;
+    float _step;
+    std::vector<Point> _controlPoints;
+    std::vector<Point> _interpolants;    // old way, for debugging purpose
+    std::vector<int> knotVector;
+    std::vector<Point> _gradientControlPoints;
+    std::vector<Point> _centerPoints;
+    std::vector<Point> _centerGradientPoints;
+    std::vector<VisualPoint> _normalUp;   //
+    std::vector<VisualPoint> _normalDown;
+    std::vector<Point> _boundaryPoints;
+    std::vector<VisualPoint> _startingBoundaryVisualControlPoints;  // 3
+    std::vector<VisualPoint> _startingBoundaryVisualPoints;  // 3
+    std::vector<VisualPoint> _endingBoundaryVisualControlPoints;  // 3
+    std::vector<VisualPoint> _endingBoundaryVisualPoints;  // 3
+    float _thickness;
+    bool _straightLine;
+    bool _visibleControlPoint;
+
+
+    outerclass(){};
+    outerclass(std::vector<Point> controlPoints)
+            : _toRenew(true),
+              _degree(controlPoints.size()-1),
+              _step(0.01f),
+              _controlPoints(std::move(controlPoints)),_thickness(1),_straightLine(true),_visibleControlPoint(true) {
+    }
+    Point deCasteljau(const float t, std::vector<Point>& points)
     {
         if (points.size()==1) return points[0];
 
@@ -38,22 +61,10 @@
         //std::cout<<"DeCasterjau"<<std::endl;
 
         return deCasteljau(t,points);
-    }
-    Curve::Curve(const std::vector<Point>& controlPoints)
-            : Curve(controlPoints,controlPoints.size() - 1) {
-    }
-    Curve::Curve(const std::vector<Point>& controlPoints,int degree)
-            : _toRenew(true),
-              _degree(degree),
-              _step(0.01f),
-              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true) {
+    };
 
-        for (int i=0;i<_controlPoints.size();i++)
-        {
-            _controlPoints[i].setCallBack(std::bind(&Curve::generate, this));
-        }
-    }
-    void Curve::drawControlPoints()
+
+    void drawControlPoints()
     {
         glColor3f(1.0f, 0.0f, 0.0f);
         for (int i=0;i<_controlPoints.size();i++) {
@@ -61,7 +72,7 @@
         }
     }
 
-    void Curve::cleanDeletedPoints()
+    void cleanDeletedPoints()
     {
         if (_controlPoints.size()>3)
         {
@@ -82,20 +93,15 @@
 
 
 
-    const Point Curve::interpolate(const float t)
+    const Point interpolate(const float t)
     {
 
         std::vector<Point> controlPointCopy(_controlPoints);
         return deCasteljau(t,controlPointCopy);
     }
 
-    void Curve::setCallBack(some_void_function_type f)
-    {
-        f_ = f;
-    }
 
-
-    void Curve::generateInterpolants()
+    void generateInterpolants()
     {
         this->_interpolants.clear();
 
@@ -105,7 +111,7 @@
         this->_interpolants.push_back(interpolate(1.0f));
     }
 
-    void Curve::generate()
+    void generate()
     {
         // generateInterpolants();
         generateKnotVector();
@@ -120,7 +126,7 @@
 
     }
 
-    void Curve::checkMouseSelection(float xpos, float ypos)
+    void checkMouseSelection(float xpos, float ypos)
     {
         for (auto &p: _controlPoints) {   // important here , otherwise, it is a copy, not a reference
             // std::cout<<"drawing"<<std::endl;
@@ -128,7 +134,7 @@
         }
     }
 
-    void Curve::updatePosition(float xpos, float ypos)
+    void updatePosition(float xpos, float ypos)
     {
         for (auto &p: _controlPoints) {   // important here , otherwise, it is a copy, not a reference
             // std::cout<<"drawing"<<std::endl;
@@ -136,7 +142,7 @@
         }
         _toRenew=true;
     }
-    void Curve::generateStartingBoundary()
+    void generateStartingBoundary()
     {
         _startingBoundaryVisualControlPoints.clear();
         _startingBoundaryVisualControlPoints.push_back(_normalUp.front());
@@ -158,7 +164,7 @@
 
     }
 
-    void Curve::generateEndingBoundary()
+    void generateEndingBoundary()
     {
         _endingBoundaryVisualControlPoints.clear();
         _endingBoundaryVisualControlPoints.push_back(_normalUp.back());
@@ -181,7 +187,7 @@
 
     }
 
-    VisualPoint Curve::deBoorClosing(std::vector<VisualPoint>& controlPoints,int r, int i, float u)
+    VisualPoint deBoorClosing(std::vector<VisualPoint>& controlPoints,int r, int i, float u)
     {
         //r is degree, i is no of control points,
 
@@ -199,7 +205,7 @@
     }
 
 
-    void Curve::generateNormal()
+    void generateNormal()
     {
         _normalUp.clear();
         _normalDown.clear();
@@ -215,7 +221,7 @@
     }
 
 
-    void Curve::draw() {
+    void draw() {
         cleanDeletedPoints();
         if (_visibleControlPoint) drawControlPoints();
         if (_toRenew) {
@@ -226,7 +232,7 @@
         drawBoundary();
         drawEndBoundary();
     }
-    void Curve::drawEndBoundary()
+    void drawEndBoundary()
     {
         //std::cout<<"size of _endingBoundaryVisualPoint is "<<_endingBoundaryVisualPoints.size();
         for(int i=0;i< _endingBoundaryVisualPoints.size()-1;i++) {
@@ -250,7 +256,7 @@
 
     }
 
-    void Curve::drawSkeleton()
+    void drawSkeleton()
     {
         // draw skeleton, the center extrapolated thin line
         for(int i=0;i< _centerPoints.size()-1;i++)
@@ -263,7 +269,7 @@
 
     }
 
-    void Curve::drawBoundary()
+    void drawBoundary()
     {
         for(int i=0;i< _normalUp.size()-1;i++)
         {
@@ -286,7 +292,7 @@
 
         // std::cout<<"draw boundary,_normalUp.size()"<<_normalUp.size()<<std::endl;
     }
-    void Curve::generateKnotVector()
+    void generateKnotVector()
     {
         //  needs to be tested
         knotVector.clear();
@@ -299,7 +305,7 @@
             else knotVector.push_back(index);
         }
     }
-    void Curve::generateGradientControlPoint()
+    void generateGradientControlPoint()
     {
         _gradientControlPoints.clear();
         for (int i = 0; i < _controlPoints.size() - 1; i++)
@@ -311,7 +317,7 @@
 
     // https://en.wikipedia.org/wiki/De_Boor%27s_algorithm
     // maybe can be optimized
-    Point Curve::deBoor(int r, int i, float t)  // r=degree i is number of control points
+    Point deBoor(int r, int i, float t)  // r=degree i is number of control points
     {
 
         if (r == 0)
@@ -328,7 +334,7 @@
 
 
 
-    Point Curve::gradientDeboor(int p, int i, float t)
+    Point gradientDeboor(int p, int i, float t)
     {
         if (p == 0)
         {
@@ -341,7 +347,7 @@
 
         }
     }
-    void Curve::generateCenterPoint() {
+    void generateCenterPoint() {
         _centerPoints.clear();
         _centerGradientPoints.clear();
         for (float i = 0.0f; i < knotVector[_degree + _controlPoints.size()]; i += 0.01f / _controlPoints.size()) {
@@ -355,7 +361,7 @@
             }
         }
     }
-    void Curve::showCruveproperty(const char* prefix, int uid)
+    void showCruveproperty(const char* prefix, int uid)
     {
         ImGui::PushID(uid);
 
@@ -390,7 +396,7 @@
                 ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
                 ImGui::PopStyleVar();
 
-                if (ImGui::Button("OK", ImVec2(120, 0))) { std::cout << serialize( boost::json::value_from( *this ) );ImGui::CloseCurrentPopup(); }
+                if (ImGui::Button("OK", ImVec2(120, 0))) {ImGui::CloseCurrentPopup(); }
                 ImGui::SetItemDefaultFocus();
                 ImGui::SameLine();
                 if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
@@ -425,7 +431,7 @@
 
     }
 
-    void Curve::drawCurve()
+    void drawCurve()
     {
         if (_toRenew) {
             _toRenew = false;
@@ -462,11 +468,13 @@
     }
 
 
-void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Curve const& c )
-{
-    jv ={"position",boost::json::value_from( c._controlPoints )};
+    friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, outerclass const& c )
+    {
+        jv ={
+                {"points",c._controlPoints }};
 
-}
+    }
 
+};
 
-
+#endif //FYP_OUTERCLASS_H

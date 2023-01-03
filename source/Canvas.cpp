@@ -57,7 +57,7 @@ Canvas::~Canvas()
     clear();
 }
 
-void Canvas::addCurve(Curve&& curve) {
+void Canvas::addCurve(outerclass curve) {
      // area for improvement
     _curves.push_back(curve);
     //curve->setCallBack(std::bind(&Canvas::generate, this));
@@ -66,7 +66,7 @@ void Canvas::addCurve(Curve&& curve) {
 }
 void Canvas::save2()
 {
-    std::cout<<" save this message"<<std::endl;
+    std::cout<<" save this message"<<""<<serialize( boost::json::value_from( _curves[0] ) )<<std::endl;
 }
 
 void Canvas::save()

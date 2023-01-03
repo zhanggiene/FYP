@@ -340,11 +340,7 @@
     void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Point const& p )
 {
     jv = {
-            { "position" , {int(p.position.x()),int(p.position.y())}},
-            {"color1",{p.color1.x,p.color1.y,p.color1.z}},
-            {"color2",{p.color2.x,p.color2.y,p.color2.z}},
-            {"radius1",p.radius1},
-            {"radius2",p.radius2},
+            { "position" , {int(p.position.x()),int(p.position.y())}}
     };
 }
 

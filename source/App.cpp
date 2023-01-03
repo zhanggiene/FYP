@@ -309,8 +309,9 @@ void App::HelpMarker(const char* desc)
 void App::addCurve() {
     if (!_points.empty())
     {
-        _canvas.addCurve(Curve(_points));  // move semantic
-        _points.clear();
+        outerclass temp(_points);
+        _canvas.addCurve(temp);  // move semantic
+        // _points.clear();
     }
 }
 void App::deleteLastPoint() {
