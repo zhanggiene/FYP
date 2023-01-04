@@ -42,7 +42,7 @@ public:
             : _toRenew(true),
               _degree(controlPoints.size()-1),
               _step(0.01f),
-              _controlPoints(std::move(controlPoints)),_thickness(1),_straightLine(true),_visibleControlPoint(true) {
+              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true) {
     }
     Point deCasteljau(const float t, std::vector<Point>& points)
     {
@@ -474,6 +474,20 @@ public:
                 {"points",c._controlPoints }};
 
     }
+
+    template<class T>
+    void extract( boost::json::object const& obj, T& t, std::string_view key )
+    {
+        t = boost::json::value_to<T>( obj.at( key ) );
+    }
+
+    friend outerclass tag_invoke( boost::json::value_to_tag< outerclass >, boost::json::value const& jv )
+    {
+        boost::json::object const& obj = jv.as_object();
+        return outerclass (
+                boost::json::value_to< std::vector< Point > >( obj.at( "points" ) ));
+    }
+
 
 };
 

@@ -69,7 +69,7 @@ void Canvas::save()
     testmessage="test123";
     lTheSaveFileName = tinyfd_saveFileDialog(
             "let us save this password",
-            "curve1.json",
+            "curve1.txt",
             1,
             lFilterPatterns,
             NULL);
@@ -83,9 +83,50 @@ void Canvas::save()
                 "error",
                 1);
     }
-    fputs(serialize( boost::json::value_from(*this )).c_str(), lIn);
+    fputs(serialize( boost::json::value_from(_curves )).c_str(), lIn);
     fclose(lIn);
     std::cout<<" save this message"<<"";
+}
+
+void Canvas::loadJson()
+{
+    lTheOpenFileName = tinyfd_openFileDialog(
+		"load control points",
+		"",
+		1,
+		lFilterPatterns,
+		NULL,
+		0);
+    if (! lTheOpenFileName)
+    {
+        tinyfd_messageBox(
+                "Error",
+                "Open file name is NULL",
+                "ok",
+                "error",
+                1);
+        return ;
+    }
+
+    lIn = fopen(lTheOpenFileName, "r");
+
+    if (!lIn)
+    {
+        tinyfd_messageBox(
+                "Error",
+                "Can not open this file in read mode",
+                "ok",
+                "error",
+                1);
+        return ;
+    }
+    lBuffer[0] = '\0';
+    fgets(lBuffer, sizeof(lBuffer), lIn);
+    std::cout<<lBuffer;
+    fclose(lIn);
+    boost::json::value jv = boost::json::parse( lBuffer );
+    _curves=boost::json::value_to< std::vector< outerclass > >( jv );
+
 }
 
 
@@ -129,7 +170,7 @@ void Canvas::ShowAppMainMenuBar()
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+            if (ImGui::MenuItem("Open", "Ctrl+O")) { loadJson();}
             if (ImGui::MenuItem("save")) {save();}
 
             ImGui::EndMenu();

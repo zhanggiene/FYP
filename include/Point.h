@@ -40,6 +40,8 @@ public:
 
     Point(ImVec4 color1_,ImVec4 color2_,float x_,float y_,float r1_,float r2_);
     Point(ImVec4 color1_,ImVec4 color2_,Eigen::Vector2f position_,float r1_,float r2_);
+    Point(float color1_x,float color1_y, float color1_z,float color2_x,float color2_y, float color2_z,float x_,float y_,float r1_,float r2_);
+
 
     void setCallBack(some_void_function_type f);
 
@@ -77,6 +79,10 @@ public:
 
     friend std::ostream &operator<<(std::ostream &os, const Point &p);
     friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Point const& p );
+    template<class T>
+    void extract( boost::json::object const& obj, T& t, std::string_view key );
+    friend Point tag_invoke( boost::json::value_to_tag< Point >, boost::json::value const& jv );
+
 };
 
 

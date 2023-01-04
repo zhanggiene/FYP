@@ -14,6 +14,13 @@
             color1(color1_), color2(color2_) ,position(position_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
     }
+Point::Point(float color1_x,float color1_y, float color1_z,float color2_x,float color2_y, float color2_z,float x_,float y_,float r1_,float r2_):
+color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
+{
+
+}
+
+
 
     void Point::setCallBack(some_void_function_type f)
     {
@@ -340,8 +347,41 @@
     void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Point const& p )
 {
     jv = {
-            { "position" , {int(p.position.x()),int(p.position.y())}}
+            { "position_x" , int(p.position.x())},
+              { "position_y" , int(p.position.y())},
+            {"color1_x",p.color1.x},
+             {"color1_y",p.color1.y},
+              {"color1_z",p.color1.z},
+               {"color2_x",p.color2.x},
+                {"color2_y",p.color2.y},
+                 {"color2_z",p.color2.z},
+            {"radius1",p.radius1},
+            {"radius2",p.radius2}
+
+
     };
+}
+
+ Point tag_invoke( boost::json::value_to_tag< Point >, boost::json::value const& jv )
+{
+    boost::json::object const& obj = jv.as_object();
+    return Point {
+            boost::json::value_to<float>( obj.at( "color1_x" ) ),
+            boost::json::value_to<float>( obj.at( "color1_y" ) ),
+            boost::json::value_to<float>( obj.at( "color1_z" ) ),
+            boost::json::value_to<float>( obj.at( "color2_x" ) ),
+            boost::json::value_to<float>( obj.at( "color2_y" ) ),
+            boost::json::value_to<float>( obj.at( "color2_z" ) ),
+            boost::json::value_to<float>( obj.at( "position_x" )),
+            boost::json::value_to<float>( obj.at( "position_y" ) ),
+            boost::json::value_to<float>( obj.at( "radius1" ) ),
+            boost::json::value_to<float>( obj.at( "radius2" ) )
+    };
+}
+template<class T>
+void Point::extract( boost::json::object const& obj, T& t, std::string_view key )
+{
+    t = boost::json::value_to<T>( obj.at( key ) );
 }
 
 

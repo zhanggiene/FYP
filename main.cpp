@@ -10,7 +10,9 @@
 
 int main(int argc, char *argv[])
 {
-
+    //boost::json::value jv = boost::json::parse( "{\"position_x\":75,\"position_y\":188,\"color1_x\":3.0000001192092896E-1,\"color1_y\":4.000000059604645E-1,\"color1_z\":2.0000000298023224E-1,\"color2_x\":3.0000001192092896E-1,\"color2_y\":0E0,\"color2_z\":4.000000059604645E-1,\"radius1\":5E0,\"radius2\":1E1}" );
+    //Point c( boost::json::value_to<Point>(jv) );
+    //std::cout<<c;
     /*std::vector<Point> points;
     ImVec4  color1(0.3,0.4,0.2,0.5);
     ImVec4  color2(0.3,0.4,0.2,0.5);

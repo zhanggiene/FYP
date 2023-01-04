@@ -62,5 +62,7 @@ public:
     void save();
     FILE * lIn;
     std::string testmessage;
+    void loadJson();
+    char lBuffer[1024];
 };
 #endif //FYP_CANVAS_H
