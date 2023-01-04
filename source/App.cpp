@@ -224,8 +224,7 @@ void App::keyboard_press_callback(GLFWwindow *window,int key, int scancode, int 
             _canvas.setdisplayMode(false);
             editMode=false;
         }
-
-        // std::cout<<"edit mode is "<<editMode;
+        std::cout<<"edit mode is "<<editMode;
     }
     else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
         {
@@ -245,7 +244,7 @@ void App::cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
             // std::cout<<"drawing"<<std::endl;
             p.checkMouseSelection(xpos, ypos);
         }
-    _canvas.checkMouseSelection(xpos,ypos);
+    _canvas.checkMouseSelection(xpos,ypos);   // check for points that is already part of the curve
         if (editMode && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
             {
                 for (auto &p: _points) {   // important here , otherwise, it is a copy, not a reference
