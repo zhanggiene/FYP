@@ -24,10 +24,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="save and load done">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="change layout of directory">
+      <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Point.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Point.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/outerclass.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/outerclass.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/App.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/App.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/Canvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Canvas.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/Point.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Point.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +49,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="10391348062eea1cb4d512a791d16d9cb123ce96" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -90,6 +98,11 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.fyp">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="cpptest" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />

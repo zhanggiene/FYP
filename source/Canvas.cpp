@@ -57,9 +57,10 @@ Canvas::~Canvas()
     clear();
 }
 
-void Canvas::addCurve(outerclass curve) {
+void Canvas::addCurve(outerclass&& curve) {
      // area for improvement
-    _curves.push_back(curve);
+     //curve._controlPoints[0].f_();
+    //_curves.push_back(std::forward(curve));
     //curve->setCallBack(std::bind(&Canvas::generate, this));
 
 
@@ -439,7 +440,7 @@ void Canvas::addVisualPoint(const VisualPoint &p_) {
 }
 void Canvas::drawToImage()
 {
-    for (auto curve : _curves)
+    for (auto &curve : _curves)
     {
         for (int i=0; i<curve._normalUp.size();i++)
         {

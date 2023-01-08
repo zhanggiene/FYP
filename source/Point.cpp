@@ -25,6 +25,7 @@ color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),positi
     void Point::setCallBack(some_void_function_type f)
     {
         f_ = f;
+
     }
 
     // Copy constructor
@@ -37,8 +38,6 @@ color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),positi
         radius1=p1.radius1;
         radius2=p1.radius2;
         isDeleted=false;
-
-
     }
 
     void Point::showCruveproperty(const char* prefix, int uid)
@@ -117,14 +116,17 @@ color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),positi
 
     }
 
-    Point::Point (Point&& other)
+    // move constructor
+    Point::Point (Point&& other) noexcept
     {
+    std::cout<<"point move_______constructor";
         color1=std::move(other.color1);
         color2=std::move(other.color2);
         position=std::move(other.position);
         radius1=other.radius1;
         radius2=other.radius2;
         isDeleted=false;
+        //f_=other.f_;
 
     }
 
@@ -210,6 +212,19 @@ color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),positi
         isDeleted=false;
         return *this;
     }
+Point& Point::operator=(Point&& other)
+{
+    if (this == &other)
+        return *this;
+    std::cout<<"point move assignment is used";
+    color1=other.color1;
+    color2=other.color2;
+    position=other.position;
+    radius1=other.radius1;
+    radius2=other.radius2;
+    isDeleted=false;
+    return *this;
+}
 
     Point Point::operator+(const Point &p) const
     {

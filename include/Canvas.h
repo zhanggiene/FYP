@@ -37,7 +37,7 @@ public:
     void setSize(unsigned  int size);
     void clear();
     void draw();
-    void addCurve(outerclass curve);
+    void addCurve(outerclass&& curve);
     void addVisualPoint(const VisualPoint& p_);
     void addVisualPointXY(int x, int y,const ImVec4& color);
     void drawToImage(); // make the upper and lower boundary into 2 layers.

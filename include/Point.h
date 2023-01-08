@@ -22,10 +22,10 @@
 #define POINT_SIZE 10
 class Point
 {
-private:
+public:
     typedef std::function<void()> some_void_function_type;
     some_void_function_type f_;
-public:
+
     ImVec4 color1;
     ImVec4 color2;
     Eigen::Vector2f position;
@@ -50,7 +50,7 @@ public:
 
     void showCruveproperty(const char* prefix, int uid);
 
-    Point (Point&& other);
+    Point (Point&& other) noexcept;
     void checkMouseSelection(float x,float y,bool rightClickFlag=false);
 
     void updatePosition(float x,float y);
@@ -61,6 +61,7 @@ public:
     void drawCircle(float cx, float cy, int num_segments=100,int lineWidth=10,float radius=r,float r_c=0,float g=1,float b=0) ;
 
     Point& operator=(const Point& other);
+    Point& operator=(Point&& other);
 
     Point operator+(const Point &p) const;
 

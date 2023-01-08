@@ -43,6 +43,61 @@ public:
               _degree(controlPoints.size()-1),
               _step(0.01f),
               _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true) {
+
+
+        std::cout<< "construct curves";
+        for(int i=0;i<_controlPoints.size();i++)
+        {
+            _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
+            //_controlPoints[i].setCallBack([](){std::cout<<"hi";});
+        }
+
+
+    }
+    // Move assignment
+    outerclass& operator=(outerclass&& other) noexcept
+    {
+        std::cout<<"outer class move assignment";
+        _controlPoints=std::move(other._controlPoints);
+        knotVector=std::move(other.knotVector);
+        return *this;
+    }
+
+    outerclass (outerclass&& other) noexcept: _toRenew(true),_step(0.01f),_thickness(1),_straightLine(true),_visibleControlPoint(true)
+    {
+        std::cout<<"outer class move constructor";
+        //_controlPoints.reserve(other._controlPoints.size());
+        //std::move(other._controlPoints.begin(), std::next(other._controlPoints.begin(), other._controlPoints.size()),std::back_inserter(_controlPoints));
+        _controlPoints=std::move(other._controlPoints); // ????
+        for(int i=0;i<_controlPoints.size();i++)
+        {
+            _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
+        }
+        _degree=_controlPoints.size()-1,
+        knotVector=std::move(other.knotVector);
+        _gradientControlPoints=std::move(other._gradientControlPoints);
+                _centerPoints=std::move(other._centerPoints);
+        _centerGradientPoints=std::move(other._centerGradientPoints);
+        _normalUp=std::move(other._normalUp);   //
+        _normalDown=std::move(other._normalDown);
+         _boundaryPoints=std::move(other._boundaryPoints);
+         _startingBoundaryVisualControlPoints=std::move(other._startingBoundaryVisualControlPoints);  // 3
+        _startingBoundaryVisualPoints=std::move(other._startingBoundaryVisualPoints);  // 3
+         _endingBoundaryVisualControlPoints=std::move(other._endingBoundaryVisualControlPoints);  // 3
+         _endingBoundaryVisualPoints=std::move(other._endingBoundaryVisualPoints);  // 3
+        _thickness=other._thickness;
+        _straightLine=other._straightLine;
+        _visibleControlPoint=other._visibleControlPoint;
+
+    }
+
+    // copy assignment
+    outerclass& operator=(const outerclass& other)
+    {
+        _controlPoints=other._controlPoints;
+        knotVector=other.knotVector;
+        return *this;
+
     }
     Point deCasteljau(const float t, std::vector<Point>& points)
     {
@@ -111,6 +166,12 @@ public:
         this->_interpolants.push_back(interpolate(1.0f));
     }
 
+    void generate2()
+    {
+        std::cout<<"size of control "<<_controlPoints.size()<<std::endl;
+
+
+    }
     void generate()
     {
         // generateInterpolants();
@@ -223,12 +284,13 @@ public:
 
     void draw() {
         cleanDeletedPoints();
-        if (_visibleControlPoint) drawControlPoints();
+
         if (_toRenew) {
             _toRenew = false;
             generate();
         }
-        drawSkeleton();
+        if (_visibleControlPoint) {drawControlPoints();
+            drawSkeleton();}
         drawBoundary();
         drawEndBoundary();
     }

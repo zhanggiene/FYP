@@ -60,7 +60,7 @@ void App::draw( GLuint texture) {
         _canvas.displayFinalImage();
     }
 
-        _canvas.draw();
+    _canvas.draw();
     for (int i=0; i<_points.size();i++) {
         _points[i].draw();
     }
@@ -310,7 +310,10 @@ void App::addCurve() {
         {
          std::vector<Point > temp_points=_points;  // make a copy
         outerclass temp(temp_points);
-        _canvas.addCurve(temp);  // move semantic
+        temp._controlPoints[0].f_();
+        std::cout<<"start to move the outer class";
+        _canvas._curves.push_back(std::move(temp));  // move semantic
+        _canvas._curves[0]._controlPoints[0].f_();
         _points.clear();
     }
 }
