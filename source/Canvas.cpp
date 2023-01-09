@@ -126,7 +126,7 @@ void Canvas::loadJson()
     fclose(lIn);
     boost::json::value jv = boost::json::parse( lBuffer );
     _curves=boost::json::value_to< std::vector< outerclass > >( jv );
-
+    addcallBack();
 }
 
 void Canvas::addcallBack()

@@ -24,15 +24,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="avoid points in curve merging together">
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="deleted curves done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Point.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Point.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/outerclass.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/outerclass.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/App.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/App.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/Canvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Canvas.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/Point.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Point.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,7 +199,7 @@
       <workItem from="1673185511470" duration="2826000" />
       <workItem from="1673228503052" duration="1084000" />
       <workItem from="1673235941993" duration="2587000" />
-      <workItem from="1673251432482" duration="10000" />
+      <workItem from="1673251432482" duration="1056000" />
     </task>
     <task id="LOCAL-00001" summary="basic bazier curve done">
       <created>1670145198085</created>
@@ -311,7 +306,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673225482330</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="deleted curves done">
+      <created>1673251891035</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1673251891035</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -345,6 +347,7 @@
     <MESSAGE value="primary save done" />
     <MESSAGE value="save and load done" />
     <MESSAGE value="avoid points in curve merging together" />
-    <option name="LAST_COMMIT_MESSAGE" value="avoid points in curve merging together" />
+    <MESSAGE value="deleted curves done" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleted curves done" />
   </component>
 </project>

@@ -62,11 +62,9 @@ public:
     // used when we erase curve
     outerclass& operator=(outerclass&& other) noexcept
     {
-        std::cout<<"outer class move assignement";
         //_controlPoints.reserve(other._controlPoints.size());
         //std::move(other._controlPoints.begin(), std::next(other._controlPoints.begin(), other._controlPoints.size()),std::back_inserter(_controlPoints));
         _controlPoints=std::move(other._controlPoints); // ????
-        std::cout<<"outer class move assignement 0";
         for(int i=0;i<_controlPoints.size();i++)
         {
             _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
@@ -77,7 +75,6 @@ public:
             _controlPoints[i].setCleanCallBack(std::bind(&outerclass::cleanDeletedPoints, this));
         }
 
-        std::cout<<"outer class move assignement 1";
         _degree=_controlPoints.size()-1,
                 knotVector=std::move(other.knotVector);
         _gradientControlPoints=std::move(other._gradientControlPoints);
@@ -85,26 +82,23 @@ public:
         _centerGradientPoints=std::move(other._centerGradientPoints);
         _normalUp=std::move(other._normalUp);   //
         _normalDown=std::move(other._normalDown);
-        std::cout<<"outer class move assignement 2";
         _boundaryPoints=std::move(other._boundaryPoints);
         _startingBoundaryVisualControlPoints=std::move(other._startingBoundaryVisualControlPoints);  // 3
         _startingBoundaryVisualPoints=std::move(other._startingBoundaryVisualPoints);  // 3
         _endingBoundaryVisualControlPoints=std::move(other._endingBoundaryVisualControlPoints);  // 3
         _endingBoundaryVisualPoints=std::move(other._endingBoundaryVisualPoints);  // 3
         _thickness=other._thickness;
-        std::cout<<"outer class move assignement 3";
         _straightLine=other._straightLine;
         _visibleControlPoint=other._visibleControlPoint;
         _lock=other._lock;
         _isDeleted=other._isDeleted;
         cleandeleted_=other.cleandeleted_;
-        std::cout<<"outer class move assignement 4";
         return *this;
     }
 
     outerclass (outerclass&& other) noexcept: _toRenew(true),_step(0.01f),_thickness(1),_straightLine(true),_visibleControlPoint(true)
     {
-        std::cout<<"outer class move constructor";
+        //std::cout<<"outer class move constructor";
         //_controlPoints.reserve(other._controlPoints.size());
         //std::move(other._controlPoints.begin(), std::next(other._controlPoints.begin(), other._controlPoints.size()),std::back_inserter(_controlPoints));
         _controlPoints=std::move(other._controlPoints); // ????
