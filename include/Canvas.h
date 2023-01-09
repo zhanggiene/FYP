@@ -62,7 +62,7 @@ public:
     void save();
     FILE * lIn;
     void loadJson();
-    char lBuffer[4028];
+    char lBuffer[1024];
     void cleanDeletedCurve();
     void addcallBack();
 };

@@ -121,12 +121,17 @@ void Canvas::loadJson()
                 1);
         return ;
     }
-    lBuffer[0] = '\0';
-    fgets(lBuffer, sizeof(lBuffer), lIn);
-    std::cout<<lBuffer;
+    //lBuffer[0] = '\0';
+    //boost::json::value jv = boost::json::parse( lBuffer );
+    boost::json::stream_parser p;
+    while(fgets(lBuffer,  sizeof(lBuffer), lIn) != NULL)
+    {
+        /* Do stuff. */
+        p.write(lBuffer);
+    }
+    p.finish();
     fclose(lIn);
-    boost::json::value jv = boost::json::parse( lBuffer );
-    _curves=boost::json::value_to< std::vector< outerclass > >( jv );
+    _curves=boost::json::value_to< std::vector< outerclass > >( p.release() );
     addcallBack();
 }
 
