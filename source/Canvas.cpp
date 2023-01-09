@@ -67,7 +67,6 @@ void Canvas::addCurve(outerclass&& curve) {
 }
 void Canvas::save()
 {
-    testmessage="test123";
     lTheSaveFileName = tinyfd_saveFileDialog(
             "let us save this password",
             "curve1.txt",
@@ -128,6 +127,15 @@ void Canvas::loadJson()
     boost::json::value jv = boost::json::parse( lBuffer );
     _curves=boost::json::value_to< std::vector< outerclass > >( jv );
 
+}
+
+void Canvas::addcallBack()
+{
+    for(int i=0;i<_curves.size();i++)
+    {
+        _curves[i].setCleanCallBack(std::bind(&Canvas::cleanDeletedCurve, this));
+        //_controlPoints[i].setCallBack([](){std::cout<<"hi";});
+    }
 }
 
 
@@ -438,6 +446,14 @@ void Canvas::addVisualPoint(const VisualPoint &p_) {
     Mask(int(p_.position.x())*size_+int(p_.position.y()))=true;
     counter+=1;
 }
+
+void Canvas::cleanDeletedCurve()
+{
+
+    _curves.erase(std::remove_if(_curves.begin(), _curves.end(), [](const outerclass &h) { return h._isDeleted; }), _curves.end());
+        // erase is not working, as the curve number is
+
+    }
 void Canvas::drawToImage()
 {
     for (auto &curve : _curves)

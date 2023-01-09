@@ -24,7 +24,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="change layout of directory">
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="avoid points in curve merging together">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Point.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Point.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/outerclass.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/outerclass.h" afterDir="false" />
@@ -98,11 +100,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.fyp">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="cpptest" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -204,6 +201,10 @@
       <workItem from="1672234248295" duration="6320000" />
       <workItem from="1672708783116" duration="1987000" />
       <workItem from="1672831802926" duration="8542000" />
+      <workItem from="1673185511470" duration="2826000" />
+      <workItem from="1673228503052" duration="1084000" />
+      <workItem from="1673235941993" duration="2587000" />
+      <workItem from="1673251432482" duration="10000" />
     </task>
     <task id="LOCAL-00001" summary="basic bazier curve done">
       <created>1670145198085</created>
@@ -303,7 +304,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672841321041</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="avoid points in curve merging together">
+      <created>1673225482330</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1673225482330</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -336,6 +344,7 @@
     <MESSAGE value="add cpp and hpp" />
     <MESSAGE value="primary save done" />
     <MESSAGE value="save and load done" />
-    <option name="LAST_COMMIT_MESSAGE" value="save and load done" />
+    <MESSAGE value="avoid points in curve merging together" />
+    <option name="LAST_COMMIT_MESSAGE" value="avoid points in curve merging together" />
   </component>
 </project>

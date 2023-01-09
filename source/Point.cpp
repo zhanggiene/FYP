@@ -27,6 +27,11 @@ color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),positi
         f_ = f;
 
     }
+void Point::setCleanCallBack(some_void_function_type f)
+{
+    cleandeleted_ = f;
+
+}
 
     // Copy constructor
     Point::Point(const Point& p1)
@@ -75,7 +80,7 @@ color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),positi
                 ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
                 ImGui::PopStyleVar();
 
-                if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup();isDeleted=true; }
+                if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup();isDeleted=true; cleandeleted_(); }
                 ImGui::SetItemDefaultFocus();
                 ImGui::SameLine();
                 if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
@@ -119,7 +124,6 @@ color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),positi
     // move constructor
     Point::Point (Point&& other) noexcept
     {
-    std::cout<<"point move_______constructor";
         color1=std::move(other.color1);
         color2=std::move(other.color2);
         position=std::move(other.position);

@@ -61,8 +61,9 @@ public:
 	char const * lTheOpenFileName;
     void save();
     FILE * lIn;
-    std::string testmessage;
     void loadJson();
-    char lBuffer[1024];
+    char lBuffer[4028];
+    void cleanDeletedCurve();
+    void addcallBack();
 };
 #endif //FYP_CANVAS_H

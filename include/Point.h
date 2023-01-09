@@ -25,6 +25,7 @@ class Point
 public:
     typedef std::function<void()> some_void_function_type;
     some_void_function_type f_;
+    some_void_function_type cleandeleted_;
 
     ImVec4 color1;
     ImVec4 color2;
@@ -44,6 +45,7 @@ public:
 
 
     void setCallBack(some_void_function_type f);
+    void setCleanCallBack(some_void_function_type f);
 
     // Copy constructor
     Point(const Point& p1);

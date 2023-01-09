@@ -313,7 +313,7 @@ void App::addCurve() {
         temp._controlPoints[0].f_();
         std::cout<<"start to move the outer class";
         _canvas._curves.push_back(std::move(temp));  // move semantic
-        _canvas._curves[0]._controlPoints[0].f_();
+        _canvas.addcallBack();
         _points.clear();
     }
 }

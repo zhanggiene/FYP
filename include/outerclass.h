@@ -19,6 +19,8 @@ public:
     bool _toRenew;
     unsigned int _degree;
     float _step;
+    typedef std::function<void()> some_void_function_type;
+    some_void_function_type cleandeleted_;
     std::vector<Point> _controlPoints;
     std::vector<Point> _interpolants;    // old way, for debugging purpose
     std::vector<int> knotVector;
@@ -35,6 +37,8 @@ public:
     float _thickness;
     bool _straightLine;
     bool _visibleControlPoint;
+    bool _lock;
+    bool _isDeleted;
 
 
     outerclass(){};
@@ -42,24 +46,59 @@ public:
             : _toRenew(true),
               _degree(controlPoints.size()-1),
               _step(0.01f),
-              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true) {
+              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true),_lock(false),_isDeleted(false) {
 
 
         std::cout<< "construct curves";
         for(int i=0;i<_controlPoints.size();i++)
         {
             _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
+            _controlPoints[i].setCleanCallBack(std::bind(&outerclass::cleanDeletedPoints, this));
             //_controlPoints[i].setCallBack([](){std::cout<<"hi";});
         }
 
-
     }
     // Move assignment
+    // used when we erase curve
     outerclass& operator=(outerclass&& other) noexcept
     {
-        std::cout<<"outer class move assignment";
-        _controlPoints=std::move(other._controlPoints);
-        knotVector=std::move(other.knotVector);
+        std::cout<<"outer class move assignement";
+        //_controlPoints.reserve(other._controlPoints.size());
+        //std::move(other._controlPoints.begin(), std::next(other._controlPoints.begin(), other._controlPoints.size()),std::back_inserter(_controlPoints));
+        _controlPoints=std::move(other._controlPoints); // ????
+        std::cout<<"outer class move assignement 0";
+        for(int i=0;i<_controlPoints.size();i++)
+        {
+            _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
+        }
+
+        for(int i=0;i<_controlPoints.size();i++)
+        {
+            _controlPoints[i].setCleanCallBack(std::bind(&outerclass::cleanDeletedPoints, this));
+        }
+
+        std::cout<<"outer class move assignement 1";
+        _degree=_controlPoints.size()-1,
+                knotVector=std::move(other.knotVector);
+        _gradientControlPoints=std::move(other._gradientControlPoints);
+        _centerPoints=std::move(other._centerPoints);
+        _centerGradientPoints=std::move(other._centerGradientPoints);
+        _normalUp=std::move(other._normalUp);   //
+        _normalDown=std::move(other._normalDown);
+        std::cout<<"outer class move assignement 2";
+        _boundaryPoints=std::move(other._boundaryPoints);
+        _startingBoundaryVisualControlPoints=std::move(other._startingBoundaryVisualControlPoints);  // 3
+        _startingBoundaryVisualPoints=std::move(other._startingBoundaryVisualPoints);  // 3
+        _endingBoundaryVisualControlPoints=std::move(other._endingBoundaryVisualControlPoints);  // 3
+        _endingBoundaryVisualPoints=std::move(other._endingBoundaryVisualPoints);  // 3
+        _thickness=other._thickness;
+        std::cout<<"outer class move assignement 3";
+        _straightLine=other._straightLine;
+        _visibleControlPoint=other._visibleControlPoint;
+        _lock=other._lock;
+        _isDeleted=other._isDeleted;
+        cleandeleted_=other.cleandeleted_;
+        std::cout<<"outer class move assignement 4";
         return *this;
     }
 
@@ -72,6 +111,11 @@ public:
         for(int i=0;i<_controlPoints.size();i++)
         {
             _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
+        }
+
+        for(int i=0;i<_controlPoints.size();i++)
+        {
+            _controlPoints[i].setCleanCallBack(std::bind(&outerclass::cleanDeletedPoints, this));
         }
         _degree=_controlPoints.size()-1,
         knotVector=std::move(other.knotVector);
@@ -88,17 +132,12 @@ public:
         _thickness=other._thickness;
         _straightLine=other._straightLine;
         _visibleControlPoint=other._visibleControlPoint;
+        _lock=other._lock;
+        _isDeleted=other._isDeleted;
+        cleandeleted_=other.cleandeleted_;
 
     }
 
-    // copy assignment
-    outerclass& operator=(const outerclass& other)
-    {
-        _controlPoints=other._controlPoints;
-        knotVector=other.knotVector;
-        return *this;
-
-    }
     Point deCasteljau(const float t, std::vector<Point>& points)
     {
         if (points.size()==1) return points[0];
@@ -166,6 +205,11 @@ public:
         this->_interpolants.push_back(interpolate(1.0f));
     }
 
+    void setCleanCallBack(some_void_function_type f)
+    {
+        cleandeleted_ = f;
+
+    }
     void generate()
     {
         // generateInterpolants();
@@ -191,11 +235,13 @@ public:
 
     void updatePosition(float xpos, float ypos)
     {
-        for (auto &p: _controlPoints) {   // important here , otherwise, it is a copy, not a reference
-            // std::cout<<"drawing"<<std::endl;
-            p.updatePosition(xpos, ypos);
+        if (_lock==false) {
+            for (auto &p: _controlPoints) {   // important here , otherwise, it is a copy, not a reference
+                // std::cout<<"drawing"<<std::endl;
+                p.updatePosition(xpos, ypos);
+            }
+            _toRenew=true;
         }
-        _toRenew=true;
     }
     void generateStartingBoundary()
     {
@@ -277,7 +323,7 @@ public:
 
 
     void draw() {
-        cleanDeletedPoints();
+        //cleanDeletedPoints();
 
         if (_toRenew) {
             _toRenew = false;
@@ -452,7 +498,7 @@ public:
                 ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
                 ImGui::PopStyleVar();
 
-                if (ImGui::Button("OK", ImVec2(120, 0))) {ImGui::CloseCurrentPopup(); }
+                if (ImGui::Button("OK", ImVec2(120, 0))) {_isDeleted=true;cleandeleted_();ImGui::CloseCurrentPopup(); }
                 ImGui::SetItemDefaultFocus();
                 ImGui::SameLine();
                 if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
@@ -471,6 +517,16 @@ public:
             ImGui::SetNextItemWidth(-FLT_MIN);
 
             ImGui::Checkbox("Control Point visibility", &_visibleControlPoint);
+            ImGui::NextColumn();
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::AlignTextToFramePadding();
+            ImGui::TreeNodeEx("Field", flags, "Field_%d",11 );
+
+            ImGui::TableSetColumnIndex(1);
+            ImGui::SetNextItemWidth(-FLT_MIN);
+
+            ImGui::Checkbox("lock", &_lock);
             ImGui::NextColumn();
 
             ImGui::PopID();
