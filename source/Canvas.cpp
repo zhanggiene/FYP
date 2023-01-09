@@ -496,10 +496,10 @@ void Canvas::addVisualPointXY(int x, int y, const ImVec4 &color) {
 
 }
 
-void Canvas::checkMouseSelection(float xpos, float ypos)
+void Canvas::checkMouseSelection(float xpos, float ypos,bool& lock)
 {
     for (auto &c: _curves) {
-        c.checkMouseSelection(xpos, ypos);
+        c.checkMouseSelection(xpos, ypos,lock);
     }
 }
 

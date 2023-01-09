@@ -242,9 +242,9 @@ void App::cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
 
         for (auto &p: _points) {   // important here , otherwise, it is a copy, not a reference
             // std::cout<<"drawing"<<std::endl;
-            p.checkMouseSelection(xpos, ypos);
+            p.checkMouseSelection(xpos, ypos,mouseSelectionLock);
         }
-    _canvas.checkMouseSelection(xpos,ypos);   // check for points that is already part of the curve
+    _canvas.checkMouseSelection(xpos,ypos,mouseSelectionLock);   // check for points that is already part of the curve
         if (editMode && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
             {
                 for (auto &p: _points) {   // important here , otherwise, it is a copy, not a reference
@@ -284,7 +284,7 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
         glfwGetCursorPos(window, &xpos, &ypos);
         for (auto &p: _points) {   // important here , otherwise, it is a copy, not a reference
             // std::cout<<"drawing"<<std::endl;
-            p.checkMouseSelection(xpos, ypos,true);
+            p.checkMouseSelection(xpos, ypos,mouseSelectionLock);
         }
 
 
@@ -397,3 +397,4 @@ bool App::showPopUp=false;
 GLuint App::image_tex_;
 int App::size;
 std::vector<float> App::data;
+bool App::mouseSelectionLock=false;

@@ -130,16 +130,18 @@ color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),positi
 
     }
 
-    void Point::checkMouseSelection(float x,float y,bool rightClickFlag)
+    void Point::checkMouseSelection(float x,float y,bool& lock)
     {
-        if(abs(position.x()-x)<4*r && abs(position.y()-y)<4*r)
+        if(abs(position.x()-x)<4*r && abs(position.y()-y)<4*r && lock==false)
         {
             // highlighted by the mouse
             isSelected=true;
+            lock=true;
         }
         else
         {
             isSelected=false;
+            lock=false;
         }
 
 

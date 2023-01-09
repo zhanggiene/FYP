@@ -166,12 +166,6 @@ public:
         this->_interpolants.push_back(interpolate(1.0f));
     }
 
-    void generate2()
-    {
-        std::cout<<"size of control "<<_controlPoints.size()<<std::endl;
-
-
-    }
     void generate()
     {
         // generateInterpolants();
@@ -187,11 +181,11 @@ public:
 
     }
 
-    void checkMouseSelection(float xpos, float ypos)
+    void checkMouseSelection(float xpos, float ypos,bool& lock)
     {
         for (auto &p: _controlPoints) {   // important here , otherwise, it is a copy, not a reference
             // std::cout<<"drawing"<<std::endl;
-            p.checkMouseSelection(xpos, ypos);
+            p.checkMouseSelection(xpos, ypos,lock);
         }
     }
 

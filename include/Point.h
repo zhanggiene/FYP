@@ -51,7 +51,7 @@ public:
     void showCruveproperty(const char* prefix, int uid);
 
     Point (Point&& other) noexcept;
-    void checkMouseSelection(float x,float y,bool rightClickFlag=false);
+    void checkMouseSelection(float x,float y,bool& lock);
 
     void updatePosition(float x,float y);
     void drawR1R2();

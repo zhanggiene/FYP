@@ -43,5 +43,6 @@ private:
     static int size;
     static std::vector<float> data;
     static void deleteLastPoint();
+    static bool mouseSelectionLock;
 };
 #endif //FYP_APP_H
