@@ -13,6 +13,7 @@
 #endif
 
 #include "App.h"
+#include "internal_string.h"
 #include <glfw3.h>
 #define STB_IMAGE_IMPLEMENTATION
 // https://subscription.packtpub.com/book/game-development/9781838986193/2/ch02lvl1sec14/loading-images-with-stb
@@ -69,7 +70,12 @@ void App::draw( GLuint texture) {
 
 }
 
-
+std::string App::getEditMode() {
+    if (editMode) {
+        return STRING_LABEL::editMode;
+    }
+    return STRING_LABEL::createMode;
+}
 void App::clear()
 {
     _points.clear();

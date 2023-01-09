@@ -4,6 +4,7 @@
 
 // https://stackoverflow.com/questions/21070076/opengl-generating-a-2d-texture-from-a-data-array-to-display-on-a-quad
 #include "Canvas.h"
+#include "App.h"
 
 Canvas::Canvas()
         :
@@ -151,7 +152,7 @@ void Canvas::ShowPropertyEditor()
     ShowAppMainMenuBar();
     ImGuiWindowFlags window_flags = 0;
     ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Control points editor",NULL,window_flags))
+    if (!ImGui::Begin(App::getEditMode().c_str(),NULL,window_flags))
     {
         ImGui::End();
         return;

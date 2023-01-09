@@ -4,6 +4,7 @@
 
 #include "Point.h"
 #include "imgui.h"
+#include "App.h"
 
 
     Point::Point(ImVec4 color1_,ImVec4 color2_,float x_,float y_,float r1_,float r2_):
@@ -167,10 +168,11 @@ void Point::setCleanCallBack(some_void_function_type f)
     }
     void Point::draw()
     {
-        if (!isSelected) {
-            drawFilledCircle(position.x(), position.y());
+        if (isSelected  && App::editMode) {
+            drawCircle(position.x(),position.y());
+
         }
-        else drawCircle(position.x(),position.y());
+        else drawFilledCircle(position.x(), position.y());
         drawR1R2();
     }
 

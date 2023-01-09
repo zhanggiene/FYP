@@ -33,12 +33,13 @@ public:
     static void addCurve();
     static GLuint LoadImage();
     static void HelpMarker(const char* desc);
+    static std::string getEditMode();
+    static bool editMode;
 private:
     static void draw(GLuint texture);
     static Canvas _canvas;
     static ImVec4 color1;
     static ImVec4 color2;
-    static bool editMode;
     static void clear();
     static int size;
     static std::vector<float> data;
