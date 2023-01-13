@@ -17,7 +17,7 @@ class outerclass {
 public:
 
     bool _toRenew;
-    unsigned int _degree;
+    int _degree;
     float _step;
     typedef std::function<void()> some_void_function_type;
     some_void_function_type cleandeleted_;
@@ -39,6 +39,7 @@ public:
     bool _visibleControlPoint;
     bool _lock;
     bool _isDeleted;
+    bool _visibleCurve;
 
 
     outerclass(){};
@@ -46,7 +47,7 @@ public:
             : _toRenew(true),
               _degree(controlPoints.size()-1),
               _step(0.01f),
-              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true),_lock(false),_isDeleted(false) {
+              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true),_lock(false),_isDeleted(false),_visibleCurve(true) {
 
 
         std::cout<< "construct curves";
@@ -93,6 +94,7 @@ public:
         _lock=other._lock;
         _isDeleted=other._isDeleted;
         cleandeleted_=other.cleandeleted_;
+        _visibleCurve=other._visibleCurve;
         return *this;
     }
 
@@ -129,6 +131,7 @@ public:
         _lock=other._lock;
         _isDeleted=other._isDeleted;
         cleandeleted_=other.cleandeleted_;
+        _visibleCurve=other._visibleCurve;
 
     }
 
@@ -323,10 +326,14 @@ public:
             _toRenew = false;
             generate();
         }
-        if (_visibleControlPoint) {drawControlPoints();
-            drawSkeleton();}
-        drawBoundary();
-        drawEndBoundary();
+        if (_visibleCurve) {
+            if (_visibleControlPoint) {
+                drawControlPoints();
+                drawSkeleton();
+            }
+            drawBoundary();
+            drawEndBoundary();
+        }
     }
     void drawEndBoundary()
     {
@@ -505,24 +512,38 @@ public:
             ImGui::AlignTextToFramePadding();
             ImGuiTreeNodeFlags flags =
                     ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
-            ImGui::TreeNodeEx("Field", flags, "Field_%d",10 );
+            ImGui::TreeNodeEx("Field", flags, "Visibility");
 
             ImGui::TableSetColumnIndex(1);
             ImGui::SetNextItemWidth(-FLT_MIN);
 
-            ImGui::Checkbox("Control Point visibility", &_visibleControlPoint);
+            ImGui::Checkbox("Control Point ##Control Point ", &_visibleControlPoint);
+            ImGui::SameLine();
+            ImGui::Checkbox("Curve ##Curve ", &_visibleCurve);
             ImGui::NextColumn();
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
             ImGui::AlignTextToFramePadding();
-            ImGui::TreeNodeEx("Field", flags, "Field_%d",11 );
+            ImGui::TreeNodeEx("Field", flags, "Lock");
 
             ImGui::TableSetColumnIndex(1);
             ImGui::SetNextItemWidth(-FLT_MIN);
 
-            ImGui::Checkbox("lock", &_lock);
+            ImGui::Checkbox("##lock", &_lock);
             ImGui::NextColumn();
+            ImGui::TableNextRow();
+            /*
+            ImGui::TableSetColumnIndex(0);
+            ImGui::AlignTextToFramePadding();
+            ImGui::TreeNodeEx("Field", flags, "Degree");
 
+            ImGui::TableSetColumnIndex(1);
+            ImGui::SetNextItemWidth(-FLT_MIN);
+
+            if (ImGui::SliderInt("##degree", &_degree, 0, _controlPoints.size()-1 , "%d")) generate();
+            ImGui::NextColumn();
+            ImGui::TableNextRow();
+            */
             ImGui::PopID();
             for (int i = 0; i < _controlPoints.size(); i++)
             {

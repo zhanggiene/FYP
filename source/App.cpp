@@ -157,10 +157,10 @@ int App::run() {
 
         // Create a window called "Hello, world!" and append into it.
         if (showPopUp)
-        {ImGui::OpenPopup("Stacked 1");}
-        if (ImGui::BeginPopupModal("Stacked 1", NULL, ImGuiWindowFlags_MenuBar))
+        {ImGui::OpenPopup("Control Point attributes");}
+        if (ImGui::BeginPopupModal("Control Point attributes", NULL))
         {
-            float w = (ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.y) * 0.40f;
+            float w = (ImGui::GetContentRegionAvail().x - ImGui::GetStyle().ItemSpacing.y) * 0.70f;
             // Testing behavior of widgets stacking their own regular popups over the modal.
             ImGui::SetNextItemWidth(w);
             ImGui::ColorPicker3(" color 1 ", (float *) &_points.back().color1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
@@ -172,11 +172,15 @@ int App::run() {
             ImGui::SliderFloat("radius 2", &_points.back().radius2, 0.0f, 100.0f);
 
             if (ImGui::Button("Done")) {
+                color1=_points.back().color1;
+                color2=_points.back().color2;
+                r1=_points.back().radius1;
+                r2=_points.back().radius2;
                 showPopUp=false;
                 ImGui::CloseCurrentPopup();
             }
+            ImGui::SameLine();
             if (ImGui::Button("Cancel")) { deleteLastPoint();showPopUp=false; ImGui::CloseCurrentPopup(); }
-            // TODO cancel button not working now
             ImGui::EndPopup();
         }
         //ImGui::BeginChild("blah");
@@ -395,7 +399,7 @@ std::vector<Point > App::_points;
 Canvas App::_canvas;
 ImVec4 App::color1(0.3,0.4,0.2,0.5);
 ImVec4 App::color2(0.3,0,0.4,0.5);
-float App::r1=5;
+float App::r1=10;
 float App::r2=10;
 bool App::editMode=false;
 bool App::finalImageBool=false;
