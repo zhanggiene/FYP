@@ -327,6 +327,14 @@ void App::addCurve() {
         _points.clear();
     }
 }
+
+void App::cancel()
+{
+    if (!_points.empty())
+    {
+        _points.pop_back();
+    }
+}
 void App::deleteLastPoint() {
     _points.pop_back();
 }

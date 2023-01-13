@@ -46,7 +46,19 @@ void Canvas::initializeTexture()
 }
 void Canvas::clear()
 {
-
+    cleardiffuseImage();
+    //data.clear();
+    fill(data.begin(),data.end(),0);
+    _curves.clear();
+    glTexImage2D(GL_TEXTURE_2D,     // Type of texture
+                 0,                 // Pyramid level (for mip-mapping) - 0 is the top level
+                 GL_RGB,            // Internal colour format to convert to
+                 size_,          // Image width  i.e. 640 for Kinect in standard mode
+                 size_,          // Image height i.e. 480 for Kinect in standard mode
+                 0,                 // Border width in pixels (can either be 1 or 0)
+                 GL_RGB, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
+                 GL_FLOAT,  // Image data type
+                 data.data());        // The actual image data itself
 }
 void Canvas::setdisplayMode(bool bl_)
 {
@@ -192,8 +204,8 @@ void Canvas::ShowAppMainMenuBar()
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-            if (ImGui::MenuItem("Clear", "CTRL+C")) {}
+            if (ImGui::MenuItem("Undo", "CTRL+Z")) {App::cancel();}
+            if (ImGui::MenuItem("Clear", "CTRL+C")) {clear();}
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();

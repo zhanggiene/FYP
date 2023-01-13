@@ -34,6 +34,7 @@ public:
     static GLuint LoadImage();
     static void HelpMarker(const char* desc);
     static std::string getEditMode();
+    static void cancel();
     static bool editMode;
 private:
     static void draw(GLuint texture);
