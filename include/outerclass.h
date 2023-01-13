@@ -35,7 +35,8 @@ public:
     std::vector<VisualPoint> _endingBoundaryVisualControlPoints;  // 3
     std::vector<VisualPoint> _endingBoundaryVisualPoints;  // 3
     float _thickness;
-    bool _straightLine;
+    bool _straightLineEnd1;
+    bool _straightLineEnd2;
     bool _visibleControlPoint;
     bool _lock;
     bool _isDeleted;
@@ -47,7 +48,7 @@ public:
             : _toRenew(true),
               _degree(controlPoints.size()-1),
               _step(0.01f),
-              _controlPoints(controlPoints),_thickness(1),_straightLine(true),_visibleControlPoint(true),_lock(false),_isDeleted(false),_visibleCurve(true) {
+              _controlPoints(controlPoints),_thickness(1),_straightLineEnd1(true),_straightLineEnd2(true),_visibleControlPoint(true),_lock(false),_isDeleted(false),_visibleCurve(true) {
 
 
         std::cout<< "construct curves";
@@ -89,7 +90,8 @@ public:
         _endingBoundaryVisualControlPoints=std::move(other._endingBoundaryVisualControlPoints);  // 3
         _endingBoundaryVisualPoints=std::move(other._endingBoundaryVisualPoints);  // 3
         _thickness=other._thickness;
-        _straightLine=other._straightLine;
+        _straightLineEnd1=other._straightLineEnd1;
+        _straightLineEnd2=other._straightLineEnd2;
         _visibleControlPoint=other._visibleControlPoint;
         _lock=other._lock;
         _isDeleted=other._isDeleted;
@@ -98,7 +100,7 @@ public:
         return *this;
     }
 
-    outerclass (outerclass&& other) noexcept: _toRenew(true),_step(0.01f),_thickness(1),_straightLine(true),_visibleControlPoint(true)
+    outerclass (outerclass&& other) noexcept: _toRenew(true),_step(0.01f),_thickness(1),_straightLineEnd1(true),_straightLineEnd2(true),_visibleControlPoint(true)
     {
         //std::cout<<"outer class move constructor";
         //_controlPoints.reserve(other._controlPoints.size());
@@ -126,7 +128,8 @@ public:
          _endingBoundaryVisualControlPoints=std::move(other._endingBoundaryVisualControlPoints);  // 3
          _endingBoundaryVisualPoints=std::move(other._endingBoundaryVisualPoints);  // 3
         _thickness=other._thickness;
-        _straightLine=other._straightLine;
+        _straightLineEnd1=other._straightLineEnd1;
+        _straightLineEnd2=other._straightLineEnd2;
         _visibleControlPoint=other._visibleControlPoint;
         _lock=other._lock;
         _isDeleted=other._isDeleted;
@@ -214,9 +217,23 @@ public:
         generateGradientControlPoint();
         generateCenterPoint();
         generateNormal();
-        if (_straightLine) {
-            generateEndingBoundary();
+        if (_straightLineEnd1) {
             generateStartingBoundary();
+        }
+        else
+        {
+            std::cout<<"size of _endingBoundaryVisualPoint is "<<_startingBoundaryVisualPoints.size();
+            _startingBoundaryVisualPoints.clear();
+            std::cout<<"size of _endingBoundaryVisualPoint after clearing  is "<<_startingBoundaryVisualPoints.size();
+        }
+        if (_straightLineEnd2)
+        {
+
+            generateEndingBoundary();
+        }
+        else
+        {
+            _endingBoundaryVisualPoints.clear();
         }
 
 
@@ -338,15 +355,21 @@ public:
     void drawEndBoundary()
     {
         //std::cout<<"size of _endingBoundaryVisualPoint is "<<_endingBoundaryVisualPoints.size();
-        for(int i=0;i< _endingBoundaryVisualPoints.size()-1;i++) {
-            glBegin( GL_LINES);
-            glColor3f(_endingBoundaryVisualPoints[i].color.x,_endingBoundaryVisualPoints[i].color.y,_endingBoundaryVisualPoints[i].color.z);
-            glVertex2f(_endingBoundaryVisualPoints[i].position.x(),_endingBoundaryVisualPoints[i].position.y());
-            glVertex2f(_endingBoundaryVisualPoints[i+1].position.x(),_endingBoundaryVisualPoints[i+1].position.y());
-            glColor3f(1,1,1);
-            glEnd();
+        if (_endingBoundaryVisualPoints.size()>0) {
+            for (int i = 0; i < _endingBoundaryVisualPoints.size() - 1; i++) {
+                glBegin(GL_LINES);
+                glColor3f(_endingBoundaryVisualPoints[i].color.x, _endingBoundaryVisualPoints[i].color.y,
+                          _endingBoundaryVisualPoints[i].color.z);
+                glVertex2f(_endingBoundaryVisualPoints[i].position.x(), _endingBoundaryVisualPoints[i].position.y());
+                glVertex2f(_endingBoundaryVisualPoints[i + 1].position.x(),
+                           _endingBoundaryVisualPoints[i + 1].position.y());
+                glColor3f(1, 1, 1);
+                glEnd();
 
+            }
         }
+        if (_startingBoundaryVisualPoints.size())
+        {
         for(int i=0;i< _startingBoundaryVisualPoints.size()-1;i++) {
             glBegin( GL_LINES);
             glColor3f(_startingBoundaryVisualPoints[i].color.x,_startingBoundaryVisualPoints[i].color.y,_startingBoundaryVisualPoints[i].color.z);
@@ -355,7 +378,7 @@ public:
             glColor3f(1,1,1);
             glEnd();
 
-        }
+        }}
 
     }
 
@@ -520,6 +543,18 @@ public:
             ImGui::Checkbox("Control Point ##Control Point ", &_visibleControlPoint);
             ImGui::SameLine();
             ImGui::Checkbox("Curve ##Curve ", &_visibleCurve);
+            ImGui::NextColumn();
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::AlignTextToFramePadding();
+            ImGui::TreeNodeEx("Field", flags, "Straightline");
+
+            ImGui::TableSetColumnIndex(1);
+            ImGui::SetNextItemWidth(-FLT_MIN);
+
+            if (ImGui::Checkbox("End near start", &_straightLineEnd1)) { std::cout<<"hi end near start"<<_straightLineEnd1;generate();}
+            ImGui::SameLine();
+            if (ImGui::Checkbox("End near end ", &_straightLineEnd2)) {std::cout<<"hi end near end"<<_straightLineEnd2;generate();}
             ImGui::NextColumn();
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
