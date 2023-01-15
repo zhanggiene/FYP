@@ -39,9 +39,9 @@ public:
     bool isDeleted;
 
 
-    Point(ImVec4 color1_,ImVec4 color2_,float x_,float y_,float r1_,float r2_);
-    Point(ImVec4 color1_,ImVec4 color2_,Eigen::Vector2f position_,float r1_,float r2_);
-    Point(float color1_x,float color1_y, float color1_z,float color2_x,float color2_y, float color2_z,float x_,float y_,float r1_,float r2_);
+    Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,float x_,float y_,float r1_,float r2_);
+    Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,Eigen::Vector2f position_,float r1_,float r2_);
+    Point(float color1_x,float color1_y, float color1_z,float color2_x,float color2_y, float color2_z,float colorOuter1_x,float colorOuter1_y, float colorOuter1_z,float colorOuter2_x,float colorOuter2_y, float colorOuter2_z,float x_,float y_,float r1_,float r2_);
 
 
     void setCallBack(some_void_function_type f);

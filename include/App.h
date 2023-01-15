@@ -31,7 +31,6 @@ public:
     static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
     static void keyboard_press_callback(GLFWwindow *window,int key, int scancode, int action, int mods);
     static void addCurve();
-    static GLuint LoadImage();
     static void HelpMarker(const char* desc);
     static std::string getEditMode();
     static void cancel();
@@ -41,6 +40,8 @@ private:
     static Canvas _canvas;
     static ImVec4 color1;
     static ImVec4 color2;
+    static ImVec4 colorOuter1;
+    static ImVec4 colorOuter2;
     static void clear();
     static int size;
     static std::vector<float> data;

@@ -24,11 +24,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="json stream parsing">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="add open or close near the end boundary">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/App.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/App.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/outerclass.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/outerclass.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/App.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/App.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/Canvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Canvas.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -206,6 +208,7 @@
       <workItem from="1673422497374" duration="2744000" />
       <workItem from="1673506902914" duration="3561000" />
       <workItem from="1673527527222" duration="459000" />
+      <workItem from="1673529095336" duration="11365000" />
     </task>
     <task id="LOCAL-00001" summary="basic bazier curve done">
       <created>1670145198085</created>
@@ -333,7 +336,28 @@
       <option name="project" value="LOCAL" />
       <updated>1673277773298</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="add curve visibility">
+      <created>1673577124581</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1673577124581</updated>
+    </task>
+    <task id="LOCAL-00020" summary="add clear and cancel">
+      <created>1673579578646</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1673579578646</updated>
+    </task>
+    <task id="LOCAL-00021" summary="add open or close near the end boundary">
+      <created>1673601829160</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1673601829160</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -370,6 +394,9 @@
     <MESSAGE value="deleted curves done" />
     <MESSAGE value="clean up" />
     <MESSAGE value="json stream parsing" />
-    <option name="LAST_COMMIT_MESSAGE" value="json stream parsing" />
+    <MESSAGE value="add curve visibility" />
+    <MESSAGE value="add clear and cancel" />
+    <MESSAGE value="add open or close near the end boundary" />
+    <option name="LAST_COMMIT_MESSAGE" value="add open or close near the end boundary" />
   </component>
 </project>

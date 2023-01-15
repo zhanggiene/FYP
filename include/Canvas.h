@@ -32,6 +32,7 @@ public:
     bool _arePointsVisible;
     std::vector<outerclass> _curves;
     int counter;
+    void loadImage();
     Canvas();
     ~Canvas();
     void setSize(unsigned  int size);

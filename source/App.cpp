@@ -15,11 +15,6 @@
 #include "App.h"
 #include "internal_string.h"
 #include <glfw3.h>
-#define STB_IMAGE_IMPLEMENTATION
-// https://subscription.packtpub.com/book/game-development/9781838986193/2/ch02lvl1sec14/loading-images-with-stb
-#include "stb_image.h"
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb_image_write.h>
 void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mode)
 {
     //If you press ESC and set windowShouldClose to True, the outer loop will close the application
@@ -167,13 +162,20 @@ int App::run() {
             ImGui::SetNextItemWidth(w);
             ImGui::ColorPicker3(" color 2 ", (float *)  &_points.back().color2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
             ImGui::SetNextItemWidth(w);
-            ImGui::SliderFloat("radius 1", &_points.back().radius1, 0.0f, 100.0f);
+
+            ImGui::ColorPicker3(" color outer 1 ", (float *) &_points.back().colorOuter1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
             ImGui::SetNextItemWidth(w);
-            ImGui::SliderFloat("radius 2", &_points.back().radius2, 0.0f, 100.0f);
+            ImGui::ColorPicker3(" color outer 2 ", (float *)  &_points.back().colorOuter2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
+            ImGui::SetNextItemWidth(w);
+            ImGui::SliderFloat("radius 1", &_points.back().radius1, 0.0f, 300.0f);
+            ImGui::SetNextItemWidth(w);
+            ImGui::SliderFloat("radius 2", &_points.back().radius2, 0.0f, 300.0f);
 
             if (ImGui::Button("Done")) {
                 color1=_points.back().color1;
                 color2=_points.back().color2;
+                colorOuter1=_points.back().colorOuter1;
+                colorOuter2=_points.back().colorOuter2;
                 r1=_points.back().radius1;
                 r2=_points.back().radius2;
                 showPopUp=false;
@@ -279,7 +281,7 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
         std::cout<<r1<<std::endl;
         std::cout<<r2<<std::endl;
         showPopUp=true;
-        _points.emplace_back(color1,color2,xpos,ypos,r1,r2);
+        _points.emplace_back(color1,color2,colorOuter1,colorOuter2,xpos,ypos,r1,r2);
         std::cout<<"points added "<<color1.x<<"  "<<color1.y<<"   "<<color1.z<<"   "<<xpos<<"   "<<ypos<<"  "<<r1<<"  "<<r2<<" ;";
 
     }
@@ -338,68 +340,6 @@ void App::cancel()
 void App::deleteLastPoint() {
     _points.pop_back();
 }
-GLuint App::LoadImage()
-{
-
-    /*
-    int w, h, comp;
-    const uint8_t* img = stbi_load(  "/Users/zhangzhuyan/Desktop/mosQUIToes/coding/FYP/Mycode/Baseline-Example.jpg", &w, &h, &comp, 3);
-    if (img == NULL) {
-        std::cout<<" file not found";
-    }
-    unsigned int depth = 3;
-
-    GLubyte *checkImage = new GLubyte[size * size * depth];
-
-    for(unsigned int ix = 0; ix < size; ++ix)
-    {
-        for(unsigned int iy = 0; iy < size; ++iy)
-        {
-            float c=100;
-
-            checkImage[ix * size * depth + iy * depth + 0] = c;   //red
-            checkImage[ix * size * depth + iy * depth + 1] = c;   //green
-            checkImage[ix * size * depth + iy * depth + 2] = c;   //blue
-        }
-    }
-     */
-
-    //delete [] checkImage;
-
-    //GLuint texture;
-    GLuint image_tex;
-    glGenTextures(1, &image_tex);
-    glBindTexture(GL_TEXTURE_2D,image_tex);
-    glTexParameteri(image_tex, GL_TEXTURE_MAX_LEVEL, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    static Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> A(size,size);
-    data.resize(A.size()*3,0);
-    // https://github.com/libigl/libigl/blob/main/include/igl/png/writePNG.cpp
-    int comp=3;
-    for (unsigned i = 0; i<A.rows();++i)
-    {
-        for (unsigned j = 0; j < A.cols(); ++j)
-        {
-            data[(j * A.rows() * comp) + (i * comp) + 0] = 1;
-            data[(j * A.rows() * comp) + (i * comp) + 1] = 0;
-            data[(j * A.rows() * comp) + (i * comp) + 2] = 0;
-        }
-    }
-    A.setConstant(size, size, 0.0f);
-    glTexImage2D(GL_TEXTURE_2D,     // Type of texture
-                 0,                 // Pyramid level (for mip-mapping) - 0 is the top level
-                 GL_RGB,            // Internal colour format to convert to
-                 size,          // Image width  i.e. 640 for Kinect in standard mode
-                 size,          // Image height i.e. 480 for Kinect in standard mode
-                 0,                 // Border width in pixels (can either be 1 or 0)
-                 GL_RGB, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
-                 GL_FLOAT,  // Image data type
-                 data.data());        // The actual image data itself
-                 return image_tex;
-}
 
 
 GLFWwindow* App::_window;
@@ -407,6 +347,8 @@ std::vector<Point > App::_points;
 Canvas App::_canvas;
 ImVec4 App::color1(0.3,0.4,0.2,0.5);
 ImVec4 App::color2(0.3,0,0.4,0.5);
+ImVec4 App::colorOuter1(0,0,0,1);
+ImVec4 App::colorOuter2(0,0,0,1);
 float App::r1=10;
 float App::r2=10;
 bool App::editMode=false;

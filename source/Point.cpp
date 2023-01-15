@@ -7,16 +7,16 @@
 #include "App.h"
 
 
-    Point::Point(ImVec4 color1_,ImVec4 color2_,float x_,float y_,float r1_,float r2_):
-            color1(color1_), color2(color2_) ,position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
+    Point::Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,float x_,float y_,float r1_,float r2_):
+            color1(color1_), color2(color2_) ,colorOuter1(colorOuter1_),colorOuter2(colorOuter2_),position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
     }
-    Point::Point(ImVec4 color1_,ImVec4 color2_,Eigen::Vector2f position_,float r1_,float r2_):
-            color1(color1_), color2(color2_) ,position(position_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
+    Point::Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,Eigen::Vector2f position_,float r1_,float r2_):
+            color1(color1_), color2(color2_) ,colorOuter1(colorOuter1_),colorOuter2(colorOuter2_),position(position_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
     }
-Point::Point(float color1_x,float color1_y, float color1_z,float color2_x,float color2_y, float color2_z,float x_,float y_,float r1_,float r2_):
-color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
+Point::Point(float color1_x,float color1_y, float color1_z,float color2_x,float color2_y, float color2_z,float colorOuter1_x,float colorOuter1_y, float colorOuter1_z,float colorOuter2_x,float colorOuter2_y, float colorOuter2_z,float x_,float y_,float r1_,float r2_):
+color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),colorOuter1(colorOuter1_x,colorOuter1_y,colorOuter1_z,1),colorOuter2(colorOuter2_x,colorOuter2_y,colorOuter2_z,1),position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
 {
 
 }
@@ -40,6 +40,8 @@ void Point::setCleanCallBack(some_void_function_type f)
         // std::cout<<"copy constructor used"<<std::endl;
         color1 = p1.color1;
         color2 = p1.color2;
+        colorOuter1 = p1.colorOuter1;
+        colorOuter2 = p1.colorOuter2;
         position=p1.position;
         radius1=p1.radius1;
         radius2=p1.radius2;
@@ -127,6 +129,8 @@ void Point::setCleanCallBack(some_void_function_type f)
     {
         color1=std::move(other.color1);
         color2=std::move(other.color2);
+        colorOuter1=std::move(other.colorOuter1);
+        colorOuter2=std::move(other.colorOuter2);
         position=std::move(other.position);
         radius1=other.radius1;
         radius2=other.radius2;
@@ -217,6 +221,8 @@ void Point::setCleanCallBack(some_void_function_type f)
         position=other.position;
         radius1=other.radius1;
         radius2=other.radius2;
+        colorOuter1=other.colorOuter1;
+        colorOuter2=other.colorOuter2;
         isDeleted=false;
         return *this;
     }
@@ -224,9 +230,11 @@ Point& Point::operator=(Point&& other)
 {
     if (this == &other)
         return *this;
-    std::cout<<"point move assignment is used";
+    //std::cout<<"point move assignment is used";
     color1=other.color1;
     color2=other.color2;
+    colorOuter1=other.colorOuter1;
+    colorOuter2=other.colorOuter2;
     position=other.position;
     radius1=other.radius1;
     radius2=other.radius2;
@@ -244,6 +252,12 @@ Point& Point::operator=(Point&& other)
         ret.color2.x+=(color2.x);
         ret.color2.y+=(color2.y);
         ret.color2.z+=(color2.z);
+        ret.colorOuter1.x+=(colorOuter1.x);
+        ret.colorOuter1.y+=(colorOuter1.y);
+        ret.colorOuter1.z+=(colorOuter1.z);
+        ret.colorOuter2.x+=(colorOuter2.x);
+        ret.colorOuter2.y+=(colorOuter2.y);
+        ret.colorOuter2.z+=(colorOuter2.z);
         ret.radius1+=radius1;
         ret.radius2+=radius2;
         ret.isDeleted=false;
@@ -260,6 +274,12 @@ Point& Point::operator=(Point&& other)
         ret.color2.x-=(color2.x);
         ret.color2.y-=(color2.y);
         ret.color2.z-=(color2.z);
+        ret.colorOuter1.x-=(colorOuter1.x);
+        ret.colorOuter1.y-=(colorOuter1.y);
+        ret.colorOuter1.z-=(colorOuter1.z);
+        ret.colorOuter2.x-=(colorOuter2.x);
+        ret.colorOuter2.y-=(colorOuter2.y);
+        ret.colorOuter2.z-=(colorOuter2.z);
         ret.radius1-=radius1;
         ret.radius2-=radius2;
         ret.isDeleted=false;
@@ -276,6 +296,12 @@ Point& Point::operator=(Point&& other)
         ret.color2.x*=s;
         ret.color2.y*=s;
         ret.color2.z*=s;
+        ret.colorOuter1.x*=s;
+        ret.colorOuter1.y*=s;
+        ret.colorOuter1.z*=s;
+        ret.colorOuter2.x*=s;
+        ret.colorOuter2.y*=s;
+        ret.colorOuter2.z*=s;
         ret.radius1*=s;
         ret.radius2*=s;
         ret.isDeleted=false;
@@ -292,6 +318,12 @@ Point& Point::operator=(Point&& other)
         ret.color2.x/=s;
         ret.color2.y/=s;
         ret.color2.z/=s;
+        ret.colorOuter1.x/=s;
+        ret.colorOuter1.y/=s;
+        ret.colorOuter1.z/=s;
+        ret.colorOuter2.x/=s;
+        ret.colorOuter2.y/=s;
+        ret.colorOuter2.z/=s;
         ret.radius1/=s;
         ret.radius2/=s;
         ret.isDeleted=false;
@@ -309,6 +341,12 @@ Point& Point::operator=(Point&& other)
         color2.x+=(p.color2.x);
         color2.y+=(p.color2.y);
         color2.z+=(p.color2.z);
+        colorOuter1.x+=(p.colorOuter1.x);
+        colorOuter1.y+=(p.colorOuter1.y);
+        colorOuter1.z+=(p.colorOuter1.z);
+        colorOuter2.x+=(p.colorOuter2.x);
+        colorOuter2.y+=(p.colorOuter2.y);
+        colorOuter2.z+=(p.colorOuter2.z);
         radius1+=p.radius1;
         radius2+=p.radius2;
         isDeleted=false;
@@ -325,6 +363,12 @@ Point& Point::operator=(Point&& other)
         color2.x-=(p.color2.x);
         color2.y-=(p.color2.y);
         color2.z-=(p.color2.z);
+        colorOuter1.x-=(p.colorOuter1.x);
+        colorOuter1.y-=(p.colorOuter1.y);
+        colorOuter1.z-=(p.colorOuter1.z);
+        colorOuter2.x-=(p.colorOuter2.x);
+        colorOuter2.y-=(p.colorOuter2.y);
+        colorOuter2.z-=(p.colorOuter2.z);
         radius1-=p.radius1;
         radius2-=p.radius2;
         isDeleted=false;
@@ -341,6 +385,11 @@ Point& Point::operator=(Point&& other)
         color2.x*=s;
         color2.y*=s;
         color2.z*=s;
+        colorOuter1.x*=s;
+        colorOuter1.y*=s;
+        colorOuter1.z*=s;
+        colorOuter2.y*=s;
+        colorOuter2.z*=s;
         radius1*=s;
         radius2*=s;
         isDeleted=false;
@@ -350,13 +399,18 @@ Point& Point::operator=(Point&& other)
     void Point::operator/=(float s)
     {
         position/=s;
-
         color1.x/=s;
         color1.y/=s;
         color1.z/=s;
         color2.x/=s;
         color2.y/=s;
         color2.z/=s;
+        colorOuter1.x/=s;
+        colorOuter1.y/=s;
+        colorOuter1.z/=s;
+        colorOuter2.x/=s;
+        colorOuter2.y/=s;
+        colorOuter2.z/=s;
         radius1/=s;
         radius2/=s;
         isDeleted=false;
@@ -378,6 +432,13 @@ Point& Point::operator=(Point&& other)
                {"color2_x",p.color2.x},
                 {"color2_y",p.color2.y},
                  {"color2_z",p.color2.z},
+            {"colorouter1_x",p.colorOuter1.x},
+            {"colorouter1_y",p.colorOuter1.y},
+            {"colorouter1_z",p.colorOuter1.z},
+            {"colorouter2_x",p.colorOuter2.x},
+            {"colorouter2_y",p.colorOuter2.y},
+            {"colorouter2_z",p.colorOuter2.z},
+
             {"radius1",p.radius1},
             {"radius2",p.radius2}
 
@@ -395,6 +456,12 @@ Point& Point::operator=(Point&& other)
             boost::json::value_to<float>( obj.at( "color2_x" ) ),
             boost::json::value_to<float>( obj.at( "color2_y" ) ),
             boost::json::value_to<float>( obj.at( "color2_z" ) ),
+            boost::json::value_to<float>( obj.at( "colorouter1_x" ) ),
+            boost::json::value_to<float>( obj.at( "colorouter1_y" ) ),
+            boost::json::value_to<float>( obj.at( "colorcouter1_z" ) ),
+            boost::json::value_to<float>( obj.at( "colorouter2_x" ) ),
+            boost::json::value_to<float>( obj.at( "colorouter2_y" ) ),
+            boost::json::value_to<float>( obj.at( "colorouter2_z" ) ),
             boost::json::value_to<float>( obj.at( "position_x" )),
             boost::json::value_to<float>( obj.at( "position_y" ) ),
             boost::json::value_to<float>( obj.at( "radius1" ) ),

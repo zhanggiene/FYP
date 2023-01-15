@@ -222,9 +222,8 @@ public:
         }
         else
         {
-            std::cout<<"size of _endingBoundaryVisualPoint is "<<_startingBoundaryVisualPoints.size();
+
             _startingBoundaryVisualPoints.clear();
-            std::cout<<"size of _endingBoundaryVisualPoint after clearing  is "<<_startingBoundaryVisualPoints.size();
         }
         if (_straightLineEnd2)
         {
