@@ -147,7 +147,7 @@ int App::run() {
         ImGui_ImplOpenGL2_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        //ImGui::ShowDemoWindow();
+        ImGui::ShowDemoWindow();
 
 
         // Create a window called "Hello, world!" and append into it.
@@ -163,9 +163,9 @@ int App::run() {
             ImGui::ColorPicker3(" color 2 ", (float *)  &_points.back().color2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
             ImGui::SetNextItemWidth(w);
 
-            ImGui::ColorPicker3(" color outer 1 ", (float *) &_points.back().colorOuter1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
+            ImGui::ColorEdit3(" color outer 1 ", (float *) &_points.back().colorOuter1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
             ImGui::SetNextItemWidth(w);
-            ImGui::ColorPicker3(" color outer 2 ", (float *)  &_points.back().colorOuter2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
+            ImGui::ColorEdit3(" color outer 2 ", (float *)  &_points.back().colorOuter2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha); // Edit 3 floats representing a color
             ImGui::SetNextItemWidth(w);
             ImGui::SliderFloat("radius 1", &_points.back().radius1, 0.0f, 300.0f);
             ImGui::SetNextItemWidth(w);

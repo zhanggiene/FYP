@@ -31,9 +31,11 @@ public:
     std::vector<VisualPoint> _normalDown;
     std::vector<Point> _boundaryPoints;
     std::vector<VisualPoint> _startingBoundaryVisualControlPoints;  // 3
-    std::vector<VisualPoint> _startingBoundaryVisualPoints;  // 3
+    std::vector<VisualPoint> _startingBoundaryVisualPoints;
     std::vector<VisualPoint> _endingBoundaryVisualControlPoints;  // 3
-    std::vector<VisualPoint> _endingBoundaryVisualPoints;  // 3
+    std::vector<VisualPoint> _endingBoundaryVisualPoints;
+    ImVec4 startOuterColor;
+    ImVec4 endOuterColor;
     float _thickness;
     bool _straightLineEnd1;
     bool _straightLineEnd2;
@@ -554,6 +556,17 @@ public:
             if (ImGui::Checkbox("End near start", &_straightLineEnd1)) { std::cout<<"hi end near start"<<_straightLineEnd1;generate();}
             ImGui::SameLine();
             if (ImGui::Checkbox("End near end ", &_straightLineEnd2)) {std::cout<<"hi end near end"<<_straightLineEnd2;generate();}
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::AlignTextToFramePadding();
+            ImGui::TreeNodeEx("Field", flags, "outer color at both ends");
+
+            ImGui::TableSetColumnIndex(1);
+            ImGui::SetNextItemWidth(-FLT_MIN);
+
+            ImGui::ColorEdit3(" near start ", (float *) &startOuterColor,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha);
+            ImGui::SameLine();
+            ImGui::ColorEdit3(" near end ", (float *) &endOuterColor,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha);
             ImGui::NextColumn();
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);

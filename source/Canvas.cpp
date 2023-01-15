@@ -559,7 +559,6 @@ void Canvas::drawToImage()
             addVisualPointXY(xpos,ypos, curve._centerPoints[i].colorOuter1);
 
         }
-        // TODO if the error rate is small, no need more iteration
         for (int i=0; i<curve._normalDown.size();i++)
         {
             int shiftx=-1;
@@ -576,6 +575,50 @@ void Canvas::drawToImage()
             xpos= int (curve._normalDown[i].position.x())-shiftx;
             ypos= int (curve._normalDown[i].position.y())-shifty;
             addVisualPointXY(xpos,ypos, curve._centerPoints[i].colorOuter2);
+
+        }
+
+        if (curve._straightLineEnd1)
+        {
+            // we need outer color  to stop the difussion at start end point
+            auto normalizedGradient=curve._startingBoundaryVisualPoints[0].position-curve._startingBoundaryVisualPoints.back().position;
+            Eigen::Vector2f rotateVectout = Eigen::Vector2f(-normalizedGradient.y(), normalizedGradient.x()).normalized();
+            for (int i=0;i<curve._startingBoundaryVisualPoints.size();i++)
+            {
+                int shiftx=-1;
+                int shifty=-1;
+                if (rotateVectout.x()>0) shiftx=1;
+                if (rotateVectout.y()>0) shifty=1;
+                int xpos= int (curve._startingBoundaryVisualPoints[i].position.x())+shiftx;
+                int ypos= int (curve._startingBoundaryVisualPoints[i].position.y())+shifty;
+                addVisualPointXY(xpos,ypos, curve._startingBoundaryVisualPoints[i].color);
+                xpos= int (curve._startingBoundaryVisualPoints[i].position.x())-shiftx;
+                ypos= int (curve._startingBoundaryVisualPoints[i].position.y())-shifty;
+                addVisualPointXY(xpos,ypos, curve.startOuterColor);
+
+            }
+
+        }
+
+        if (curve._straightLineEnd2)
+        {
+            // we need outer color  to stop the difussion at start end point
+            auto normalizedGradient=curve._endingBoundaryVisualPoints[0].position-curve._endingBoundaryVisualPoints.back().position;
+            Eigen::Vector2f rotateVectout = Eigen::Vector2f(-normalizedGradient.y(), normalizedGradient.x()).normalized();
+            for (int i=0;i<curve._endingBoundaryVisualPoints.size();i++)
+            {
+                int shiftx=1;
+                int shifty=1;
+                if (rotateVectout.x()>0) shiftx=-1;
+                if (rotateVectout.y()>0) shifty=-1;
+                int xpos= int (curve._endingBoundaryVisualPoints[i].position.x())+shiftx;
+                int ypos= int (curve._endingBoundaryVisualPoints[i].position.y())+shifty;
+                addVisualPointXY(xpos,ypos, curve._endingBoundaryVisualPoints[i].color);
+                xpos= int (curve._endingBoundaryVisualPoints[i].position.x())-shiftx;
+                ypos= int (curve._endingBoundaryVisualPoints[i].position.y())-shifty;
+                addVisualPointXY(xpos,ypos, curve.endOuterColor);
+
+            }
 
         }
 
