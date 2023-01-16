@@ -147,7 +147,7 @@ int App::run() {
         ImGui_ImplOpenGL2_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        ImGui::ShowDemoWindow();
+        //ImGui::ShowDemoWindow();
 
 
         // Create a window called "Hello, world!" and append into it.

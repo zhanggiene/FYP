@@ -72,7 +72,7 @@ void Point::setCleanCallBack(some_void_function_type f)
 
             if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
             {
-                ImGui::Text("This curve and all the points will be deleted!!.\nThis operation cannot be undone!\n\n");
+                ImGui::Text("This point will be deleted.\nThis operation cannot be undone!\n\n");
                 ImGui::Separator();
 
                 //static int unused_i = 0;
@@ -90,7 +90,7 @@ void Point::setCleanCallBack(some_void_function_type f)
                 ImGui::EndPopup();
             }
             static float placeholder_members[8] = { 0.0f, 0.0f, 1.0f, 3.1416f, 100.0f, 999.0f };
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
 
                 ImGui::PushID(i); // Use field index as identifier.
@@ -101,9 +101,10 @@ void Point::setCleanCallBack(some_void_function_type f)
                 ImGuiTreeNodeFlags flags =
                         ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
                 if (i==0) ImGui::TreeNodeEx("Color 1", flags, "Field_%d", i);
-                else if (i==1 ) ImGui::TreeNodeEx("Color 2", flags, "Field_%d", i);
-                else if (i==2 ) ImGui::TreeNodeEx("radius 1", flags, "Field_%d", i);
-                else if (i==3 ) ImGui::TreeNodeEx("radius 2", flags, "Field_%d", i);
+                else if (i==1 ) ImGui::TreeNodeEx("Color 2", flags, "Field %d", i);
+                else if (i==2 ) ImGui::TreeNodeEx("radius 1", flags, "Field %d", i);
+                else if (i==3 ) ImGui::TreeNodeEx("radius 2", flags, "Field %d", i);
+                else if (i==4 ) ImGui::TreeNodeEx("outer color", flags, "Field %d", i);
 
                 ImGui::TableSetColumnIndex(1);
                 ImGui::SetNextItemWidth(-FLT_MIN);
@@ -113,6 +114,12 @@ void Point::setCleanCallBack(some_void_function_type f)
                 else if (i==1 and  ImGui::ColorPicker3(" color 2 ", (float *) &color2,ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoAlpha)) f_();
                 else if (i==2 and ImGui::DragFloat("##radius 1", &radius1, 1.0f, 0.0f,100.0f)) f_();
                 else if (i==3 and ImGui::DragFloat("##radius 2", &radius2, 1.0f, 0.0f,100.0f)) f_();
+                else if (i==4)
+                {
+                    if (ImGui::ColorEdit3(" color outer 1 ", (float *) &colorOuter1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha)) f_(); // Edit 3 floats representing a color
+                    ImGui::SameLine();
+                    if (ImGui::ColorEdit3(" color outer 2 ", (float *)  &colorOuter2,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha)) f_(); // Edit 3 floats representing a color
+                }
                 ImGui::NextColumn();
 
                 ImGui::PopID();
@@ -458,7 +465,7 @@ Point& Point::operator=(Point&& other)
             boost::json::value_to<float>( obj.at( "color2_z" ) ),
             boost::json::value_to<float>( obj.at( "colorouter1_x" ) ),
             boost::json::value_to<float>( obj.at( "colorouter1_y" ) ),
-            boost::json::value_to<float>( obj.at( "colorcouter1_z" ) ),
+            boost::json::value_to<float>( obj.at( "colorouter1_z" ) ),
             boost::json::value_to<float>( obj.at( "colorouter2_x" ) ),
             boost::json::value_to<float>( obj.at( "colorouter2_y" ) ),
             boost::json::value_to<float>( obj.at( "colorouter2_z" ) ),

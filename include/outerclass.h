@@ -504,7 +504,7 @@ public:
         {
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
-            if (ImGui::Button("Delete..")) ImGui::OpenPopup("Delete?");
+            if (ImGui::Button("Delete")) ImGui::OpenPopup("Delete?");
 
             // Always center this window when appearing
             ImVec2 center = ImGui::GetMainViewport()->GetCenter();
