@@ -36,7 +36,7 @@ public:
     static void cancel();
     static bool editMode;
 private:
-    static void draw(GLuint texture);
+    static void draw();
     static Canvas _canvas;
     static ImVec4 color1;
     static ImVec4 color2;
@@ -47,5 +47,6 @@ private:
     static std::vector<float> data;
     static void deleteLastPoint();
     static bool mouseSelectionLock;
+    static GLuint LoadImage();
 };
 #endif //FYP_APP_H

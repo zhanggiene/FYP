@@ -23,38 +23,14 @@ void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mo
     std::cout<<"ESC"<<mode;
 }
 
-void App::draw( GLuint texture) {
+void App::draw() {
 
 
-    /*
+
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, texture);   //  this is important
-
-    glBegin(GL_QUADS);
-    glTexCoord2i(0, 0); glVertex2i(0,   0);
-    glTexCoord2i(0, 1); glVertex2i(0,   size/2);
-    glTexCoord2i(1, 1); glVertex2i(size/2, size/2);
-    glTexCoord2i(1, 0); glVertex2i(size/2, 0);
-
-    glEnd();
-
-    // glDeleteTextures(1, &image_tex);
-    glDisable(GL_TEXTURE_2D);
 
 
-    glBegin(GL_TRIANGLES);
-    glColor3f(0, 1, 0);
-    glVertex2f(0, 0);
-    glVertex2f(size/2, 0);
-    glVertex2f(size, size);
-    glColor3f(1, 1, 1); // this is important
-    // https://stackoverflow.com/questions/8956736/glcolor-coloring-all-textures
-    glEnd();
-    */
-    if (finalImageBool) {
         _canvas.displayFinalImage();
-    }
 
     _canvas.draw();
     for (int i=0; i<_points.size();i++) {
@@ -63,7 +39,10 @@ void App::draw( GLuint texture) {
 
 
 
+
 }
+
+
 
 std::string App::getEditMode() {
     if (editMode) {
@@ -92,7 +71,6 @@ bool App::initialize(int width, int height, const char *title) {
     }
     _canvas.setSize(width);
     glfwMakeContextCurrent(_window); // this one is important to be above opengl call
-    //image_tex_=LoadImage();
     _canvas.initializeTexture();
 
 
@@ -194,7 +172,7 @@ int App::run() {
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        draw(image_tex_);
+        draw();
 
         ImGui::Render();
         ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
