@@ -30,7 +30,7 @@ void App::draw() {
     //glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
 
-        _canvas.displayFinalImage();
+    _canvas.displayFinalImage();
 
     _canvas.draw();
     for (int i=0; i<_points.size();i++) {
@@ -221,7 +221,6 @@ void App::keyboard_press_callback(GLFWwindow *window,int key, int scancode, int 
 
             std::cout<<"space button clicked is "<<editMode;
             _canvas.drawFinalImage();
-            finalImageBool=true;
         }
 
 }
@@ -330,7 +329,6 @@ ImVec4 App::colorOuter2(0,0,0,1);
 float App::r1=10;
 float App::r2=10;
 bool App::editMode=false;
-bool App::finalImageBool=false;
 bool App::showPopUp=false;
 GLuint App::image_tex_;
 int App::size;
