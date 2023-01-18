@@ -24,10 +24,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="add open or close near the end boundary">
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="background completed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/App.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/App.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/App.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/App.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/tinyfiledialogs.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/tinyfiledialogs.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/Canvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Canvas.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/Point.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Point.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,6 +210,10 @@
       <workItem from="1673527527222" duration="459000" />
       <workItem from="1673529095336" duration="11365000" />
       <workItem from="1673964273819" duration="716000" />
+      <workItem from="1674001628553" duration="1644000" />
+      <workItem from="1674007961685" duration="2799000" />
+      <workItem from="1674021126178" duration="3000" />
+      <workItem from="1674029670823" duration="3743000" />
     </task>
     <task id="LOCAL-00001" summary="basic bazier curve done">
       <created>1670145198085</created>
@@ -355,7 +362,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673601829160</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="background completed">
+      <created>1674002417935</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1674002417935</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -395,6 +409,7 @@
     <MESSAGE value="add curve visibility" />
     <MESSAGE value="add clear and cancel" />
     <MESSAGE value="add open or close near the end boundary" />
-    <option name="LAST_COMMIT_MESSAGE" value="add open or close near the end boundary" />
+    <MESSAGE value="background completed" />
+    <option name="LAST_COMMIT_MESSAGE" value="background completed" />
   </component>
 </project>

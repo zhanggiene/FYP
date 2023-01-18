@@ -34,6 +34,7 @@ public:
     static std::string getEditMode();
     static void cancel();
     static bool editMode;
+    static void clear();
 private:
     static void draw();
     static Canvas _canvas;
@@ -41,7 +42,6 @@ private:
     static ImVec4 color2;
     static ImVec4 colorOuter1;
     static ImVec4 colorOuter2;
-    static void clear();
     static int size;
     static std::vector<float> data;
     static void deleteLastPoint();

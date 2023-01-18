@@ -58,6 +58,7 @@ public:
     void ShowAppMainMenuBar();
     friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Canvas const& p );
     char const * lFilterPatterns[1] = { "*.txt"};
+    char const * ImageFilterPatterns[3] = { "*.jpg","*.jpeg","*.png"};
     char const * lTheSaveFileName;
 	char const * lTheOpenFileName;
     void save();

@@ -112,8 +112,8 @@ void Point::setCleanCallBack(some_void_function_type f)
 
                 if (i==0 and ImGui::ColorPicker3(" color 1 ", (float *) &color1,ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoAlpha)) f_();
                 else if (i==1 and  ImGui::ColorPicker3(" color 2 ", (float *) &color2,ImGuiColorEditFlags_PickerHueWheel | ImGuiColorEditFlags_NoAlpha)) f_();
-                else if (i==2 and ImGui::DragFloat("##radius 1", &radius1, 1.0f, 0.0f,100.0f)) f_();
-                else if (i==3 and ImGui::DragFloat("##radius 2", &radius2, 1.0f, 0.0f,100.0f)) f_();
+                else if (i==2 and ImGui::DragFloat("##radius 1", &radius1, 1.0f, 0.0f,500)) f_();
+                else if (i==3 and ImGui::DragFloat("##radius 2", &radius2, 1.0f, 0.0f,500)) f_();
                 else if (i==4)
                 {
                     if (ImGui::ColorEdit3(" color outer 1 ", (float *) &colorOuter1,ImGuiColorEditFlags_PickerHueWheel |ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoAlpha)) f_(); // Edit 3 floats representing a color

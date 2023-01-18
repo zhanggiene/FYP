@@ -7,6 +7,7 @@
 #include "App.h"
 #define STB_IMAGE_IMPLEMENTATION
 // https://subscription.packtpub.com/book/game-development/9781838986193/2/ch02lvl1sec14/loading-images-with-stb
+//http://csundergrad.science.uoit.ca/courses/csci1061u/labs/4-image.html
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
@@ -52,10 +53,12 @@ void Canvas::initializeTexture()
 }
 void Canvas::clear()
 {
+
     cleardiffuseImage();
     //data.clear();
     fill(data.begin(),data.end(),0);
     _curves.clear();
+    App::clear();
     glTexImage2D(GL_TEXTURE_2D,     // Type of texture
                  0,                 // Pyramid level (for mip-mapping) - 0 is the top level
                  GL_RGB,            // Internal colour format to convert to
@@ -87,11 +90,36 @@ void Canvas::addCurve(outerclass&& curve) {
 
 void Canvas::loadImage()
 {
-    int w, h, comp;
-    const uint8_t* img = stbi_load(  "/Users/zhangzhuyan/Desktop/mosQUIToes/coding/FYP/Mycode/Baseline-Example.jpg", &w, &h, &comp, 3);
-    if (img == NULL) {
-        std::cout<<" file not found";
+    lTheOpenFileName = tinyfd_openFileDialog(
+            "load background image",
+            "",
+            3,
+            ImageFilterPatterns,
+            NULL,
+            0);
+    if (! lTheOpenFileName)
+    {
+        tinyfd_messageBox(
+                "Error",
+                "Open file name is NULL",
+                "ok",
+                "error",
+                1);
+        return ;
     }
+
+    int w, h, comp;
+    const uint8_t* img = stbi_load(lTheOpenFileName, &w, &h, &comp, 3);
+    if (img == NULL) {
+        tinyfd_messageBox(
+                "Error",
+                "Can not open this file in read mode",
+                "ok",
+                "error",
+                1);
+        return ;
+    }
+
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D,texture);
     glTexParameteri(texture, GL_TEXTURE_MAX_LEVEL, 0);
@@ -170,6 +198,7 @@ void Canvas::loadJson()
     //lBuffer[0] = '\0';
     //boost::json::value jv = boost::json::parse( lBuffer );
     boost::json::stream_parser p;
+    try {
     while(fgets(lBuffer,  sizeof(lBuffer), lIn) != NULL)
     {
         /* Do stuff. */
@@ -177,7 +206,19 @@ void Canvas::loadJson()
     }
     p.finish();
     fclose(lIn);
-    _curves=boost::json::value_to< std::vector< outerclass > >( p.release() );
+        _curves = boost::json::value_to<std::vector<outerclass> >(p.release());
+    }
+    catch(const std::exception& e)
+            {
+                tinyfd_messageBox(
+                        "Error",
+                        "The file cannot be decoded",
+                        "ok",
+                        "error",
+                        1);
+                return ;
+
+            }
     addcallBack();
 }
 
@@ -231,16 +272,16 @@ void Canvas::ShowAppMainMenuBar()
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Open", "Ctrl+O")) { loadJson();}
-            if (ImGui::MenuItem("save")) {save();}
+            if (ImGui::MenuItem("Load Stroke" )) { loadJson();}
+            if (ImGui::MenuItem("save Stroke")) {save();}
             if (ImGui::MenuItem("load background image")) {loadImage();displayFinalImage();}
 
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Undo", "CTRL+Z")) {App::cancel();}
-            if (ImGui::MenuItem("Clear", "CTRL+C")) {clear();}
+            if (ImGui::MenuItem("Undo" )) {App::cancel();}
+            if (ImGui::MenuItem("Clear")) {clear();}
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
