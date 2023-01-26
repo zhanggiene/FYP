@@ -2,11 +2,6 @@
 #include "App.h"
 #include <glfw3.h>
 #define WINDOW_SIZE 700
-#include <Eigen/Dense>
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl2.h"
-#include "outerclass.h"
 
 int main(int argc, char *argv[])
 {

@@ -4,7 +4,7 @@
 
 #ifndef FYP_POINT_H
 #define FYP_POINT_H
-#include <glfw3.h>
+//include <glfw3.h>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
