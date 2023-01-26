@@ -85,9 +85,12 @@ public:
     template<class T>
     void extract( boost::json::object const& obj, T& t, std::string_view key );
     friend Point tag_invoke( boost::json::value_to_tag< Point >, boost::json::value const& jv );
-
 };
-
+ImVec4 operator+=(ImVec4 a, ImVec4 const& b);
+ImVec4 operator-=(ImVec4 a, ImVec4 const& b);
+template<class T>
+ImVec4 operator/=(ImVec4 a, T t);
+template<class T> ImVec4 operator*=(ImVec4 a, T t);
 
 
 #endif //FYP_POINT_H

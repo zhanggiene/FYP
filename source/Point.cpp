@@ -253,18 +253,13 @@ Point& Point::operator=(Point&& other)
     {
         Point ret=p;
         ret.position+=position;
-        ret.color1.x+=(color1.x);
-        ret.color1.y+=(color1.y);
-        ret.color1.z+=(color1.z);
-        ret.color2.x+=(color2.x);
-        ret.color2.y+=(color2.y);
-        ret.color2.z+=(color2.z);
-        ret.colorOuter1.x+=(colorOuter1.x);
-        ret.colorOuter1.y+=(colorOuter1.y);
-        ret.colorOuter1.z+=(colorOuter1.z);
-        ret.colorOuter2.x+=(colorOuter2.x);
-        ret.colorOuter2.y+=(colorOuter2.y);
-        ret.colorOuter2.z+=(colorOuter2.z);
+        //ret.color1.x+=(color1.x);
+        //ret.color1.y+=(color1.y);
+        //ret.color1.z+=(color1.z);
+        ret.color1+=color1;
+        ret.color2+=color2;
+        ret.colorOuter1+=colorOuter1;
+        ret.colorOuter2+=colorOuter2;
         ret.radius1+=radius1;
         ret.radius2+=radius2;
         ret.isDeleted=false;
@@ -275,18 +270,10 @@ Point& Point::operator=(Point&& other)
     {
         Point ret=p;
         ret.position-=position;
-        ret.color1.x-=(color1.x);
-        ret.color1.y-=(color1.y);
-        ret.color1.z-=(color1.z);
-        ret.color2.x-=(color2.x);
-        ret.color2.y-=(color2.y);
-        ret.color2.z-=(color2.z);
-        ret.colorOuter1.x-=(colorOuter1.x);
-        ret.colorOuter1.y-=(colorOuter1.y);
-        ret.colorOuter1.z-=(colorOuter1.z);
-        ret.colorOuter2.x-=(colorOuter2.x);
-        ret.colorOuter2.y-=(colorOuter2.y);
-        ret.colorOuter2.z-=(colorOuter2.z);
+        ret.color1-=color1;
+        ret.color2-=color2;
+        ret.colorOuter1-=colorOuter1;
+        ret.colorOuter2-=colorOuter2;
         ret.radius1-=radius1;
         ret.radius2-=radius2;
         ret.isDeleted=false;
@@ -297,18 +284,10 @@ Point& Point::operator=(Point&& other)
     {
         Point ret=*this;
         ret.position*=s;
-        ret.color1.x*=s;
-        ret.color1.y*=s;
-        ret.color1.z*=s;
-        ret.color2.x*=s;
-        ret.color2.y*=s;
-        ret.color2.z*=s;
-        ret.colorOuter1.x*=s;
-        ret.colorOuter1.y*=s;
-        ret.colorOuter1.z*=s;
-        ret.colorOuter2.x*=s;
-        ret.colorOuter2.y*=s;
-        ret.colorOuter2.z*=s;
+        ret.color1*=s;
+        ret.color2*=s;
+        ret.colorOuter1*=s;
+        ret.colorOuter2*=s;
         ret.radius1*=s;
         ret.radius2*=s;
         ret.isDeleted=false;
@@ -319,18 +298,10 @@ Point& Point::operator=(Point&& other)
     {
         Point ret=*this;
         ret.position/=s;
-        ret.color1.x/=s;
-        ret.color1.y/=s;
-        ret.color1.z/=s;
-        ret.color2.x/=s;
-        ret.color2.y/=s;
-        ret.color2.z/=s;
-        ret.colorOuter1.x/=s;
-        ret.colorOuter1.y/=s;
-        ret.colorOuter1.z/=s;
-        ret.colorOuter2.x/=s;
-        ret.colorOuter2.y/=s;
-        ret.colorOuter2.z/=s;
+        ret.color1/=s;
+        ret.color2/=s;
+        ret.colorOuter1/=s;
+        ret.colorOuter2/=s;
         ret.radius1/=s;
         ret.radius2/=s;
         ret.isDeleted=false;
@@ -341,19 +312,10 @@ Point& Point::operator=(Point&& other)
     void Point::operator+=(const Point &p)
     {
         position+=p.position;
-
-        color1.x+=(p.color1.x);
-        color1.y+=(p.color1.y);
-        color1.z+=(p.color1.z);
-        color2.x+=(p.color2.x);
-        color2.y+=(p.color2.y);
-        color2.z+=(p.color2.z);
-        colorOuter1.x+=(p.colorOuter1.x);
-        colorOuter1.y+=(p.colorOuter1.y);
-        colorOuter1.z+=(p.colorOuter1.z);
-        colorOuter2.x+=(p.colorOuter2.x);
-        colorOuter2.y+=(p.colorOuter2.y);
-        colorOuter2.z+=(p.colorOuter2.z);
+        color1+=p.color1;
+        color2+=p.color2;
+        colorOuter1+=colorOuter1;
+        colorOuter2+=colorOuter2;
         radius1+=p.radius1;
         radius2+=p.radius2;
         isDeleted=false;
@@ -364,18 +326,11 @@ Point& Point::operator=(Point&& other)
     {
         position-=p.position;
 
-        color1.x-=(p.color1.x);
-        color1.y-=(p.color1.y);
-        color1.z-=(p.color1.z);
-        color2.x-=(p.color2.x);
-        color2.y-=(p.color2.y);
-        color2.z-=(p.color2.z);
-        colorOuter1.x-=(p.colorOuter1.x);
-        colorOuter1.y-=(p.colorOuter1.y);
-        colorOuter1.z-=(p.colorOuter1.z);
-        colorOuter2.x-=(p.colorOuter2.x);
-        colorOuter2.y-=(p.colorOuter2.y);
-        colorOuter2.z-=(p.colorOuter2.z);
+        position-=p.position;
+        color1-=p.color1;
+        color2-=p.color2;
+        colorOuter1-=colorOuter1;
+        colorOuter2-=colorOuter2;
         radius1-=p.radius1;
         radius2-=p.radius2;
         isDeleted=false;
@@ -386,17 +341,10 @@ Point& Point::operator=(Point&& other)
     {
         position*=s;
 
-        color1.x*=s;
-        color1.y*=s;
-        color1.z*=s;
-        color2.x*=s;
-        color2.y*=s;
-        color2.z*=s;
-        colorOuter1.x*=s;
-        colorOuter1.y*=s;
-        colorOuter1.z*=s;
-        colorOuter2.y*=s;
-        colorOuter2.z*=s;
+        color1*=s;
+        color2*=s;
+        colorOuter1*=s;
+        colorOuter2*=s;
         radius1*=s;
         radius2*=s;
         isDeleted=false;
@@ -406,18 +354,10 @@ Point& Point::operator=(Point&& other)
     void Point::operator/=(float s)
     {
         position/=s;
-        color1.x/=s;
-        color1.y/=s;
-        color1.z/=s;
-        color2.x/=s;
-        color2.y/=s;
-        color2.z/=s;
-        colorOuter1.x/=s;
-        colorOuter1.y/=s;
-        colorOuter1.z/=s;
-        colorOuter2.x/=s;
-        colorOuter2.y/=s;
-        colorOuter2.z/=s;
+        color1/=s;
+        color2/=s;
+        colorOuter1/=s;
+        colorOuter2/=s;
         radius1/=s;
         radius2/=s;
         isDeleted=false;
@@ -480,6 +420,40 @@ void Point::extract( boost::json::object const& obj, T& t, std::string_view key 
 {
     t = boost::json::value_to<T>( obj.at( key ) );
 }
+
+ImVec4 operator+=(ImVec4 a, ImVec4 const& b) {
+    a.x+=(b.x);
+    a.y+=(b.y);
+    a.z+=(b.z);
+    return a;
+
+}
+
+ImVec4 operator-=(ImVec4 a, ImVec4 const& b) {
+    a.x-=(b.x);
+    a.y-=(b.y);
+    a.z-=(b.z);
+    return a;
+
+}
+template<class T>
+ImVec4 operator*=(ImVec4 a, T t) {
+    a.x*=t;
+    a.y*=t;
+    a.z*=t;
+    return a;
+}
+template<class T>
+ImVec4 operator/=(ImVec4 a, T t) {
+    a.x/=t;
+    a.y/=t;
+    a.z/=t;
+    return a;
+}
+
+
+
+
 
 
 
