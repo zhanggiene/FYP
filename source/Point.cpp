@@ -336,7 +336,7 @@ Point Point::operator/(float s) const
     return ret;
 }
 
-void Point::operator+=(const Point &p)
+Point& Point::operator+=(const Point &p)
 {
     position+=p.position;
 
@@ -355,10 +355,11 @@ void Point::operator+=(const Point &p)
     radius1+=p.radius1;
     radius2+=p.radius2;
     isDeleted=false;
+    return *this;
 
 }
 
-void Point::operator-=(const Point &p)
+Point& Point::operator-=(const Point &p)
 {
     position-=p.position;
 
@@ -377,10 +378,11 @@ void Point::operator-=(const Point &p)
     radius1-=p.radius1;
     radius2-=p.radius2;
     isDeleted=false;
+    return *this;
 
 }
 
-void Point::operator*=(float s)
+Point& Point::operator*=(float s)
 {
     position*=s;
 
@@ -399,10 +401,11 @@ void Point::operator*=(float s)
     radius1*=s;
     radius2*=s;
     isDeleted=false;
+    return *this;
 
 }
 
-void Point::operator/=(float s)
+Point& Point::operator/=(float s)
 {
     position/=s;
     color1.x/=s;
@@ -420,6 +423,7 @@ void Point::operator/=(float s)
     radius1/=s;
     radius2/=s;
     isDeleted=false;
+    return *this;
 
 }
     std::ostream& operator<<(std::ostream &os, const Point &p)

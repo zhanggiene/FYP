@@ -56,6 +56,8 @@ public:
     void drawR1R2() const;
     void draw() const ;
 
+    // return reference as it is used for chaining operation
+    // C==A==B
     Point& operator=(const Point& other);
     Point& operator=(Point&& other);
 
@@ -66,13 +68,13 @@ public:
 
     Point operator/(float s) const;
 
-    void operator+=(const Point &p);
+    Point& operator+=(const Point &p);
 
-    void operator-=(const Point &p);
+    Point& operator-=(const Point &p);
 
-    void operator*=(float s);
+    Point& operator*=(float s);
 
-    void operator/=(float s);
+    Point& operator/=(float s);
 
     friend std::ostream &operator<<(std::ostream &os, const Point &p);
     friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Point const& p );
@@ -83,7 +85,7 @@ private:
     static const unsigned int R=5; // only one copy per class // scope is only in this class
     void drawFilledCircle(float cx, float cy, int num_segments=20) const ;
 
-    void drawCircle(float cx, float cy, int num_segments=100,int lineWidth=10,float radius=r,float r_c=0,float g=1,float b=0) const ;
+    void drawCircle(float cx, float cy, int num_segments=100,int lineWidth=10,float radius=R,float r_c=0,float g=1,float b=0) const ;
 
 };
 

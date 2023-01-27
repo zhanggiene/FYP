@@ -22,7 +22,7 @@ public:
     {
     }
     VisualPoint(Eigen::Vector2f position_):
-            position(position_)
+            color(),position(position_)
     {
     }
 
@@ -100,36 +100,40 @@ public:
         return ret;
     }
 
-    void operator+=(const VisualPoint &p)
+    VisualPoint& operator+=(const VisualPoint &p)
     {
         position+=p.position;
         color.x+=p.color.x;
         color.y+=p.color.y;
         color.z+=p.color.z;
+        return *this;
     }
 
-    void operator-=(const VisualPoint &p)
+    VisualPoint& operator-=(const VisualPoint &p)
     {
         position-=p.position;
         color.x-=p.color.x;
         color.y-=p.color.y;
         color.z-=p.color.z;
+        return *this;
     }
 
-    void operator*=(float s)
+    VisualPoint& operator*=(float s)
     {
         position*=s;
         color.x*=s;
         color.y*=s;
         color.z*=s;
+        return *this;
     }
 
-    void operator/=(float s)
+    VisualPoint& operator/=(float s)
     {
         position/=s;
         color.x/=s;
         color.y/=s;
         color.z/=s;
+        return *this;
 
     }
 
@@ -139,7 +143,7 @@ public:
         return os << " }";
     }
 
-    void draw()
+    void draw() const
     {
         glColor3f(1, 0, 0);
         float twicePi = 2.0 * 3.142;
