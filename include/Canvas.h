@@ -4,7 +4,7 @@
 
 #ifndef FYP_CANVAS_H
 #define FYP_CANVAS_H
-#include "outerclass.h"
+#include "Curve.h"
 #include <vector>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
@@ -30,7 +30,7 @@ public:
     std::vector<float> data; // for giving to opengl
     Eigen::SparseMatrix<float,Eigen::RowMajor>  A;
     bool _arePointsVisible;
-    std::vector<outerclass> _curves;
+    std::vector<Curve> _curves;
     int counter;
     void loadImage();
     Canvas();
@@ -38,7 +38,7 @@ public:
     void setSize(unsigned  int size);
     void clear();
     void draw();
-    void addCurve(outerclass&& curve);
+    void addCurve(Curve&& curve);
     void addVisualPoint(const VisualPoint& p_);
     void addVisualPointXY(int x, int y,const ImVec4& color);
     void drawToImage(); // make the upper and lower boundary into 2 layers.

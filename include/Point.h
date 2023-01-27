@@ -4,7 +4,6 @@
 
 #ifndef FYP_POINT_H
 #define FYP_POINT_H
-//include <glfw3.h>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
@@ -19,7 +18,6 @@
 #include <Eigen/Dense>
 #include <math.h>
 #include <boost/json.hpp>
-#define POINT_SIZE 10
 class Point
 {
 public:
@@ -32,7 +30,6 @@ public:
     Eigen::Vector2f position;
     ImVec4 colorOuter1;
     ImVec4 colorOuter2;
-    static const unsigned int r=5;
     bool isSelected;
     float radius1;
     float radius2;
@@ -50,17 +47,14 @@ public:
     // Copy constructor
     Point(const Point& p1);
 
-    void showCruveproperty(const char* prefix, int uid);
+    void showCurveproperty(const char* prefix, int uid);
 
     Point (Point&& other) noexcept;
     void checkMouseSelection(float x,float y,bool& lock);
 
     void updatePosition(float x,float y);
-    void drawR1R2();
-    void draw();
-    void drawFilledCircle(float cx, float cy, int num_segments=20);
-
-    void drawCircle(float cx, float cy, int num_segments=100,int lineWidth=10,float radius=r,float r_c=0,float g=1,float b=0) ;
+    void drawR1R2() const;
+    void draw() const ;
 
     Point& operator=(const Point& other);
     Point& operator=(Point&& other);
@@ -85,12 +79,13 @@ public:
     template<class T>
     void extract( boost::json::object const& obj, T& t, std::string_view key );
     friend Point tag_invoke( boost::json::value_to_tag< Point >, boost::json::value const& jv );
+private:
+    static const unsigned int R=5; // only one copy per class // scope is only in this class
+    void drawFilledCircle(float cx, float cy, int num_segments=20) const ;
+
+    void drawCircle(float cx, float cy, int num_segments=100,int lineWidth=10,float radius=r,float r_c=0,float g=1,float b=0) const ;
+
 };
-ImVec4 operator+=(ImVec4 a, ImVec4 const& b);
-ImVec4 operator-=(ImVec4 a, ImVec4 const& b);
-template<class T>
-ImVec4 operator/=(ImVec4 a, T t);
-template<class T> ImVec4 operator*=(ImVec4 a, T t);
 
 
 #endif //FYP_POINT_H

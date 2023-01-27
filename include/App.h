@@ -42,7 +42,7 @@ private:
     static ImVec4 color2;
     static ImVec4 colorOuter1;
     static ImVec4 colorOuter2;
-    static int size;
+    static std::size_t size;  // unsigned type
     static std::vector<float> data;
     static void deleteLastPoint();
     static bool mouseSelectionLock;

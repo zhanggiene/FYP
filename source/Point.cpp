@@ -5,8 +5,6 @@
 #include "Point.h"
 #include "imgui.h"
 #include "App.h"
-
-
     Point::Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,float x_,float y_,float r1_,float r2_):
             color1(color1_), color2(color2_) ,colorOuter1(colorOuter1_),colorOuter2(colorOuter2_),position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
@@ -48,7 +46,7 @@ void Point::setCleanCallBack(some_void_function_type f)
         isDeleted=false;
     }
 
-    void Point::showCruveproperty(const char* prefix, int uid)
+    void Point::showCurveproperty(const char* prefix, int uid)
     {
         ImGui::PushID(uid);
 
@@ -142,13 +140,11 @@ void Point::setCleanCallBack(some_void_function_type f)
         radius1=other.radius1;
         radius2=other.radius2;
         isDeleted=false;
-        //f_=other.f_;
-
     }
 
     void Point::checkMouseSelection(float x,float y,bool& lock)
     {
-        if(abs(position.x()-x)<4*r && abs(position.y()-y)<4*r && lock==false)
+        if(abs(position.x()-x)<4*R && abs(position.y()-y)<4*R && lock==false)
         {
             // highlighted by the mouse
             isSelected=true;
@@ -171,13 +167,13 @@ void Point::setCleanCallBack(some_void_function_type f)
             position.y()=y;
         }
     }
-    void Point::drawR1R2()
+    void Point::drawR1R2() const
     {
         drawCircle(position.x(), position.y(), 100,10,radius1,color1.x,color1.y,color1.z);
         drawCircle(position.x(), position.y(), 100,10,radius2,color2.x,color2.y,color2.z);
 
     }
-    void Point::draw()
+    void Point::draw() const
     {
         if (isSelected  && App::editMode) {
             drawCircle(position.x(),position.y());
@@ -187,7 +183,8 @@ void Point::setCleanCallBack(some_void_function_type f)
         drawR1R2();
     }
 
-    void Point::drawFilledCircle(float cx, float cy, int num_segments){
+    void Point::drawFilledCircle(float cx, float cy, int num_segments) const
+    {
         //static float angle;
         // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glColor3f(1, 1, 1);
@@ -196,14 +193,15 @@ void Point::setCleanCallBack(some_void_function_type f)
         glVertex2f(cx, cy); // center of circle
         for (int i = 0; i <= num_segments; i++)   {
             glVertex2f (
-                    (cx + (r* cos(i * twicePi / num_segments))), (cy + (r * sin(i * twicePi / num_segments)))
+                    (cx + (R* cos(i * twicePi / num_segments))), (cy + (R * sin(i * twicePi / num_segments)))
             );
         }
         glColor3f(1, 1, 1);
         glEnd(); //END
     }
 
-    void Point::drawCircle(float cx, float cy, int num_segments,int lineWidth,float radius,float r_c,float g,float b) {
+    void Point::drawCircle(float cx, float cy, int num_segments,int lineWidth,float radius,float r_c,float g,float b) const
+    {
         glLineWidth(lineWidth);
         glEnable(GL_LINE_SMOOTH);
         glColor3f(r_c, g, b);
@@ -249,123 +247,184 @@ Point& Point::operator=(Point&& other)
     return *this;
 }
 
-    Point Point::operator+(const Point &p) const
-    {
-        Point ret=p;
-        ret.position+=position;
-        //ret.color1.x+=(color1.x);
-        //ret.color1.y+=(color1.y);
-        //ret.color1.z+=(color1.z);
-        ret.color1+=color1;
-        ret.color2+=color2;
-        ret.colorOuter1+=colorOuter1;
-        ret.colorOuter2+=colorOuter2;
-        ret.radius1+=radius1;
-        ret.radius2+=radius2;
-        ret.isDeleted=false;
-        return ret;
-    }
+Point Point::operator+(const Point &p) const
+{
+    Point ret=p;
+    ret.position+=position;
+    ret.color1.x+=(color1.x);
+    ret.color1.y+=(color1.y);
+    ret.color1.z+=(color1.z);
+    ret.color2.x+=(color2.x);
+    ret.color2.y+=(color2.y);
+    ret.color2.z+=(color2.z);
+    ret.colorOuter1.x+=(colorOuter1.x);
+    ret.colorOuter1.y+=(colorOuter1.y);
+    ret.colorOuter1.z+=(colorOuter1.z);
+    ret.colorOuter2.x+=(colorOuter2.x);
+    ret.colorOuter2.y+=(colorOuter2.y);
+    ret.colorOuter2.z+=(colorOuter2.z);
+    ret.radius1+=radius1;
+    ret.radius2+=radius2;
+    ret.isDeleted=false;
+    return ret;
+}
 
-    Point Point::operator-(const Point &p) const
-    {
-        Point ret=p;
-        ret.position-=position;
-        ret.color1-=color1;
-        ret.color2-=color2;
-        ret.colorOuter1-=colorOuter1;
-        ret.colorOuter2-=colorOuter2;
-        ret.radius1-=radius1;
-        ret.radius2-=radius2;
-        ret.isDeleted=false;
-        return ret;
-    }
+Point Point::operator-(const Point &p) const
+{
+    Point ret=p;
+    ret.position-=position;
+    ret.color1.x-=(color1.x);
+    ret.color1.y-=(color1.y);
+    ret.color1.z-=(color1.z);
+    ret.color2.x-=(color2.x);
+    ret.color2.y-=(color2.y);
+    ret.color2.z-=(color2.z);
+    ret.colorOuter1.x-=(colorOuter1.x);
+    ret.colorOuter1.y-=(colorOuter1.y);
+    ret.colorOuter1.z-=(colorOuter1.z);
+    ret.colorOuter2.x-=(colorOuter2.x);
+    ret.colorOuter2.y-=(colorOuter2.y);
+    ret.colorOuter2.z-=(colorOuter2.z);
+    ret.radius1-=radius1;
+    ret.radius2-=radius2;
+    ret.isDeleted=false;
+    return ret;
+}
 
-    Point Point::operator*(float s) const
-    {
-        Point ret=*this;
-        ret.position*=s;
-        ret.color1*=s;
-        ret.color2*=s;
-        ret.colorOuter1*=s;
-        ret.colorOuter2*=s;
-        ret.radius1*=s;
-        ret.radius2*=s;
-        ret.isDeleted=false;
-        return ret;
-    }
+Point Point::operator*(float s) const
+{
+    Point ret=*this;
+    ret.position*=s;
+    ret.color1.x*=s;
+    ret.color1.y*=s;
+    ret.color1.z*=s;
+    ret.color2.x*=s;
+    ret.color2.y*=s;
+    ret.color2.z*=s;
+    ret.colorOuter1.x*=s;
+    ret.colorOuter1.y*=s;
+    ret.colorOuter1.z*=s;
+    ret.colorOuter2.x*=s;
+    ret.colorOuter2.y*=s;
+    ret.colorOuter2.z*=s;
+    ret.radius1*=s;
+    ret.radius2*=s;
+    ret.isDeleted=false;
+    return ret;
+}
 
-    Point Point::operator/(float s) const
-    {
-        Point ret=*this;
-        ret.position/=s;
-        ret.color1/=s;
-        ret.color2/=s;
-        ret.colorOuter1/=s;
-        ret.colorOuter2/=s;
-        ret.radius1/=s;
-        ret.radius2/=s;
-        ret.isDeleted=false;
+Point Point::operator/(float s) const
+{
+    Point ret=*this;
+    ret.position/=s;
+    ret.color1.x/=s;
+    ret.color1.y/=s;
+    ret.color1.z/=s;
+    ret.color2.x/=s;
+    ret.color2.y/=s;
+    ret.color2.z/=s;
+    ret.colorOuter1.x/=s;
+    ret.colorOuter1.y/=s;
+    ret.colorOuter1.z/=s;
+    ret.colorOuter2.x/=s;
+    ret.colorOuter2.y/=s;
+    ret.colorOuter2.z/=s;
+    ret.radius1/=s;
+    ret.radius2/=s;
+    ret.isDeleted=false;
 
-        return ret;
-    }
+    return ret;
+}
 
-    void Point::operator+=(const Point &p)
-    {
-        position+=p.position;
-        color1+=p.color1;
-        color2+=p.color2;
-        colorOuter1+=colorOuter1;
-        colorOuter2+=colorOuter2;
-        radius1+=p.radius1;
-        radius2+=p.radius2;
-        isDeleted=false;
+void Point::operator+=(const Point &p)
+{
+    position+=p.position;
 
-    }
+    color1.x+=(p.color1.x);
+    color1.y+=(p.color1.y);
+    color1.z+=(p.color1.z);
+    color2.x+=(p.color2.x);
+    color2.y+=(p.color2.y);
+    color2.z+=(p.color2.z);
+    colorOuter1.x+=(p.colorOuter1.x);
+    colorOuter1.y+=(p.colorOuter1.y);
+    colorOuter1.z+=(p.colorOuter1.z);
+    colorOuter2.x+=(p.colorOuter2.x);
+    colorOuter2.y+=(p.colorOuter2.y);
+    colorOuter2.z+=(p.colorOuter2.z);
+    radius1+=p.radius1;
+    radius2+=p.radius2;
+    isDeleted=false;
 
-    void Point::operator-=(const Point &p)
-    {
-        position-=p.position;
+}
 
-        position-=p.position;
-        color1-=p.color1;
-        color2-=p.color2;
-        colorOuter1-=colorOuter1;
-        colorOuter2-=colorOuter2;
-        radius1-=p.radius1;
-        radius2-=p.radius2;
-        isDeleted=false;
+void Point::operator-=(const Point &p)
+{
+    position-=p.position;
 
-    }
+    color1.x-=(p.color1.x);
+    color1.y-=(p.color1.y);
+    color1.z-=(p.color1.z);
+    color2.x-=(p.color2.x);
+    color2.y-=(p.color2.y);
+    color2.z-=(p.color2.z);
+    colorOuter1.x-=(p.colorOuter1.x);
+    colorOuter1.y-=(p.colorOuter1.y);
+    colorOuter1.z-=(p.colorOuter1.z);
+    colorOuter2.x-=(p.colorOuter2.x);
+    colorOuter2.y-=(p.colorOuter2.y);
+    colorOuter2.z-=(p.colorOuter2.z);
+    radius1-=p.radius1;
+    radius2-=p.radius2;
+    isDeleted=false;
 
-    void Point::operator*=(float s)
-    {
-        position*=s;
+}
 
-        color1*=s;
-        color2*=s;
-        colorOuter1*=s;
-        colorOuter2*=s;
-        radius1*=s;
-        radius2*=s;
-        isDeleted=false;
+void Point::operator*=(float s)
+{
+    position*=s;
 
-    }
+    color1.x*=s;
+    color1.y*=s;
+    color1.z*=s;
+    color2.x*=s;
+    color2.y*=s;
+    color2.z*=s;
+    colorOuter1.x*=s;
+    colorOuter1.y*=s;
+    colorOuter1.z*=s;
+    colorOuter2.x*=s;
+    colorOuter2.y*=s;
+    colorOuter2.z*=s;
+    radius1*=s;
+    radius2*=s;
+    isDeleted=false;
 
-    void Point::operator/=(float s)
-    {
-        position/=s;
-        color1/=s;
-        color2/=s;
-        colorOuter1/=s;
-        colorOuter2/=s;
-        radius1/=s;
-        radius2/=s;
-        isDeleted=false;
+}
 
-    }
+void Point::operator/=(float s)
+{
+    position/=s;
+    color1.x/=s;
+    color1.y/=s;
+    color1.z/=s;
+    color2.x/=s;
+    color2.y/=s;
+    color2.z/=s;
+    colorOuter1.x/=s;
+    colorOuter1.y/=s;
+    colorOuter1.z/=s;
+    colorOuter2.x/=s;
+    colorOuter2.y/=s;
+    colorOuter2.z/=s;
+    radius1/=s;
+    radius2/=s;
+    isDeleted=false;
+
+}
     std::ostream& operator<<(std::ostream &os, const Point &p)
     {
-        os << p.position<<"radius 1 "<<p.radius1<<" radius 2 "<<p.radius2<<".    ";
+        os << p.position.x()<<" "<< p.position.x()<<" "<<p.color1.x<<" "<<"radius 1:"<<p.radius1<<" radius 2 "<<p.radius2<<".    ";
         return os << " }";
     }
     void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Point const& p )
@@ -421,35 +480,7 @@ void Point::extract( boost::json::object const& obj, T& t, std::string_view key 
     t = boost::json::value_to<T>( obj.at( key ) );
 }
 
-ImVec4 operator+=(ImVec4 a, ImVec4 const& b) {
-    a.x+=(b.x);
-    a.y+=(b.y);
-    a.z+=(b.z);
-    return a;
 
-}
-
-ImVec4 operator-=(ImVec4 a, ImVec4 const& b) {
-    a.x-=(b.x);
-    a.y-=(b.y);
-    a.z-=(b.z);
-    return a;
-
-}
-template<class T>
-ImVec4 operator*=(ImVec4 a, T t) {
-    a.x*=t;
-    a.y*=t;
-    a.z*=t;
-    return a;
-}
-template<class T>
-ImVec4 operator/=(ImVec4 a, T t) {
-    a.x/=t;
-    a.y/=t;
-    a.z/=t;
-    return a;
-}
 
 
 

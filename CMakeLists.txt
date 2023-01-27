@@ -48,7 +48,7 @@ set(MKL_LINK "-fopenmp=libomp -lpthread")
 
 find_package(OpenMP REQUIRED)
 file(GLOB sources *.cpp)
-add_library(eXpressiveDrawing ${sources} include tinyfiledialogs.c ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp source/Canvas.cpp include/VisualPoint.h include/stb_image.h include/stb_image_write.h source/Point.cpp include/outerclass.h include/internal_string.h include/internal_string.h)
+add_library(eXpressiveDrawing ${sources} include tinyfiledialogs.c ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp ${IMGUI_DIR}/imgui.cpp ${IMGUI_DIR}/imgui_draw.cpp ${IMGUI_DIR}/backends/imgui_impl_opengl2.cpp ${IMGUI_DIR}/imgui_demo.cpp ${IMGUI_DIR}/imgui_tables.cpp ${IMGUI_DIR}/imgui_widgets.cpp source/App.cpp source/Canvas.cpp include/VisualPoint.h include/stb_image.h include/stb_image_write.h source/Point.cpp include/Curve.h include/internal_string.h include/internal_string.h)
 target_include_directories(eXpressiveDrawing
         PUBLIC include
         ${GLFW_H}

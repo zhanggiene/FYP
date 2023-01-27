@@ -233,7 +233,7 @@ void App::cursor_position_callback(GLFWwindow *window, double xpos, double ypos)
             // std::cout<<"drawing"<<std::endl;
             p.checkMouseSelection(xpos, ypos,mouseSelectionLock);
         }
-    _canvas.checkMouseSelection(xpos,ypos,mouseSelectionLock);   // check for points that is already part of the curve
+    _canvas.checkMouseSelection(xpos,ypos,mouseSelectionLock);   // check for points that is already part of the Curve
         if (editMode && glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
             {
                 for (auto &p: _points) {   // important here , otherwise, it is a copy, not a reference
@@ -297,8 +297,9 @@ void App::HelpMarker(const char* desc)
 void App::addCurve() {
     if (!_points.empty())
         {
-         std::vector<Point > temp_points=_points;  // make a copy
-        outerclass temp(temp_points);
+         std::vector<Point > temp_points=_points;  // copy constructor as new object(vector as well) is being
+         // defined
+        Curve temp(temp_points);
         temp._controlPoints[0].f_();
         std::cout<<"start to move the outer class";
         _canvas._curves.push_back(std::move(temp));  // move semantic
@@ -331,6 +332,6 @@ float App::r2=10;
 bool App::editMode=false;
 bool App::showPopUp=false;
 GLuint App::image_tex_;
-int App::size;
+std::size_t App::size;
 std::vector<float> App::data;
 bool App::mouseSelectionLock=false;

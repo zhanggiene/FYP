@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     Point point2(color1,color2,position1,30,30);
     points.push_back(point1);
     points.push_back(point2);
-    outerclass oo(points);
+    Curve oo(points);
      */
 //oo.cc.push_back(point1);
 //oo.cc.push_back(point2);

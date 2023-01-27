@@ -79,11 +79,11 @@ Canvas::~Canvas()
     clear();
 }
 
-void Canvas::addCurve(outerclass&& curve) {
+void Canvas::addCurve(Curve&& curve) {
      // area for improvement
-     //curve._controlPoints[0].f_();
-    //_curves.push_back(std::forward(curve));
-    //curve->setCallBack(std::bind(&Canvas::generate, this));
+     //Curve._controlPoints[0].f_();
+    //_curves.push_back(std::forward(Curve));
+    //Curve->setCallBack(std::bind(&Canvas::generate, this));
 
 
 }
@@ -206,7 +206,7 @@ void Canvas::loadJson()
     }
     p.finish();
     fclose(lIn);
-        _curves = boost::json::value_to<std::vector<outerclass> >(p.release());
+        _curves = boost::json::value_to<std::vector<Curve> >(p.release());
     }
     catch(const std::exception& e)
             {
@@ -544,8 +544,8 @@ void Canvas::addVisualPoint(const VisualPoint &p_) {
 void Canvas::cleanDeletedCurve()
 {
 
-    _curves.erase(std::remove_if(_curves.begin(), _curves.end(), [](const outerclass &h) { return h._isDeleted; }), _curves.end());
-        // erase is not working, as the curve number is
+    _curves.erase(std::remove_if(_curves.begin(), _curves.end(), [](const Curve &h) { return h._isDeleted; }), _curves.end());
+        // erase is not working, as the Curve number is
 
     }
 void Canvas::drawToImage()

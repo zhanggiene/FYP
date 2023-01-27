@@ -9,8 +9,10 @@
 #include "imgui.h"
 // secondary VisualPoint that derived from main control VisualPoint
 
-#define POINT_SIZE_v 3
 class VisualPoint {
+private:
+    static const unsigned int POINT_SIZE_v=3;
+    // without const, it has to be out of class
 public:
     ImVec4 color;
     Eigen::Vector2f position;
@@ -36,7 +38,6 @@ public:
     }
 
     // copy constructor
-    //https://stackoverflow.com/questions/11255027/why-user-defined-move-constructor-disables-the-implicit-copy-constructor
     VisualPoint (const VisualPoint & vp)
     {
         color=vp.color;
@@ -140,7 +141,7 @@ public:
 
     void draw()
     {
-        glColor3ub(255, 0, 0);
+        glColor3f(1, 0, 0);
         float twicePi = 2.0 * 3.142;
         glBegin(GL_TRIANGLE_FAN); //BEGIN CIRCLE
         glVertex2f(position.x(), position.y()); // center of circle

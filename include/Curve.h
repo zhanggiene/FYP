@@ -2,8 +2,8 @@
 // Created by Zhang Zhuyan on 28/12/22.
 //
 
-#ifndef FYP_OUTERCLASS_H
-#define FYP_OUTERCLASS_H
+#ifndef FYP_CURVE_H
+#define FYP_CURVE_H
 
 #include <string>
 #include <vector>
@@ -13,7 +13,7 @@
 #include "Point.h"
 #include "Canvas.h"
 #include "VisualPoint.h"
-class outerclass {
+class Curve {
 public:
 
     bool _toRenew;
@@ -45,8 +45,8 @@ public:
     bool _visibleCurve;
 
 
-    outerclass(){};
-    outerclass(std::vector<Point> controlPoints)
+    Curve(){};
+    Curve(std::vector<Point> controlPoints)
             : _toRenew(true),
               _degree(controlPoints.size()-1),
               _step(0.01f),
@@ -56,27 +56,27 @@ public:
         std::cout<< "construct curves";
         for(int i=0;i<_controlPoints.size();i++)
         {
-            _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
-            _controlPoints[i].setCleanCallBack(std::bind(&outerclass::cleanDeletedPoints, this));
+            _controlPoints[i].setCallBack(std::bind(&Curve::generate, this));
+            _controlPoints[i].setCleanCallBack(std::bind(&Curve::cleanDeletedPoints, this));
             //_controlPoints[i].setCallBack([](){std::cout<<"hi";});
         }
 
     }
     // Move assignment
-    // used when we erase curve
-    outerclass& operator=(outerclass&& other) noexcept
+    // used when we erase Curve
+    Curve& operator=(Curve&& other) noexcept
     {
         //_controlPoints.reserve(other._controlPoints.size());
         //std::move(other._controlPoints.begin(), std::next(other._controlPoints.begin(), other._controlPoints.size()),std::back_inserter(_controlPoints));
         _controlPoints=std::move(other._controlPoints); // ????
         for(int i=0;i<_controlPoints.size();i++)
         {
-            _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
+            _controlPoints[i].setCallBack(std::bind(&Curve::generate, this));
         }
 
         for(int i=0;i<_controlPoints.size();i++)
         {
-            _controlPoints[i].setCleanCallBack(std::bind(&outerclass::cleanDeletedPoints, this));
+            _controlPoints[i].setCleanCallBack(std::bind(&Curve::cleanDeletedPoints, this));
         }
 
         _degree=_controlPoints.size()-1,
@@ -102,7 +102,7 @@ public:
         return *this;
     }
 
-    outerclass (outerclass&& other) noexcept: _toRenew(true),_step(0.01f),_thickness(1),_straightLineEnd1(true),_straightLineEnd2(true),_visibleControlPoint(true)
+    Curve (Curve&& other) noexcept: _toRenew(true), _step(0.01f), _thickness(1), _straightLineEnd1(true), _straightLineEnd2(true), _visibleControlPoint(true)
     {
         //std::cout<<"outer class move constructor";
         //_controlPoints.reserve(other._controlPoints.size());
@@ -110,12 +110,12 @@ public:
         _controlPoints=std::move(other._controlPoints); // ????
         for(int i=0;i<_controlPoints.size();i++)
         {
-            _controlPoints[i].setCallBack(std::bind(&outerclass::generate, this));
+            _controlPoints[i].setCallBack(std::bind(&Curve::generate, this));
         }
 
         for(int i=0;i<_controlPoints.size();i++)
         {
-            _controlPoints[i].setCleanCallBack(std::bind(&outerclass::cleanDeletedPoints, this));
+            _controlPoints[i].setCleanCallBack(std::bind(&Curve::cleanDeletedPoints, this));
         }
         _degree=_controlPoints.size()-1,
         knotVector=std::move(other.knotVector);
@@ -446,7 +446,6 @@ public:
     // maybe can be optimized
     Point deBoor(int r, int i, float t)  // r=degree i is number of control points
     {
-
         if (r == 0)
         {
             return _controlPoints[i];
@@ -498,7 +497,7 @@ public:
         ImGui::AlignTextToFramePadding();
         bool node_open = ImGui::TreeNode("Object", "%s_%u", prefix, uid);
         ImGui::TableSetColumnIndex(1);
-        ImGui::Text("curve attributes");
+        ImGui::Text("Curve attributes");
 
         if (node_open)
         {
@@ -512,7 +511,7 @@ public:
 
             if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
             {
-                ImGui::Text("This curve and all the points will be deleted!!.\nThis operation cannot be undone!\n\n");
+                ImGui::Text("This Curve and all the points will be deleted!!.\nThis operation cannot be undone!\n\n");
                 ImGui::Separator();
 
                 //static int unused_i = 0;
@@ -597,7 +596,7 @@ public:
 
                 /*
                 */
-                _controlPoints[i].showCruveproperty("Points",i);
+                _controlPoints[i].showCurveproperty("Points", i);
             }
             ImGui::TreePop();
         }
@@ -642,7 +641,7 @@ public:
     }
 
 
-    friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, outerclass const& c )
+    friend void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, Curve const& c )
     {
         jv ={
                 {"points",c._controlPoints }};
@@ -655,14 +654,19 @@ public:
         t = boost::json::value_to<T>( obj.at( key ) );
     }
 
-    friend outerclass tag_invoke( boost::json::value_to_tag< outerclass >, boost::json::value const& jv )
+    friend Curve tag_invoke(boost::json::value_to_tag< Curve >, boost::json::value const& jv )
     {
         boost::json::object const& obj = jv.as_object();
-        return outerclass (
+        return Curve (
                 boost::json::value_to< std::vector< Point > >( obj.at( "points" ) ));
     }
 
 
+private:
+    Curve(const Curve&);
+    Curve& operator=(const Curve&);
+
+
 };
 
-#endif //FYP_OUTERCLASS_H
+#endif //FYP_CURVE_H
