@@ -18,6 +18,7 @@ class Curve {
 public:
 
     bool _toRenew;
+    bool _aboutDelete;
     int _degree;
     float _step;
     typedef std::function<void()> some_void_function_type;
@@ -49,6 +50,7 @@ public:
     //Curve(){};
     Curve(const std::vector<Point>& controlPoints)
             : _toRenew(true),
+            _aboutDelete(false),
               _degree(controlPoints.size()-1),
               _step(0.01f),
               _controlPoints(controlPoints),_thickness(1),_straightLineEnd1(true),_straightLineEnd2(true),_visibleControlPoint(true),_lock(false),_isDeleted(false),_visibleCurve(true) {
@@ -103,7 +105,7 @@ public:
         return *this;
     }
 
-    Curve (Curve&& other) noexcept: _toRenew(true), _step(0.01f), _thickness(1), _straightLineEnd1(true), _straightLineEnd2(true), _visibleControlPoint(true)
+    Curve (Curve&& other) noexcept: _toRenew(true),_aboutDelete(false), _step(0.01f), _thickness(1), _straightLineEnd1(true), _straightLineEnd2(true), _visibleControlPoint(true)
     {
         //std::cout<<"outer class move constructor";
         //_controlPoints.reserve(other._controlPoints.size());
@@ -241,6 +243,10 @@ public:
 
     }
 
+    void setAboutDelete(bool newvalue)
+    {
+        _aboutDelete=newvalue;
+    }
     void checkMouseSelection(float xpos, float ypos,bool& lock)
     {
         for (auto &p: _controlPoints) {   // important here , otherwise, it is a copy, not a reference
@@ -348,13 +354,13 @@ public:
         if (_visibleCurve) {
             if (_visibleControlPoint) {
                 drawControlPoints();
-                drawSkeleton();
+                drawSkeleton(_aboutDelete);
             }
-            drawBoundary();
-            drawEndBoundary();
+            drawBoundary(_aboutDelete);
+            drawEndBoundary(_aboutDelete);
         }
     }
-    void drawEndBoundary() const
+    void drawEndBoundary(bool hightlight=false) const
     {
         //std::cout<<"size of _endingBoundaryVisualPoint is "<<_endingBoundaryVisualPoints.size();
         if (!_endingBoundaryVisualPoints.empty()) {
@@ -362,6 +368,7 @@ public:
                 glBegin(GL_LINES);
                 glColor3f(_endingBoundaryVisualPoints[i].color.x, _endingBoundaryVisualPoints[i].color.y,
                           _endingBoundaryVisualPoints[i].color.z);
+                if (hightlight) glColor3f(1,0,0);
                 glVertex2f(_endingBoundaryVisualPoints[i].position.x(), _endingBoundaryVisualPoints[i].position.y());
                 glVertex2f(_endingBoundaryVisualPoints[i + 1].position.x(),
                            _endingBoundaryVisualPoints[i + 1].position.y());
@@ -375,6 +382,7 @@ public:
         for(int i=0;i< _startingBoundaryVisualPoints.size()-1;i++) {
             glBegin( GL_LINES);
             glColor3f(_startingBoundaryVisualPoints[i].color.x,_startingBoundaryVisualPoints[i].color.y,_startingBoundaryVisualPoints[i].color.z);
+            if (hightlight) glColor3f(1,0,0);
             glVertex2f(_startingBoundaryVisualPoints[i].position.x(),_startingBoundaryVisualPoints[i].position.y());
             glVertex2f(_startingBoundaryVisualPoints[i+1].position.x(),_startingBoundaryVisualPoints[i+1].position.y());
             glColor3f(1,1,1);
@@ -384,26 +392,29 @@ public:
 
     }
 
-    void drawSkeleton() const
+    void drawSkeleton(bool isHighLight=false) const
     {
         // draw skeleton, the center extrapolated thin line
         for(int i=0;i< _centerPoints.size()-1;i++)
         {
             glBegin( GL_LINES);
+            if (isHighLight)  glColor3f(1,0,0);
             glVertex2f(_centerPoints[i].position.x(),_centerPoints[i].position.y());
             glVertex2f(_centerPoints[i+1].position.x(),_centerPoints[i+1].position.y());
+            glColor3f(1,1,1);
             glEnd();
         }
 
     }
 
-    void drawBoundary() const
+    void drawBoundary(bool hightlight=false) const
     {
         for(int i=0;i< _normalUp.size()-1;i++)
         {
             glBegin( GL_LINES);
             //std::cout<<_normalUp[i].position<<std::endl;
             glColor3f(_normalUp[i].color.x,_normalUp[i].color.y,_normalUp[i].color.z);
+            if (hightlight) glColor3f(1,0,0);
             glVertex2f(_normalUp[i].position.x(),_normalUp[i].position.y());
             glVertex2f(_normalUp[i+1].position.x(),_normalUp[i+1].position.y());
             glEnd();
@@ -412,6 +423,7 @@ public:
         {
             glBegin( GL_LINES);
             glColor3f(_normalDown[i].color.x,_normalDown[i].color.y,_normalDown[i].color.z);
+            if (hightlight) glColor3f(1,0,0);
             glVertex2f(_normalDown[i].position.x(),_normalDown[i].position.y());
             glVertex2f(_normalDown[i+1].position.x(),_normalDown[i+1].position.y());
             glColor3f(1,1,1);
@@ -512,6 +524,7 @@ public:
 
             if (ImGui::BeginPopupModal("Delete?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
             {
+                setAboutDelete(true);
                 ImGui::Text("This Curve and all the points will be deleted!!.\nThis operation cannot be undone!\n\n");
                 ImGui::Separator();
 
@@ -523,10 +536,10 @@ public:
                 ImGui::Checkbox("Don't ask me next time", &dont_ask_me_next_time);
                 ImGui::PopStyleVar();
 
-                if (ImGui::Button("OK", ImVec2(120, 0))) {_isDeleted=true;cleandeleted_();ImGui::CloseCurrentPopup(); }
+                if (ImGui::Button("OK", ImVec2(120, 0))) { setAboutDelete(false);_isDeleted=true;cleandeleted_();ImGui::CloseCurrentPopup(); }
                 ImGui::SetItemDefaultFocus();
                 ImGui::SameLine();
-                if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+                if (ImGui::Button("Cancel", ImVec2(120, 0))) {  setAboutDelete(false);ImGui::CloseCurrentPopup(); }
                 ImGui::EndPopup();
             }
             ImGui::PushID(_controlPoints.size()); // Use field index as identifier.
