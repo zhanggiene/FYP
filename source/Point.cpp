@@ -5,19 +5,21 @@
 #include "Point.h"
 #include "imgui.h"
 #include "App.h"
-    Point::Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,float x_,float y_,float r1_,float r2_):
-            color1(color1_), color2(color2_) ,colorOuter1(colorOuter1_),colorOuter2(colorOuter2_),position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
+    Point::Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,
+                 ImVec4 colorOuter2_,Eigen::Vector2f position_,float r1_,float r2_):
+            color1(color1_), color2(color2_) ,colorOuter1(colorOuter1_),
+            colorOuter2(colorOuter2_),position(position_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
     {
     }
-    Point::Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,Eigen::Vector2f position_,float r1_,float r2_):
-            color1(color1_), color2(color2_) ,colorOuter1(colorOuter1_),colorOuter2(colorOuter2_),position(position_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
-    {
-    }
-Point::Point(float color1_x,float color1_y, float color1_z,float color2_x,float color2_y, float color2_z,float colorOuter1_x,float colorOuter1_y, float colorOuter1_z,float colorOuter2_x,float colorOuter2_y, float colorOuter2_z,float x_,float y_,float r1_,float r2_):
-color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),colorOuter1(colorOuter1_x,colorOuter1_y,colorOuter1_z,1),colorOuter2(colorOuter2_x,colorOuter2_y,colorOuter2_z,1),position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
-{
+    //Point::Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,Eigen::Vector2f position_,float r1_,float r2_):
+    //        color1(color1_), color2(color2_) ,colorOuter1(colorOuter1_),colorOuter2(colorOuter2_),position(position_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
+    //{
+    // }
+//Point::Point(float color1_x,float color1_y, float color1_z,float color2_x,float color2_y, float color2_z,float colorOuter1_x,float colorOuter1_y, float colorOuter1_z,float colorOuter2_x,float colorOuter2_y, float colorOuter2_z,float x_,float y_,float r1_,float r2_):
+// color1(color1_x,color1_y,color1_z,1),color2(color2_x,color2_y,color2_z,1),colorOuter1(colorOuter1_x,colorOuter1_y,colorOuter1_z,1),colorOuter2(colorOuter2_x,colorOuter2_y,colorOuter2_z,1),position(x_,y_),isSelected(false),radius1(r1_),radius2(r2_),isDeleted(false)
+//{
 
-}
+//}
 
 
 
@@ -98,11 +100,11 @@ void Point::setCleanCallBack(some_void_function_type f)
                 ImGui::AlignTextToFramePadding();
                 ImGuiTreeNodeFlags flags =
                         ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
-                if (i==0) ImGui::TreeNodeEx("Color 1", flags, "Field_%d", i);
-                else if (i==1 ) ImGui::TreeNodeEx("Color 2", flags, "Field %d", i);
-                else if (i==2 ) ImGui::TreeNodeEx("radius 1", flags, "Field %d", i);
-                else if (i==3 ) ImGui::TreeNodeEx("radius 2", flags, "Field %d", i);
-                else if (i==4 ) ImGui::TreeNodeEx("outer color", flags, "Field %d", i);
+                if (i==0) ImGui::TreeNodeEx("Color 1", flags, "Color 1", i);
+                else if (i==1 ) ImGui::TreeNodeEx("Color 2", flags, "Color 2", i);
+                else if (i==2 ) ImGui::TreeNodeEx("radius 1", flags, "radius 1", i);
+                else if (i==3 ) ImGui::TreeNodeEx("radius 2", flags, "radius 2", i);
+                else if (i==4 ) ImGui::TreeNodeEx("outer color", flags, "outer colors", i);
 
                 ImGui::TableSetColumnIndex(1);
                 ImGui::SetNextItemWidth(-FLT_MIN);
@@ -231,7 +233,7 @@ void Point::setCleanCallBack(some_void_function_type f)
         isDeleted=false;
         return *this;
     }
-Point& Point::operator=(Point&& other)
+Point& Point::operator=(Point&& other) noexcept
 {
     if (this == &other)
         return *this;
@@ -459,25 +461,26 @@ Point& Point::operator/=(float s)
  Point tag_invoke( boost::json::value_to_tag< Point >, boost::json::value const& jv )
 {
     boost::json::object const& obj = jv.as_object();
-    return Point {
+    return Point {ImVec4(
             boost::json::value_to<float>( obj.at( "color1_x" ) ),
             boost::json::value_to<float>( obj.at( "color1_y" ) ),
-            boost::json::value_to<float>( obj.at( "color1_z" ) ),
+            boost::json::value_to<float>( obj.at( "color1_z" ) ),1.0),ImVec4(
             boost::json::value_to<float>( obj.at( "color2_x" ) ),
             boost::json::value_to<float>( obj.at( "color2_y" ) ),
-            boost::json::value_to<float>( obj.at( "color2_z" ) ),
+            boost::json::value_to<float>( obj.at( "color2_z" ) ),1.0),ImVec4(
             boost::json::value_to<float>( obj.at( "colorouter1_x" ) ),
             boost::json::value_to<float>( obj.at( "colorouter1_y" ) ),
-            boost::json::value_to<float>( obj.at( "colorouter1_z" ) ),
+            boost::json::value_to<float>( obj.at( "colorouter1_z" ) ),1.0),ImVec4(
             boost::json::value_to<float>( obj.at( "colorouter2_x" ) ),
             boost::json::value_to<float>( obj.at( "colorouter2_y" ) ),
-            boost::json::value_to<float>( obj.at( "colorouter2_z" ) ),
+            boost::json::value_to<float>( obj.at( "colorouter2_z" ) ),1.0),Eigen::Vector2f(
             boost::json::value_to<float>( obj.at( "position_x" )),
-            boost::json::value_to<float>( obj.at( "position_y" ) ),
+            boost::json::value_to<float>( obj.at( "position_y" ) )),
             boost::json::value_to<float>( obj.at( "radius1" ) ),
             boost::json::value_to<float>( obj.at( "radius2" ) )
     };
 }
+
 template<class T>
 void Point::extract( boost::json::object const& obj, T& t, std::string_view key )
 {

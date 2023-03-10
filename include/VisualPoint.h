@@ -21,6 +21,10 @@ public:
     color(color_),position(position_)
     {
     }
+
+
+
+
     VisualPoint(Eigen::Vector2f position_):
             color(),position(position_)
     {
@@ -54,9 +58,11 @@ public:
         position=other.position;
         return *this;
     }
+
+    // move constructor
     VisualPoint (VisualPoint&& other)
     {
-        color=std::move(other.color);
+        color=other.color;
         position=std::move(other.position);
     }
 

@@ -6,6 +6,7 @@
 #define FYP_CURVE_H
 
 #include <string>
+#include <utility>
 #include <vector>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -45,8 +46,8 @@ public:
     bool _visibleCurve;
 
 
-    Curve(){};
-    Curve(std::vector<Point> controlPoints)
+    //Curve(){};
+    Curve(const std::vector<Point>& controlPoints)
             : _toRenew(true),
               _degree(controlPoints.size()-1),
               _step(0.01f),
@@ -160,11 +161,11 @@ public:
     };
 
 
-    void drawControlPoints()
+    void drawControlPoints() const
     {
         glColor3f(1.0f, 0.0f, 0.0f);
-        for (int i=0;i<_controlPoints.size();i++) {
-            _controlPoints[i].draw();
+        for (const auto & p:_controlPoints) {
+            p.draw();
         }
     }
 
@@ -250,7 +251,7 @@ public:
 
     void updatePosition(float xpos, float ypos)
     {
-        if (_lock==false) {
+        if (!_lock) {
             for (auto &p: _controlPoints) {   // important here , otherwise, it is a copy, not a reference
                 // std::cout<<"drawing"<<std::endl;
                 p.updatePosition(xpos, ypos);
@@ -329,10 +330,10 @@ public:
             auto normalizedGradient = _centerGradientPoints[i].position.normalized(); // return a value
 
             Eigen::Vector2f rotateVectdown = Eigen::Vector2f(-normalizedGradient.y(), normalizedGradient.x());
-            _normalDown.push_back(VisualPoint(_centerPoints[i].position + (_centerPoints[i].radius2 * -rotateVectdown),
-                                              _centerPoints[i].color2));
-            _normalUp.push_back(VisualPoint(_centerPoints[i].position + (_centerPoints[i].radius1 * (rotateVectdown)),
-                                            _centerPoints[i].color1));
+            _normalDown.emplace_back(_centerPoints[i].position + (_centerPoints[i].radius2 * -rotateVectdown),
+                                              _centerPoints[i].color2);
+            _normalUp.emplace_back(_centerPoints[i].position + (_centerPoints[i].radius1 * (rotateVectdown)),
+                                            _centerPoints[i].color1);
         }
     }
 
@@ -353,10 +354,10 @@ public:
             drawEndBoundary();
         }
     }
-    void drawEndBoundary()
+    void drawEndBoundary() const
     {
         //std::cout<<"size of _endingBoundaryVisualPoint is "<<_endingBoundaryVisualPoints.size();
-        if (_endingBoundaryVisualPoints.size()>0) {
+        if (!_endingBoundaryVisualPoints.empty()) {
             for (int i = 0; i < _endingBoundaryVisualPoints.size() - 1; i++) {
                 glBegin(GL_LINES);
                 glColor3f(_endingBoundaryVisualPoints[i].color.x, _endingBoundaryVisualPoints[i].color.y,
@@ -369,7 +370,7 @@ public:
 
             }
         }
-        if (_startingBoundaryVisualPoints.size())
+        if (!_startingBoundaryVisualPoints.empty())
         {
         for(int i=0;i< _startingBoundaryVisualPoints.size()-1;i++) {
             glBegin( GL_LINES);
@@ -383,7 +384,7 @@ public:
 
     }
 
-    void drawSkeleton()
+    void drawSkeleton() const
     {
         // draw skeleton, the center extrapolated thin line
         for(int i=0;i< _centerPoints.size()-1;i++)
@@ -396,7 +397,7 @@ public:
 
     }
 
-    void drawBoundary()
+    void drawBoundary() const
     {
         for(int i=0;i< _normalUp.size()-1;i++)
         {
@@ -662,9 +663,8 @@ public:
     }
 
 
-private:
-    Curve(const Curve&);
-    Curve& operator=(const Curve&);
+    Curve(const Curve&) = delete;
+    Curve& operator=(const Curve&) =delete;
 
 
 };

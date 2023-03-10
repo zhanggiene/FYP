@@ -50,10 +50,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="rename + more efficient code">
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="improve assignment operator">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/Curve.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Curve.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Point.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Point.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/VisualPoint.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/VisualPoint.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/App.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/App.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/Canvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Canvas.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/Point.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Point.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -291,11 +295,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="eXpressiveDrawing" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="eXpressiveDrawing" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -314,12 +313,9 @@
     </configuration>
     <list>
       <item itemvalue="Catch.cpptest" />
-      <item itemvalue="Catch.Operation on point class" />
       <item itemvalue="Catch.Operation on point class (1)" />
+      <item itemvalue="Catch.Operation on point class" />
       <item itemvalue="Catch.Operation on visual point class" />
-      <item itemvalue="CMake Application.eXpressiveDrawing" />
-      <item itemvalue="CMake Application.fyp" />
-      <item itemvalue="CMake Application.Continuous" />
       <item itemvalue="CMake Application.ContinuousBuild" />
       <item itemvalue="CMake Application.ContinuousConfigure" />
       <item itemvalue="CMake Application.ContinuousCoverage" />
@@ -328,7 +324,7 @@
       <item itemvalue="CMake Application.ContinuousSubmit" />
       <item itemvalue="CMake Application.ContinuousTest" />
       <item itemvalue="CMake Application.ContinuousUpdate" />
-      <item itemvalue="CMake Application.Experimental" />
+      <item itemvalue="CMake Application.Continuous" />
       <item itemvalue="CMake Application.ExperimentalBuild" />
       <item itemvalue="CMake Application.ExperimentalConfigure" />
       <item itemvalue="CMake Application.ExperimentalCoverage" />
@@ -337,7 +333,7 @@
       <item itemvalue="CMake Application.ExperimentalSubmit" />
       <item itemvalue="CMake Application.ExperimentalTest" />
       <item itemvalue="CMake Application.ExperimentalUpdate" />
-      <item itemvalue="CMake Application.Nightly" />
+      <item itemvalue="CMake Application.Experimental" />
       <item itemvalue="CMake Application.NightlyBuild" />
       <item itemvalue="CMake Application.NightlyConfigure" />
       <item itemvalue="CMake Application.NightlyCoverage" />
@@ -347,6 +343,9 @@
       <item itemvalue="CMake Application.NightlySubmit" />
       <item itemvalue="CMake Application.NightlyTest" />
       <item itemvalue="CMake Application.NightlyUpdate" />
+      <item itemvalue="CMake Application.Nightly" />
+      <item itemvalue="CMake Application.eXpressiveDrawing" />
+      <item itemvalue="CMake Application.fyp" />
       <item itemvalue="CTest Application.All CTest" />
     </list>
     <recent_temporary>
@@ -441,7 +440,11 @@
       <workItem from="1674608421875" duration="1889000" />
       <workItem from="1674637112727" duration="4577000" />
       <workItem from="1674707790238" duration="25635000" />
-      <workItem from="1674816790275" duration="2714000" />
+      <workItem from="1674816790275" duration="4051000" />
+      <workItem from="1674877167035" duration="398000" />
+      <workItem from="1674884304063" duration="6000" />
+      <workItem from="1674884412830" duration="1095000" />
+      <workItem from="1674916916532" duration="3779000" />
     </task>
     <task id="LOCAL-00001" summary="basic bazier curve done">
       <created>1670145198085</created>
@@ -618,7 +621,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674816010668</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="improve assignment operator">
+      <created>1674826768676</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1674826768676</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -637,7 +647,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="basic bazier curve done" />
     <MESSAGE value="boundary points outline" />
     <MESSAGE value="draggable control point" />
     <MESSAGE value="fixed endpoints" />
@@ -662,6 +671,7 @@
     <MESSAGE value="test cases (approval and unit test)" />
     <MESSAGE value="Point operator overloading(+-*/)" />
     <MESSAGE value="rename + more efficient code" />
-    <option name="LAST_COMMIT_MESSAGE" value="rename + more efficient code" />
+    <MESSAGE value="improve assignment operator" />
+    <option name="LAST_COMMIT_MESSAGE" value="improve assignment operator" />
   </component>
 </project>

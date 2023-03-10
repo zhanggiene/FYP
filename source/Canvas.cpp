@@ -11,11 +11,19 @@
 #include "stb_image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb_image_write.h>
+#include "internal_string.h"
 
 Canvas::Canvas()
         :
           displayMode(false),
+          size_(),
+          imageRed(),
+          imageBlue(),
+          Mask(),
+          data(),
+          A(),
           _arePointsVisible(true),
+          _curves(),
           counter(0)
 {
 }
@@ -250,6 +258,11 @@ void Canvas::ShowPropertyEditor()
         return;
     }
 
+    if (_curves.size()==0)
+    {
+        ImGui::Text(STRING_LABEL::startPage);
+    }
+
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
     if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
     {
@@ -291,8 +304,8 @@ void Canvas::ShowAppMainMenuBar()
 void Canvas::draw() {
 
 
-    for (size_t i = 0; i < _curves.size(); i++) {
-        _curves[i].draw();
+    for (auto & c: _curves) {
+        c.draw();
     }
     // draw property windows as well
     ShowPropertyEditor();
@@ -550,7 +563,7 @@ void Canvas::cleanDeletedCurve()
     }
 void Canvas::drawToImage()
 {
-    for (auto &curve : _curves)
+    for (const auto &curve : _curves)
     {
         for (int i=0; i<curve._normalUp.size();i++)
         {

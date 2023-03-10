@@ -33,8 +33,8 @@ void App::draw() {
     _canvas.displayFinalImage();
 
     _canvas.draw();
-    for (int i=0; i<_points.size();i++) {
-        _points[i].draw();
+    for (const auto & _point : _points) {
+        _point.draw();
     }
 
 
@@ -64,7 +64,7 @@ bool App::initialize(int width, int height, const char *title) {
     _window = glfwCreateWindow(width, height, "test", NULL, NULL);
     size=width;
 
-    if (_window == NULL) {
+    if (_window == nullptr) {
         std::cout << "INITIALIZER: Failed to open a window!" << std::endl;
         glfwTerminate();
         return false;
@@ -125,7 +125,7 @@ int App::run() {
         ImGui_ImplOpenGL2_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        //ImGui::ShowDemoWindow();
+        // ImGui::ShowDemoWindow();
 
 
         // Create a window called "Hello, world!" and append into it.
@@ -251,18 +251,18 @@ void App::mouse_button_callback(GLFWwindow *window, int button, int action, int 
     ImGuiIO& io = ImGui::GetIO();
     io.AddMouseButtonEvent(button, action);
     if (io.WantCaptureMouse) return;
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && editMode==false)
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && !editMode)
     {
         double xpos, ypos;
         glfwGetCursorPos(window, &xpos, &ypos);
         std::cout<<r1<<std::endl;
         std::cout<<r2<<std::endl;
         showPopUp=true;
-        _points.emplace_back(color1,color2,colorOuter1,colorOuter2,xpos,ypos,r1,r2);
+        _points.emplace_back(color1,color2,colorOuter1,colorOuter2,Eigen::Vector2f(xpos,ypos),r1,r2);
         std::cout<<"points added "<<color1.x<<"  "<<color1.y<<"   "<<color1.z<<"   "<<xpos<<"   "<<ypos<<"  "<<r1<<"  "<<r2<<" ;";
 
     }
-    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS && editMode==false)
+    else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS && !editMode)
     {
         addCurve();
     }
@@ -295,7 +295,7 @@ void App::HelpMarker(const char* desc)
 }
 
 void App::addCurve() {
-    if (!_points.empty())
+    if (_points.size()>2)
         {
          std::vector<Point > temp_points=_points;  // copy constructor as new object(vector as well) is being
          // defined

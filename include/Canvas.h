@@ -40,8 +40,7 @@ public:
     void draw();
     void addCurve(Curve&& curve);
     void addVisualPoint(const VisualPoint& p_);
-    void addVisualPointXY(int x, int y,const ImVec4& color);
-    void drawToImage(); // make the upper and lower boundary into 2 layers.
+
     void diffuse(int iteration);
     void checkMouseSelection(float xpos, float ypos,bool& lock);
     void updatePosition(float xpos, float ypos);
@@ -49,23 +48,27 @@ public:
     void drawFinalImage();
     void displayFinalImage();
     void initializeTexture();
-    GLuint texture;
+    GLuint texture{};
     void cleardiffuseImage();
     void constructA(int size);
-    void multigrid();
     void ShowPropertyEditor();
     void ShowPlaceholderObject(const char* prefix, int uid);
     void ShowAppMainMenuBar();
     friend void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Canvas const& p );
     char const * lFilterPatterns[1] = { "*.txt"};
     char const * ImageFilterPatterns[3] = { "*.jpg","*.jpeg","*.png"};
-    char const * lTheSaveFileName;
-	char const * lTheOpenFileName;
+    char const * lTheSaveFileName{};
+	char const * lTheOpenFileName{};
     void save();
     FILE * lIn;
     void loadJson();
-    char lBuffer[1024];
+    char lBuffer[1024]{};
     void cleanDeletedCurve();
     void addcallBack();
+private:
+    void drawToImage(); // make the upper and lower boundary into 2 layers.
+    void multigrid();
+    void addVisualPointXY(int x, int y,const ImVec4& color);
+
 };
 #endif //FYP_CANVAS_H
