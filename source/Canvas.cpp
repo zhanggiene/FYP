@@ -117,7 +117,7 @@ void Canvas::loadImage()
     }
 
     int w, h, comp;
-    const uint8_t* img = stbi_load(lTheOpenFileName, &w, &h, &comp, 3);
+    const uint8_t* img = stbi_load(lTheOpenFileName, &w, &h, &comp, 0);
     if (img == NULL) {
         tinyfd_messageBox(
                 "Error",
@@ -127,7 +127,8 @@ void Canvas::loadImage()
                 1);
         return ;
     }
-
+    GLenum tempRGBType=GL_RGB;
+    if (comp==4) tempRGBType=GL_RGBA;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D,texture);
     glTexParameteri(texture, GL_TEXTURE_MAX_LEVEL, 0);
@@ -141,7 +142,7 @@ void Canvas::loadImage()
                  w,          // Image width  i.e. 640 for Kinect in standard mode
                  h,          // Image height i.e. 480 for Kinect in standard mode
                  0,                 // Border width in pixels (can either be 1 or 0)
-                 GL_RGB, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
+                 tempRGBType, // Input image format (i.e. GL_RGB, GL_RGBA, GL_BGR etc.)
                  GL_UNSIGNED_BYTE,  // Image data type
                  img);        // The actual image data itself
     // return texture;
