@@ -37,7 +37,7 @@ public:
 
 
     Point(ImVec4 color1_,ImVec4 color2_,ImVec4 colorOuter1_,ImVec4 colorOuter2_,Eigen::Vector2f position_,float r1_,float r2_);
-
+    Point ();
 
     void setCallBack(some_void_function_type f);
     void setCleanCallBack(some_void_function_type f);

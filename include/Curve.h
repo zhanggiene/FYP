@@ -12,7 +12,6 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
 #include "Point.h"
-#include "Canvas.h"
 #include "VisualPoint.h"
 class Curve {
 public:

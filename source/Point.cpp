@@ -20,7 +20,8 @@
 //{
 
 //}
-
+    Point::Point()
+    {}
 
 
     void Point::setCallBack(some_void_function_type f)
@@ -430,7 +431,8 @@ Point& Point::operator/=(float s)
 }
     std::ostream& operator<<(std::ostream &os, const Point &p)
     {
-        os << p.position.x()<<" "<< p.position.x()<<" "<<p.color1.x<<" "<<"radius 1:"<<p.radius1<<" radius 2 "<<p.radius2<<".    ";
+        os << p.position.x()<<" "<< p.position.y()<<" "<<p.color1.x<<" "<<"radius 1:"<<p.radius1<<" radius 2 "<<p.radius2<<"."<<
+                "color1_x"<< p.color1.x<<"color1_y"<<p.color1.y <<"color1_z"<<p.color1.z <<"color2_w"<<p.color1.w;
         return os << " }";
     }
     void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Point const& p )

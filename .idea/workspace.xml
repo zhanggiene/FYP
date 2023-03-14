@@ -50,15 +50,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="improve assignment operator">
+    <list default="true" id="d2cebcfb-876a-4901-826f-a2f2cf5d80c0" name="Changes" comment="fix image loading bug">
+      <change afterPath="$PROJECT_DIR$/test/approval_tests/integration_tests.Curve_Formation.approved.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/flowers.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/unit_testReadJson.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/Canvas.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Canvas.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Curve.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Curve.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/Point.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/Point.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/VisualPoint.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/VisualPoint.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/App.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/App.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/Canvas.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Canvas.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/Point.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/source/Point.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/integration_tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/integration_tests.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/unit_tests.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/test/unit_tests.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +67,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="ClangdSettings">
+    <option name="clangTidyViaClangd" value="false" />
     <option name="formatViaClangd" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
@@ -79,7 +81,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="1b39396ee2863ddc392ab11c2e7cf0434cda124b" />
+        <entry key="$PROJECT_DIR$" value="4b87e81e8a1cf67d60e63b092b4ea513bf435f8c" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -110,7 +112,7 @@
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;ctest.advertisement.all.test.configuration.is.created&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/zhangzhuyan/Desktop/mosQUIToes/coding/FYP/Mycode/test/approval_tests&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/zhangzhuyan/Desktop/mosQUIToes/coding/FYP/Mycode/test&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -122,6 +124,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test" />
       <recent name="$PROJECT_DIR$/test/approval_tests" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -131,19 +134,31 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application.fyp">
-    <configuration name="Operation on point class (1)" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_METHOD="Operation on point class" TEST_MODE="SUITE_TEST">
+    <configuration name="All in unit_tests.cpp" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_PATTERN="[#unit_tests]" TEST_MODE="PATTERN">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Operation on point class" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_MODE="SUITE_TEST">
+    <configuration name="Load Json to create one Point" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_METHOD="Load Json to create one Point" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Operation on visual point class" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_METHOD="Operation on visual point class" TEST_MODE="SUITE_TEST">
+    <configuration name="Load Json" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_METHOD="Load Json" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Multiplication Operation on point class" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_METHOD="Multiplication Operation on point class" TEST_MODE="SUITE_TEST">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+        <option name="BeforeTestRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Multiplication Operation on visual point class" type="CMakeCatchTestRunConfigurationType" factoryName="Catch Test" temporary="true" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="fyp" TARGET_NAME="cpptest" RUN_TARGET_PROJECT_NAME="fyp" RUN_TARGET_NAME="cpptest" TEST_METHOD="Multiplication Operation on visual point class" TEST_MODE="SUITE_TEST">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
         <option name="BeforeTestRunTask" enabled="true" />
@@ -313,9 +328,11 @@
     </configuration>
     <list>
       <item itemvalue="Catch.cpptest" />
-      <item itemvalue="Catch.Operation on point class (1)" />
-      <item itemvalue="Catch.Operation on point class" />
-      <item itemvalue="Catch.Operation on visual point class" />
+      <item itemvalue="Catch.All in unit_tests.cpp" />
+      <item itemvalue="Catch.Load Json to create one Point" />
+      <item itemvalue="Catch.Multiplication Operation on point class" />
+      <item itemvalue="Catch.Multiplication Operation on visual point class" />
+      <item itemvalue="Catch.Load Json" />
       <item itemvalue="CMake Application.ContinuousBuild" />
       <item itemvalue="CMake Application.ContinuousConfigure" />
       <item itemvalue="CMake Application.ContinuousCoverage" />
@@ -350,9 +367,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Catch.Operation on point class (1)" />
-        <item itemvalue="Catch.Operation on visual point class" />
-        <item itemvalue="Catch.Operation on point class" />
+        <item itemvalue="Catch.All in unit_tests.cpp" />
+        <item itemvalue="Catch.Multiplication Operation on point class" />
+        <item itemvalue="Catch.Load Json to create one Point" />
+        <item itemvalue="Catch.Multiplication Operation on visual point class" />
+        <item itemvalue="Catch.Load Json" />
       </list>
     </recent_temporary>
   </component>
@@ -445,6 +464,11 @@
       <workItem from="1674884304063" duration="6000" />
       <workItem from="1674884412830" duration="1095000" />
       <workItem from="1674916916532" duration="3779000" />
+      <workItem from="1678527769934" duration="8560000" />
+      <workItem from="1678669604240" duration="15000" />
+      <workItem from="1678684198961" duration="12000" />
+      <workItem from="1678690090159" duration="9000" />
+      <workItem from="1678704092156" duration="6234000" />
     </task>
     <task id="LOCAL-00001" summary="basic bazier curve done">
       <created>1670145198085</created>
@@ -628,7 +652,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674826768676</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="fix image loading bug">
+      <created>1678527535417</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1678527535417</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -639,7 +670,15 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ID_WIDTH">
+                <map>
+                  <entry key="Table.Default.Author.ColumnIdWidth" value="177" />
+                  <entry key="Table.Default.Date.ColumnIdWidth" value="121" />
+                  <entry key="Table.Space.CommitStatus.ColumnIdWidth" value="92" />
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -647,7 +686,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="boundary points outline" />
     <MESSAGE value="draggable control point" />
     <MESSAGE value="fixed endpoints" />
     <MESSAGE value="seemingly working example" />
@@ -672,6 +710,7 @@
     <MESSAGE value="Point operator overloading(+-*/)" />
     <MESSAGE value="rename + more efficient code" />
     <MESSAGE value="improve assignment operator" />
-    <option name="LAST_COMMIT_MESSAGE" value="improve assignment operator" />
+    <MESSAGE value="fix image loading bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix image loading bug" />
   </component>
 </project>
