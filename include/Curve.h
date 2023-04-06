@@ -46,7 +46,7 @@ public:
     bool _visibleCurve;
 
 
-    //Curve(){};
+    Curve(){};
     Curve(const std::vector<Point>& controlPoints)
             : _toRenew(true),
             _aboutDelete(false),
@@ -654,10 +654,16 @@ public:
     }
 
 
-    friend void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, Curve const& c )
+    friend void tag_invoke(boost::json::value_from_tag, boost::json::value& jv, const Curve& c )
     {
-        jv ={
-                {"points",c._controlPoints }};
+        boost::json::array points_array;
+        for (const auto& point : c._controlPoints)
+        {
+            boost::json::value point_value;
+            tag_invoke(boost::json::value_from_tag{}, point_value, point);
+            points_array.push_back(point_value);
+        }
+        jv = {{"points", points_array}};
 
     }
 

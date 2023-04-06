@@ -243,8 +243,14 @@ void Canvas::addcallBack()
 
 void tag_invoke( boost::json::value_from_tag, boost::json::value& jv, Canvas const& c )
 {
-    jv ={
-            {"curves",c._curves }};
+    boost::json::array curves_array;
+    for (const auto& curve : c._curves)
+    {
+        boost::json::value curve_value;
+        tag_invoke(boost::json::value_from_tag{}, curve_value, curve);
+        curves_array.push_back(curve_value);
+    }
+    jv = {{"curves", curves_array}};
 
 }
 
