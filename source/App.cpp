@@ -14,7 +14,7 @@
 
 #include "App.h"
 #include "internal_string.h"
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 void key_callback(GLFWwindow* window_, int key, int scancode, int action, int mode)
 {
     //If you press ESC and set windowShouldClose to True, the outer loop will close the application

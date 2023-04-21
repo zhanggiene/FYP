@@ -2,11 +2,12 @@ cmake_minimum_required(VERSION 3.24)
 project(fyp)
 
 set(CMAKE_CXX_STANDARD 17)
+set(Boost_USE_STATIC_LIBS ON)
 
 # Define build options
 #option(AUTODIFF_BUILD_TESTS "Enable the compilation of the test files." ON)
 find_package(
-        Boost 1.65 REQUIRED
+        Boost REQUIRED
         COMPONENTS  json
 )
 
@@ -18,15 +19,15 @@ add_subdirectory(test)
 
 set(APP_TARGET main.app)
 
-set(GLFW_H /usr/local/Cellar/glfw/3.3.8/include/GLFW)
-#include_directories( ${GLFW_H})
+#set(GLFW_H /usr/local/Cellar/glfw/3.3.8/include/GLFW)
+include_directories( ${GLFW_H})
 
-set(GLFW_LINK /usr/local/Cellar/glfw/3.3.8/lib/libglfw.3.dylib)
-#link_libraries( ${GLFW_LINK})
+#set(GLFW_LINK /usr/local/Cellar/glfw/3.3.8/lib/libglfw.3.dylib)
+link_libraries( ${GLFW_LINK})
 
 # OPENGL
 find_package(OpenGL REQUIRED)
-find_package(amgcl REQUIRED)
+add_subdirectory(amgcl)
 #include_directories(${OPENGL_INCLUDE_DIRS})
 
 # Eigen
@@ -56,6 +57,6 @@ target_include_directories(eXpressiveDrawing
         ${IMGUI_DIR}
         ${OPENGL_INCLUDE_DIR}
         )
-target_link_libraries (eXpressiveDrawing PUBLIC Eigen3::Eigen OpenMP::OpenMP_CXX amgcl::amgcl ${Boost_LIBRARIES} ${GLFW_LINK}  ${OPENGL_LIBRARIES})
+target_link_libraries (eXpressiveDrawing PUBLIC Eigen3::Eigen glfw OpenMP::OpenMP_CXX amgcl::amgcl ${Boost_LIBRARIES} "-lGL"  ${OPENGL_LIBRARIES})
 add_executable(fyp main.cpp)
 target_link_libraries (fyp eXpressiveDrawing)

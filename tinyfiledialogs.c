@@ -90,7 +90,6 @@ Thanks for contributions, bug corrections & thorough testing to:
  #define SLASH "/"
 #endif /* _WIN32 */
 
-#include "../../../../../Downloads/tinyfiledialogs 2/tinyfiledialogs.h"
 
 #define MAX_PATH_OR_CMD 1024 /* _MAX_PATH or MAX_PATH */
 

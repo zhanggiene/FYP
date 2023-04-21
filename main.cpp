@@ -1,6 +1,6 @@
 #include <iostream>
 #include "App.h"
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
 #define WINDOW_SIZE 700
 
 int main(int argc, char *argv[])
